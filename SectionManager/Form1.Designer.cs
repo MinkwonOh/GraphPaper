@@ -24,23 +24,24 @@ namespace SectionManager {
         /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent() {
-            this.pnl_background = new System.Windows.Forms.Panel();
+            this.sectionDrawerControl1 = new SectionManager.SectionDrawerControl();
             this.SuspendLayout();
             // 
-            // pnl_background
+            // sectionDrawerControl1
             // 
-            this.pnl_background.BackColor = System.Drawing.Color.White;
-            this.pnl_background.Location = new System.Drawing.Point(20, 50);
-            this.pnl_background.Name = "pnl_background";
-            this.pnl_background.Size = new System.Drawing.Size(766, 565);
-            this.pnl_background.TabIndex = 0;
+            this.sectionDrawerControl1.AllowDrop = true;
+            this.sectionDrawerControl1.BackColor = System.Drawing.Color.White;
+            this.sectionDrawerControl1.Location = new System.Drawing.Point(12, 12);
+            this.sectionDrawerControl1.Name = "sectionDrawerControl1";
+            this.sectionDrawerControl1.Size = new System.Drawing.Size(1080, 550);
+            this.sectionDrawerControl1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1210, 1074);
-            this.Controls.Add(this.pnl_background);
+            this.ClientSize = new System.Drawing.Size(1399, 1074);
+            this.Controls.Add(this.sectionDrawerControl1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -49,7 +50,7 @@ namespace SectionManager {
 
         #endregion
 
-        private System.Windows.Forms.Panel pnl_background;
+        private SectionDrawerControl sectionDrawerControl1;
     }
 }
 
