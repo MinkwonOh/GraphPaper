@@ -13,9 +13,6 @@ namespace SectionManager {
     public partial class SectionDrawerControl : UserControl {
 
         private DrawerModel model;
-        private bool duringAdd;
-        private Bitmap emptyBox;
-        private object emptyBoxLock = new object();
 
         public SectionDrawerControl() {
             InitializeComponent();
@@ -25,81 +22,35 @@ namespace SectionManager {
 
         private void InitializeValue() {
             DoubleBuffered = true;
+
+            model = new DrawerModel();
+            LoadValue();
+
         }
 
         private void InitializeEvent() {
-            btnAdd.Click += (s, e) => AddBtnClicked();
-            Paint += (s, e) => FormPaint();
-            Click += (s, e) => ControlClicked(this);
-            panel1.Click += (s, e) => ControlClicked(panel1);
+            btnAdd.Click += (s, e) => CreateBox();
         }
 
-        private void FormPaint() {
-            Point pt = panel1.PointToClient(new Point(MousePosition.X, MousePosition.Y));
-
-            if (emptyBox != null) {
-                if (duringAdd) {
-                    DrawUnregisteredBox(pt);
-                    Invalidate();
-                }
-                else  {
-                    ClearBox();
-                }
-            }
+        private void LoadValue() { 
+            // set value to model
         }
 
-        private void DrawUnregisteredBox() {
-            DrawUnregisteredBox(panel1.PointToClient(new Point(MousePosition.X,MousePosition.Y)));
+        // 새 Box 생성
+        private void CreateBox() {
+            
         }
 
-        private void DrawUnregisteredBox(Point pt) {
-            lock (emptyBoxLock) {
-                using (var g = panel1.CreateGraphics()) {
-                    g.Clear(Color.White);
-                    g.DrawImage(emptyBox,new Rectangle(pt,emptyBox.Size));
-                }
-            }
+        // 새 박스 등록
+        private void RegistBox() {
+            
         }
 
-        private void ControlClicked(Control control) {
-            Point pt = control.PointToClient(new Point(MousePosition.X, MousePosition.Y));
-            Console.WriteLine(pt);
-            ClearBox();
-        }
-
-        private void AddBtnClicked() {
-            duringAdd = false;
-            ClearBox();
-            Size size = new Size((int)nmrcBoxWidth.Value, (int)nmrcBoxHeight.Value);
-            emptyBox = new Bitmap(size.Width, size.Height,System.Drawing.Imaging.PixelFormat.Format32bppRgb) { 
-            };
-            using (var g = Graphics.FromImage(emptyBox)) {
-                g.DrawRectangle(new Pen(Color.Black,1),new Rectangle(0,0,size.Width,size.Height));
-            }
-                duringAdd = true;
-        }
-
-        private void ClearBox() {
-            if (emptyBox != null) { 
-                emptyBox.Dispose();
-                emptyBox = null;
-            }
-        }
-
-        protected override void OnLoad(EventArgs e) {
-            base.OnLoad(e);
-
-            // get model
-
-            // draw
-        }
-
-        private void LoadData() {
-            // model 가져와서 넣기
-            model = new DrawerModel();
+        // 선택 박스 삭제
+        private void DeleteBox() { 
 
         }
 
-        
+
     }
 }

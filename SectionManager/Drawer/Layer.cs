@@ -1,0 +1,79 @@
+﻿using SectionManager.Models;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SectionManager.Drawer {
+    public class Layer : IDisposable {
+
+        private Bitmap mBitmap = null;
+        
+
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public ZoomPer Zoom { get; set; }
+
+        public Layer() { }
+        public Layer(int width, int height): this() {
+            InitValue(width, height, ZoomPer.z100);
+            DrawGrid();
+        }
+
+        public Layer(int width, int height, ZoomPer zoom = ZoomPer.z100): this() {
+            InitValue(width, height, zoom);
+            DrawGrid();
+        }
+
+        private void InitValue(int w, int h, ZoomPer zoom) {
+            Width = w;
+            Height = h;
+            Zoom = zoom;
+            CreateLayer(w, h);
+        }
+
+        private void DrawGrid() {
+            using (var g = Graphics.FromImage(mBitmap)) { 
+                
+            }
+        }
+
+        public void CreateLayer(int width, int height) {
+            if (mBitmap != null) {
+                mBitmap.Dispose();
+                mBitmap = null;
+            }
+
+            if (width > 0 && height > 0)
+                mBitmap = new Bitmap(Math.Abs(Width % int.MaxValue), Math.Abs(Height % int.MaxValue));
+        }
+
+        public void Dispose() {
+
+        }
+
+        /*private Bitmap ToBitmap() {
+            if (Width > 0 && Height > 0) {
+                var rc = new Rectangle(0, 0, Width, Height);
+                BitmapData bmData = mBitmap.LockBits(rc, ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+
+                IntPtr scan0 = bmData.Scan0;
+
+                unsafe {
+                    for (int y = 0; y < bmData.Height; y++) {
+                        UInt32* ptr = (UInt32*)scan0 + bmData.Width * y;
+                        for (int x = 0; x < bmData.Width; x++)
+                            ptr[x] = mBuffer[y][x].Color;
+                    }
+                }
+
+                mBitmap.UnlockBits(bmData);
+                return mBitmap;
+            }
+            return null;
+        }*/
+    }
+}

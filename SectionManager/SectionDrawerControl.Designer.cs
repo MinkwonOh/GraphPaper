@@ -24,23 +24,15 @@ namespace SectionManager {
         /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent() {
-            this.pnl_GraphPaper = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
             this.nmrcBoxWidth = new System.Windows.Forms.NumericUpDown();
             this.nmrcBoxHeight = new System.Windows.Forms.NumericUpDown();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pnl_GraphPaper.SuspendLayout();
+            this.sectionCtrl = new SectionManager.SectionControl();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // pnl_GraphPaper
-            // 
-            this.pnl_GraphPaper.Controls.Add(this.panel1);
-            this.pnl_GraphPaper.Location = new System.Drawing.Point(3, 41);
-            this.pnl_GraphPaper.Name = "pnl_GraphPaper";
-            this.pnl_GraphPaper.Size = new System.Drawing.Size(812, 506);
-            this.pnl_GraphPaper.TabIndex = 0;
             // 
             // btnAdd
             // 
@@ -107,36 +99,44 @@ namespace SectionManager {
             // 
             // panel1
             // 
-            this.panel1.Location = new System.Drawing.Point(15, 19);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Controls.Add(this.sectionCtrl);
+            this.panel1.Location = new System.Drawing.Point(3, 91);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(797, 487);
-            this.panel1.TabIndex = 0;
+            this.panel1.Size = new System.Drawing.Size(747, 456);
+            this.panel1.TabIndex = 4;
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(15, 17);
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(729, 439);
+            this.sectionCtrl.TabIndex = 0;
+            this.sectionCtrl.Text = "sectionControl1";
             // 
             // SectionDrawerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.nmrcBoxHeight);
             this.Controls.Add(this.nmrcBoxWidth);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.pnl_GraphPaper);
             this.Name = "SectionDrawerControl";
             this.Size = new System.Drawing.Size(1080, 550);
-            this.pnl_GraphPaper.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).EndInit();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel pnl_GraphPaper;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.NumericUpDown nmrcBoxWidth;
         private System.Windows.Forms.NumericUpDown nmrcBoxHeight;
         private System.Windows.Forms.Panel panel1;
+        private SectionControl sectionCtrl;
     }
 }

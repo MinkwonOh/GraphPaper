@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SectionManager.Drawer {
-    public class LineDrawer {
+    public class LineDrawer : IDisposable {
+        public void Dispose() {}
     }
 }
