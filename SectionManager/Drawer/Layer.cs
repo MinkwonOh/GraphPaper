@@ -1,6 +1,7 @@
 ﻿using SectionManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace SectionManager.Drawer {
 
         private Bitmap mBitmap = null;
         
+        public Bitmap Bitmap { get => mBitmap; }
+
+        private object bmpLock = new object();
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -36,9 +40,6 @@ namespace SectionManager.Drawer {
         }
 
         private void DrawGrid() {
-            using (var g = Graphics.FromImage(mBitmap)) { 
-                
-            }
         }
 
         public void CreateLayer(int width, int height) {
@@ -51,9 +52,27 @@ namespace SectionManager.Drawer {
                 mBitmap = new Bitmap(Math.Abs(Width % int.MaxValue), Math.Abs(Height % int.MaxValue));
         }
 
-        public void Dispose() {
-
+        public void Clear() {
+            try {
+                if (mBitmap != null) {
+                    using (var g = Graphics.FromImage(mBitmap)) {
+                        g.FillRectangle(new SolidBrush(Color.White),new Rectangle(0,0,Bitmap.Width, Bitmap.Height));
+                    }
+                }
+            }
+            catch (Exception ex) {
+                Debug.WriteLine($"err - Layer - Clear()");
+                Debug.WriteLine($"msg : {ex.Message}");
+                mBitmap.Dispose();
+            }
         }
+
+        public void Dispose() {
+            mBitmap?.Dispose();
+            mBitmap = null;
+        }
+
+
 
         /*private Bitmap ToBitmap() {
             if (Width > 0 && Height > 0) {

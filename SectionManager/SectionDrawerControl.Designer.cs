@@ -112,7 +112,7 @@ namespace SectionManager {
             this.sectionCtrl.Name = "sectionCtrl";
             this.sectionCtrl.Size = new System.Drawing.Size(729, 439);
             this.sectionCtrl.TabIndex = 0;
-            this.sectionCtrl.Text = "sectionControl1";
+            this.sectionCtrl.Text = "sectionCtrl";
             // 
             // SectionDrawerControl
             // 
