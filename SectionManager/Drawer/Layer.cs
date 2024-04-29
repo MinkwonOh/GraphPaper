@@ -12,6 +12,9 @@ namespace SectionManager.Drawer {
     public class Layer : IDisposable {
 
         private Bitmap mBitmap = null;
+        private Pen WhitePen = new Pen(Color.White, 2);
+        private SolidBrush WhiteBrush = new SolidBrush(Color.White);
+        private Rectangle WhiteBoard = new Rectangle(0,0,1,1);
         
         public Bitmap Bitmap { get => mBitmap; }
 
@@ -56,7 +59,9 @@ namespace SectionManager.Drawer {
             try {
                 if (mBitmap != null) {
                     using (var g = Graphics.FromImage(mBitmap)) {
-                        g.FillRectangle(new SolidBrush(Color.White),new Rectangle(0,0,Bitmap.Width, Bitmap.Height));
+                        WhiteBoard.Width = Bitmap.Width;
+                        WhiteBoard.Height = Bitmap.Height;
+                        g.FillRectangle(WhiteBrush, WhiteBoard);
                     }
                 }
             }

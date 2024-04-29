@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace SectionManager.Models {
     public class DrawerModel {
 
         #region Vars
+        private static readonly int MINIMUM_SIZE = 16;
 
         // 박스그룹 리스트
         private List<BoxGroup> _boxGroupList;
@@ -24,8 +26,8 @@ namespace SectionManager.Models {
         private int _col;
         private Rectangle _rect;
         // 박스 정보
-        private int _boxWidth = 16;
-        private int _boxHeight = 16;
+        private int _boxWidth = MINIMUM_SIZE;
+        private int _boxHeight = MINIMUM_SIZE;
         // 숨김 여부
         private bool _isGroupHide;
 
@@ -60,9 +62,9 @@ namespace SectionManager.Models {
         }
 
         public void AppendBox() {
-            if (_boxGroupList.Count == 0) { 
+            if (_boxGroupList.Count == 0) 
                 AppendBoxGroup(0);
-            }
+
             _boxGroupList[SelectedIndex].AppendBox();
         }
 
@@ -72,6 +74,19 @@ namespace SectionManager.Models {
             box.RctW = width;
             box.RctH = height;
         }
+
+        public void AppendBox(Rectangle rect) {
+            AppendBox(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        public void AppendBox(int x, int y, int w, int h) {
+            AppendBox();
+            var box = _boxGroupList[SelectedIndex].BoxList.Last();
+            box.RctX = x;
+            box.RctY = y;
+            box.RctW = w;
+            box.RctH = h;
+        }
     }
 
     // 관리되는 사각형 리스트 정보
@@ -79,8 +94,7 @@ namespace SectionManager.Models {
         public static readonly int MAX_LENGTH = 655360;
         public int Port;
         public List<Box> BoxList;
-        public Queue<int> selectedIndex = new Queue<int>();
-        public Queue<int> order = new Queue<int>();
+        public List<(int, int)> _lstLinker = new List<(int, int)>();
         public Color BoxColor = Color.LemonChiffon;
         public int LineLength { get => BoxList.ToList().Sum(i => i.RctW); }
         public float PortRoagd { get => LineLength / MAX_LENGTH; }
@@ -91,13 +105,113 @@ namespace SectionManager.Models {
         }
 
         public void AppendBox(int port) {
-            BoxList.Add(new Box(port));
-            selectedIndex.Append(port);
-            //selectedindex changed 될때 이벤트 처리 피요
+            var box = new Box(port) { tagCard = BoxList.Count};
+            for (int i = 0; i < BoxList.Count; i++) {
+                if (BoxList.Where(j => j.tagCard == i).FirstOrDefault() == null) {
+                    box.tagCard = i;
+                    break;
+                };
+            }
+            BoxList.Add(box);
+        }
+
+        public void AddLinker() {
+
+            int newIdx = _lstLinker.Count;
+            //int lastCardIdx = _lstLinker.Count <= 0 ? -1 : _lstLinker[newIdx - 1].Item1;
+
+            /*for (int i = 0; i < BoxList.Count; i++) {
+                var existBox = BoxList.Where(j => j.tagCard == i).FirstOrDefault();
+                if (existBox == null) { 
+                    newIdx = i;
+                    break;
+                }
+            }*/
+            var _lastBox = BoxList.LastOrDefault();
+            
+            (int, int) linker = (_lastBox == null ? 0 : _lastBox.tagCard, -1);
+
+            if (_lstLinker.Count > 0) {
+                var lastItem = _lstLinker.LastOrDefault();
+                if (!(lastItem.Item1 == 0 && lastItem.Item2 == 0)) { 
+                    lastItem.Item2 = linker.Item1;
+                    _lstLinker[_lstLinker.Count - 1] = lastItem;
+                }
+            }
+
+            _lstLinker.Add(linker);
+
+        }
+
+        public void DelLinker(Box box) {
+            if (box == null) return;
+
+            int card = box.tagCard;
+
+            var self = _lstLinker.Where(i => i.Item1 == card).FirstOrDefault();
+            if (!(self.Item1 == 0 && self.Item2 == 0)) {
+
+                int selfIdx = _lstLinker.IndexOf(self);
+
+
+                // 첫 노드 삭제
+                /*
+                if (selfIdx == 0) {
+                    // 노드에 첫,중간,마지막 노드에 대한 정보를 가지고 있을 것인지?
+                    // 우선 없는걸로 계산
+
+                } else{ 
+                    var child = _lstLinker.Where(i => i.Item2 == card).FirstOrDefault();
+                    if (!(child.Item1 == 0 && child.Item2 == 0)) {
+                        int childIdx = _lstLinker.IndexOf(child);
+
+                        var newChild = _lstLinker[childIdx];
+                        // 마지막노드, 중간노드 삭제
+                        newChild.Item2 = selfIdx == _lstLinker.Count - 1 ? -1 : self.Item2;
+                        _lstLinker[childIdx] = newChild;
+                    }
+                }
+                */
+
+                if (selfIdx != 0){
+                    var child = _lstLinker.Where(i => i.Item2 == card).FirstOrDefault();
+                    if (!(child.Item1 == 0 && child.Item2 == 0)) {
+                        int childIdx = _lstLinker.IndexOf(child);
+
+                        var newChild = _lstLinker[childIdx];
+                        // 마지막노드, 중간노드 삭제
+                        newChild.Item2 = selfIdx == _lstLinker.Count - 1 ? -1 : self.Item2;
+                        _lstLinker[childIdx] = newChild;
+                    }
+                }
+                
+                _lstLinker.Remove(self);
+            }
+        }
+
+        public void ClearBoxLinker() {
+            _lstLinker.Clear();
         }
 
         public void AppendBox() {
-            AppendBox(BoxList.Count);
+            AppendBox(Port);
+        }
+
+        public void ToTop(Box box) {
+            if (BoxList.Contains(box) && BoxList.Count >= 2) {
+                var tmp = BoxList.Last();
+                int srcIdx = BoxList.IndexOf(box);
+                BoxList[BoxList.Count - 1] = box;
+                BoxList[srcIdx] = tmp;
+            }
+        }
+
+        public void ToTop(int idx) {
+            if (BoxList.Count > idx && BoxList.Count >= 2) {
+                var tmp = BoxList.Last();
+                BoxList[BoxList.Count - 1] = BoxList[idx];
+                BoxList[idx] = tmp;
+            }
         }
     }
 
@@ -111,13 +225,45 @@ namespace SectionManager.Models {
         }
         public int RctX { get => Rect.X; set => Rect = new Rectangle(value < 0 ? 0 : value % int.MaxValue, Rect.Y, Rect.Width, Rect.Height); }
         public int RctY { get => Rect.Y; set => Rect = new Rectangle(Rect.X, value < 0 ? 0 : value % int.MaxValue, Rect.Width, Rect.Height); }
-        public int RctW { get => Rect.Width; set => Rect = new Rectangle(Rect.X, Rect.Y, value < 0 ? 0 : value % int.MaxValue, Rect.Height); }
-        public int RctH { get => Rect.Height; set => Rect = new Rectangle(Rect.X, Rect.Y, Rect.Width, value < 0 ? 0 : value % int.MaxValue); }
+        public int RctW { 
+            get => Rect.Width; 
+            set {
+                value = value < 0 ? MINIMUM_SIZE : value;
+                int x = RctW > RctX + value ? RctW - value : Rect.X;
+                Rect = new Rectangle(x, Rect.Y, value % int.MaxValue, Rect.Height); 
+            } 
+        }
+        public int RctH { 
+            get => Rect.Height; 
+            set {
+                value = value < 0 ? MINIMUM_SIZE : value;
+                int y = RctH > RctY + value ? RctH - value : Rect.Y;
+                Rect = new Rectangle(Rect.X, y, Rect.Width,value % int.MaxValue); 
+            } 
+        }
+        public int MidX { get => RctX + RctW / 2; }
+        public int MidY { get => RctY + RctH / 2; }
+
         public int tagPort { get; set; }
-        public int tagCard { get; set; }
-        public string Description { get => $"Port:{tagPort}\nCard:{tagCard},\nX:{RctX}\nY:{RctY}\nWidth:{RctW}\nHeight:{RctH}\n"; }
+        public int tagCard { get ; set; }
+        public string Description { get => $"Port:{tagPort}\nCard:{tagCard+1}\nX:{RctX}\nY:{RctY}\nWidth:{RctW}\nHeight:{RctH}\n"; }
+        public bool HasPoint(Point pt) {
+
+            int x = pt.X;
+            int y = pt.Y;
+
+            bool hasPoint = false;
+
+            if ((RctX <= x && x <= RctX + RctW) && (RctY <= y && y <= RctY+RctH)) {
+                Debug.WriteLine($"hasPoint");
+                hasPoint = true;
+            }
+
+            return hasPoint;
+        }
 
     }
+
 
     public enum ZoomPer { 
         z20 = 20,
@@ -141,5 +287,11 @@ namespace SectionManager.Models {
         z200 = 200,
         z300 = 300,
         z500 = 500,
+    }
+
+    public enum BoxState {
+        None,
+        Select,
+        Move
     }
 }
