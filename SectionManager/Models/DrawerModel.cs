@@ -151,26 +151,6 @@ namespace SectionManager.Models {
 
                 int selfIdx = _lstLinker.IndexOf(self);
 
-
-                // 첫 노드 삭제
-                /*
-                if (selfIdx == 0) {
-                    // 노드에 첫,중간,마지막 노드에 대한 정보를 가지고 있을 것인지?
-                    // 우선 없는걸로 계산
-
-                } else{ 
-                    var child = _lstLinker.Where(i => i.Item2 == card).FirstOrDefault();
-                    if (!(child.Item1 == 0 && child.Item2 == 0)) {
-                        int childIdx = _lstLinker.IndexOf(child);
-
-                        var newChild = _lstLinker[childIdx];
-                        // 마지막노드, 중간노드 삭제
-                        newChild.Item2 = selfIdx == _lstLinker.Count - 1 ? -1 : self.Item2;
-                        _lstLinker[childIdx] = newChild;
-                    }
-                }
-                */
-
                 if (selfIdx != 0){
                     var child = _lstLinker.Where(i => i.Item2 == card).FirstOrDefault();
                     if (!(child.Item1 == 0 && child.Item2 == 0)) {
@@ -185,6 +165,10 @@ namespace SectionManager.Models {
                 
                 _lstLinker.Remove(self);
             }
+        }
+
+        public void DelLinker() { 
+
         }
 
         public void ClearBoxLinker() {
@@ -329,5 +313,20 @@ namespace SectionManager.Models {
         BTLR,
         TBRL,
         BTRL
+    }
+
+    public enum AlignDirection { 
+        Top,
+        Bottom,
+        Left,
+        Right,
+        LeftTop,
+        RightTop,
+        LeftBottom,
+        RightBottom,
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
     }
 }

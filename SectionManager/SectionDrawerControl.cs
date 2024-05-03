@@ -39,6 +39,8 @@ namespace SectionManager {
             btnAdd.Click += (s, e) => CreateBox();
             nmrcBoxWidth.ValueChanged += (s, e) => BoxSizeValueChanged(s);
             nmrcBoxHeight.ValueChanged += (s, e) => BoxSizeValueChanged(s);
+            nmrcBaseWidth.ValueChanged += (s, e) => BaseBoxValueChanged(s);
+            nmrcBaseHeight.ValueChanged += (s, e) => BaseBoxValueChanged(s);
             sectionCtrl.BoxInfoRefreshEvent += (s, e) => BoxInfoChanged(e);
 
             btnLRTB.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.LRTB);
@@ -51,7 +53,25 @@ namespace SectionManager {
             btnBTRL.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.BTRL);
 
             btnDeleteBox.Click += (s, e) => sectionCtrl.DelBox();
-            btnClearBox.Click += (s, e) => sectionCtrl.ClearBox();
+            btnClearBox.Click += (s, e) => { sectionCtrl.ClearBox(); nmrcCol.Value = nmrcRow.Value = 0; };
+
+            btnAlignTop.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.Top);
+            btnAlignBottom.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.Bottom);
+            btnAlignLeft.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.Left);
+            btnAlignRight.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.Right);
+
+            btnLeftTop.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.LeftTop);
+            btnRightTop.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.RightTop);
+            btnLeftBot.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.LeftBottom);
+            btnRightBot.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.RightBottom);
+
+            btnTopLeft.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.TopLeft);
+            btnTopRight.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.TopRight);
+            btnBottomLeft.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.BottomLeft);
+            btnBottomRight.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.BottomRight);
+
+            nmrcRow.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
+            nmrcCol.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
         }
 
         private void BoxInfoChanged(Box box) {
@@ -64,6 +84,11 @@ namespace SectionManager {
         }
 
         private void BoxSizeValueChanged(object s) {
+            if (s is NumericUpDown nmrc)
+                nmrc.Value = ((int)nmrc.Value + MINIMUM_SIZE / 2) / MINIMUM_SIZE * MINIMUM_SIZE;
+        }
+
+        private void BaseBoxValueChanged(object s ) {
             if (s is NumericUpDown nmrc)
                 nmrc.Value = ((int)nmrc.Value + MINIMUM_SIZE / 2) / MINIMUM_SIZE * MINIMUM_SIZE;
         }
@@ -85,7 +110,7 @@ namespace SectionManager {
 
         // 새 Box 생성
         private void CreateBox() {
-            sectionCtrl.RegistBox((int)nmrcBoxWidth.Value, (int)nmrcBoxHeight.Value);
+            sectionCtrl.RegistBox((int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
         }
 
         // 새 박스 등록
