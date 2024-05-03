@@ -407,21 +407,46 @@ namespace SectionManager {
         /// T : Top
         /// B : Bottom
         /// </summary>
-        public void QuickBridgeLRTB() { 
-        }
-        public void QuickBridgeRLTB() { 
-        }
-        public void QuickBridgeRLBT() { 
-        }
-        public void QuickBridgeLRBT() { 
-        }
-        public void QuickBridgeTBLR() { 
-        }
-        public void QuickBridgeBTLR() { 
-        }
-        public void QuickBridgeTBRL() { 
-        }
-        public void QuickBridgeBTRL() { 
+        public void QuickBridge(LineDirection ld) {
+            if (_model == null && _model.SelectedPort >= _model.BoxGroupList.Count) return;
+
+            var boxGroup = _model.BoxGroupList[_model.SelectedPort];
+            if (boxGroup.BoxList.Count <= 1) return;
+            boxGroup._lstLinker.Clear();
+
+            List<Box> bridgeList = new List<Box>();
+            switch (ld) {
+                case LineDirection.LRTB:
+                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctY).ThenBy(q => q.RctX).ToList();
+                    break;
+                case LineDirection.RLTB:
+                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctY).ThenByDescending(q => q.RctX).ToList();
+                    break;
+                case LineDirection.LRBT:
+                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctY).ThenBy(q => q.RctX).ToList();
+                    break;
+                case LineDirection.RLBT:
+                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctY).ThenByDescending(q => q.RctX).ToList();
+                    break;
+                case LineDirection.TBLR:
+                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctX).ThenBy(q => q.RctY).ToList();
+                    break;
+                case LineDirection.BTLR:
+                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctX).ThenByDescending(q => q.RctY).ToList();
+                    break;
+                case LineDirection.TBRL:
+                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctX).ThenBy(q => q.RctY).ToList();
+                    break;
+                case LineDirection.BTRL:
+                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctX).ThenByDescending(q => q.RctY).ToList();
+                    break;
+            }
+
+            for (int i = 0; i < bridgeList.Count - 1; i++) {
+                boxGroup._lstLinker.Add((bridgeList[i].tagCard, bridgeList[i + 1].tagCard));
+            }
+            boxGroup._lstLinker.Add((bridgeList.Last().tagPort, -1));
+
         }
 
 

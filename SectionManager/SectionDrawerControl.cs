@@ -41,14 +41,14 @@ namespace SectionManager {
             nmrcBoxHeight.ValueChanged += (s, e) => BoxSizeValueChanged(s);
             sectionCtrl.BoxInfoRefreshEvent += (s, e) => BoxInfoChanged(e);
 
-            btnLRTB.Click += (s, e) => sectionCtrl.QuickBridgeLRTB();
-            btnRLTB.Click += (s, e) => sectionCtrl.QuickBridgeRLTB();
-            btnLRBT.Click += (s, e) => sectionCtrl.QuickBridgeLRBT();
-            btnRLBT.Click += (s, e) => sectionCtrl.QuickBridgeRLBT();
-            btnTBLR.Click += (s, e) => sectionCtrl.QuickBridgeTBLR();
-            btnBTLR.Click += (s, e) => sectionCtrl.QuickBridgeBTLR();
-            btnTBRL.Click += (s, e) => sectionCtrl.QuickBridgeTBRL();
-            btnBTRL.Click += (s, e) => sectionCtrl.QuickBridgeBTRL();
+            btnLRTB.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.LRTB);
+            btnRLTB.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.RLTB);
+            btnLRBT.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.LRBT);
+            btnRLBT.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.RLBT);
+            btnTBLR.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.TBLR);
+            btnBTLR.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.BTLR);
+            btnTBRL.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.TBRL);
+            btnBTRL.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.BTRL);
 
             btnDeleteBox.Click += (s, e) => sectionCtrl.DelBox();
             btnClearBox.Click += (s, e) => sectionCtrl.ClearBox();

@@ -319,4 +319,15 @@ namespace SectionManager.Models {
         Select,
         Move
     }
+
+    public enum LineDirection { 
+        LRTB,
+        RLTB,
+        RLBT,
+        LRBT,
+        TBLR,
+        BTLR,
+        TBRL,
+        BTRL
+    }
 }
