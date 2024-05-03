@@ -40,7 +40,7 @@ namespace SectionManager {
         private Box CurrentBox = null;
         private List<Box> CurrentBoxes = new List<Box>();
         private Pen BlackPen, PinkPen, BluePen, RedPen;
-        private Pen BlackBorderPen, PinkBorderPen, BlueBorderPen, RedBorderPen;
+        private Pen BlackBorderPen, PinkBorderPen, BlueBorderPen, RedBorderPen, BlueBorderDashPen;
         private SolidBrush BlackBrush, BlueBrush;
         private Size GapXY;
         private StringFormat sf;
@@ -75,6 +75,8 @@ namespace SectionManager {
             PinkBorderPen = new Pen(Color.Pink, 2);
             BlueBorderPen = new Pen(Color.Blue, 2);
             RedBorderPen = new Pen(Color.Red, 2);
+
+            BlueBorderDashPen = new Pen(Color.Blue, 2) { DashStyle = DashStyle.Dash };
 
             BlackPen.Alignment = PinkPen.Alignment = RedPen.Alignment = BluePen.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
 
@@ -161,11 +163,11 @@ namespace SectionManager {
                 switch (_boxState) {
                     case BoxState.None:
                         if (CurrentBox == null) {
-                            if (_mousePressed) { 
-                                _dradBox.RctX = Math.Min(e.X, _pressedPoint.X);
-                                _dradBox.RctY = Math.Min(e.Y, _pressedPoint.Y);
-                                _dradBox.RctW = Math.Max(e.X, _pressedPoint.X) - Math.Min(e.X, _pressedPoint.X);
-                                _dradBox.RctH = Math.Max(e.Y, _pressedPoint.Y) - Math.Min(e.Y, _pressedPoint.Y);
+                            if (_mousePressed) {
+                                _dradBox.RctX = Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
+                                _dradBox.RctY = Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
+                                _dradBox.RctW = Math.Max(e.X < 0 ? 0 : e.X, _pressedPoint.X) - Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
+                                _dradBox.RctH = Math.Max(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y) - Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
                                 BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                             }
                         }
@@ -190,18 +192,54 @@ namespace SectionManager {
 
         protected override void OnMouseUp(MouseEventArgs e) {
             base.OnMouseUp(e);
-            _mousePressed = false;
             if (e.Button == MouseButtons.Left) {
                 Point pt = e.Location;
                 switch (_boxState) {
                     case BoxState.None:
-                        if (CurrentBox == null) {
+                        /*if (CurrentBox == null) {
                             _dradBox.RctX = Math.Min(e.X, _pressedPoint.X);
                             _dradBox.RctY = Math.Min(e.Y, _pressedPoint.Y);
                             _dradBox.RctW = Math.Max(e.X, _pressedPoint.X) - Math.Min(e.X, _pressedPoint.X);
                             _dradBox.RctH = Math.Max(e.Y, _pressedPoint.Y) - Math.Min(e.Y, _pressedPoint.Y);
                             BoxInfoRefreshEvent?.Invoke(this, _dradBox);
+                        }*/
+
+                        _dradBox.RctX = Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
+                        _dradBox.RctY = Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
+                        _dradBox.RctW = Math.Max(e.X < 0 ? 0 : e.X, _pressedPoint.X) - Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
+                        _dradBox.RctH = Math.Max(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y) - Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
+                        if (_model.SelectedPort < 0) return;
+
+                        var bgl = _model.BoxGroupList[_model.SelectedPort];
+                        for (int i = 0; i < bgl.BoxList.Count; i++) {
+                            var box = bgl.BoxList[i];
+                            box.Selected = _dradBox.Rect.Contains(box.Rect);
                         }
+                        List<Box> _lstChildBox = bgl.BoxList.Where(i => i.Selected).ToList();
+
+                        if (_lstChildBox.Count > 0) {
+                            Rectangle subRct = _lstChildBox[0].Rect;
+                            int endX = subRct.X + subRct.Width;
+                            int endY = subRct.Y + subRct.Height;
+                            foreach (var childBox in _lstChildBox) {
+                                if (endX < childBox.RctX + childBox.RctW)
+                                    endX = childBox.RctX + childBox.RctW;
+                                if (endY < childBox.RctY + childBox.RctH)
+                                    endY = childBox.RctY + childBox.RctH;
+                                if (childBox.RctX < subRct.X)
+                                    subRct.X = childBox.RctX;
+                                if (childBox.RctY < subRct.Y)
+                                    subRct.Y = childBox.RctY;
+                            }
+                            subRct.Width = endX - subRct.X;
+                            subRct.Height = endY - subRct.Y;
+
+                            _dradBox.Rect = subRct;
+                        }
+                        else {
+                            _dradBox.Rect = new Rectangle();
+                        }
+
                         break;
                     case BoxState.Select:
                         break;
@@ -224,6 +262,8 @@ namespace SectionManager {
                 _dradBox.Rect = new Rectangle();
                 BoxInfoRefreshEvent?.Invoke(this, _dradBox);
             }
+
+            _mousePressed = false;
         }
 
 
@@ -272,9 +312,11 @@ namespace SectionManager {
                                 string desc = boxGroup[j].RctW < MINIMUM_SIZE*4 || boxGroup[j].RctH < MINIMUM_SIZE*4 ? (boxGroup[j].tagCard+1).ToString() : boxGroup[j].Description;
                                 g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
                                 // 여기가 selectedbox인데 grouping 으로 변경하고 그룹핑 된 박스를 그릴것
-                                if (CurrentBox != null) {
+                                if (CurrentBox != null)
                                     g.DrawRectangle(PinkPen, CurrentBox.Rect);
-                                }
+
+                                if (i == _model.SelectedPort && boxGroup[j].Selected)
+                                    g.DrawRectangle(BlueBorderPen, boxGroup[j].Rect);
                             }
                             var _lstLinker = boxList[i]._lstLinker;
                             if (_lstLinker.Count > 0) { 
@@ -290,7 +332,7 @@ namespace SectionManager {
                             
                         }
                         if (CurrentBox == null) {
-                            g.DrawRectangle(BluePen, _dradBox.Rect);
+                            g.DrawRectangle(BlueBorderDashPen, _dradBox.Rect);
                         }
                     }
                 }
