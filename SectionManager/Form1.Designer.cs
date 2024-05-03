@@ -30,7 +30,7 @@ namespace SectionManager {
             // sectionDrawerControl1
             // 
             this.sectionDrawerControl1.AllowDrop = true;
-            this.sectionDrawerControl1.BackColor = System.Drawing.Color.White;
+            this.sectionDrawerControl1.BackColor = System.Drawing.SystemColors.Control;
             this.sectionDrawerControl1.Location = new System.Drawing.Point(12, 12);
             this.sectionDrawerControl1.Name = "sectionDrawerControl1";
             this.sectionDrawerControl1.Size = new System.Drawing.Size(1080, 550);
@@ -40,7 +40,7 @@ namespace SectionManager {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1399, 1074);
+            this.ClientSize = new System.Drawing.Size(1109, 597);
             this.Controls.Add(this.sectionDrawerControl1);
             this.Name = "Form1";
             this.Text = "Form1";

@@ -16,7 +16,7 @@ namespace SectionManager.Models {
 
         // 박스그룹 리스트
         private List<BoxGroup> _boxGroupList;
-        private int _index = -1;
+        private int _port = -1;
         // 확대비율(100% 기준)
         public ZoomPer zoom = ZoomPer.z100;
         // standard모드? => 고정비율로 계산.
@@ -36,7 +36,7 @@ namespace SectionManager.Models {
 
         #region Properties
         public List<BoxGroup> BoxGroupList { get => _boxGroupList; set => _boxGroupList = value; }
-        public int SelectedIndex { get => _index; set => _index = value; }
+        public int SelectedPort { get => _port; set => _port = value; }
         public bool IsStandardMode { get => _isStandardMode; set => _isStandardMode = value; }
         public int Row { get => _row; set => _row = value; }
         public int Col { get => _col; set => _col = value; }
@@ -58,19 +58,19 @@ namespace SectionManager.Models {
         public void AppendBoxGroup(int idx) {
             var boxGroup = new BoxGroup(idx);
             _boxGroupList.Add(boxGroup);
-            SelectedIndex = _boxGroupList.IndexOf(boxGroup);
+            SelectedPort = _boxGroupList.IndexOf(boxGroup);
         }
 
         public void AppendBox() {
             if (_boxGroupList.Count == 0) 
                 AppendBoxGroup(0);
 
-            _boxGroupList[SelectedIndex].AppendBox();
+            _boxGroupList[SelectedPort].AppendBox();
         }
 
         public void AppendBox(int width, int height) {
             AppendBox();
-            var box = _boxGroupList[SelectedIndex].BoxList.Last();
+            var box = _boxGroupList[SelectedPort].BoxList.Last();
             box.RctW = width;
             box.RctH = height;
         }
@@ -81,7 +81,7 @@ namespace SectionManager.Models {
 
         public void AppendBox(int x, int y, int w, int h) {
             AppendBox();
-            var box = _boxGroupList[SelectedIndex].BoxList.Last();
+            var box = _boxGroupList[SelectedPort].BoxList.Last();
             box.RctX = x;
             box.RctY = y;
             box.RctW = w;
@@ -116,8 +116,6 @@ namespace SectionManager.Models {
         }
 
         public void AddLinker() {
-
-            int newIdx = _lstLinker.Count;
             //int lastCardIdx = _lstLinker.Count <= 0 ? -1 : _lstLinker[newIdx - 1].Item1;
 
             /*for (int i = 0; i < BoxList.Count; i++) {
@@ -213,6 +211,33 @@ namespace SectionManager.Models {
                 BoxList[idx] = tmp;
             }
         }
+
+        public Rectangle SelectionRect() {
+            var resultRect = new Rectangle();
+            int maxX, maxY;
+
+            var selBoxList = BoxList.Where(i => i.Selected).ToList();
+            if (selBoxList != null || selBoxList.Count != 0) {
+                resultRect = selBoxList[0].Rect;
+                maxX = resultRect.X + resultRect.Width;
+                maxY = resultRect.Y + resultRect.Height;
+                foreach (var box in selBoxList) {
+                    if (box.Rect.X < resultRect.X)
+                        resultRect.X = box.Rect.X;
+                    if (box.Rect.Y < resultRect.Y)
+                        resultRect.Y = box.Rect.Y;
+                    if (resultRect.Width < box.Rect.X + box.Rect.Width)
+                        resultRect.Width = box.Rect.X + box.Rect.Width;
+                    if (resultRect.Height < box.Rect.Y + box.Rect.Height)
+                        resultRect.Height = box.Rect.Y + box.Rect.Height;
+                    //maxX = box.Rect.X + box.Rect.Width
+                    //maxY
+                }
+            }
+
+
+            return resultRect;
+        }
     }
 
     // 사각형 정보
@@ -223,12 +248,13 @@ namespace SectionManager.Models {
             Rect = new Rectangle(0, 0, MINIMUM_SIZE, MINIMUM_SIZE);
             tagPort = port;
         }
+        public bool Selected { get; set; }
         public int RctX { get => Rect.X; set => Rect = new Rectangle(value < 0 ? 0 : value % int.MaxValue, Rect.Y, Rect.Width, Rect.Height); }
         public int RctY { get => Rect.Y; set => Rect = new Rectangle(Rect.X, value < 0 ? 0 : value % int.MaxValue, Rect.Width, Rect.Height); }
         public int RctW { 
             get => Rect.Width; 
             set {
-                value = value < 0 ? MINIMUM_SIZE : value;
+                //value = value < 0 ? MINIMUM_SIZE : value;
                 int x = RctW > RctX + value ? RctW - value : Rect.X;
                 Rect = new Rectangle(x, Rect.Y, value % int.MaxValue, Rect.Height); 
             } 
@@ -236,7 +262,7 @@ namespace SectionManager.Models {
         public int RctH { 
             get => Rect.Height; 
             set {
-                value = value < 0 ? MINIMUM_SIZE : value;
+                //value = value < 0 ? MINIMUM_SIZE : value;
                 int y = RctH > RctY + value ? RctH - value : Rect.Y;
                 Rect = new Rectangle(Rect.X, y, Rect.Width,value % int.MaxValue); 
             } 
@@ -246,7 +272,7 @@ namespace SectionManager.Models {
 
         public int tagPort { get; set; }
         public int tagCard { get ; set; }
-        public string Description { get => $"Port:{tagPort}\nCard:{tagCard+1}\nX:{RctX}\nY:{RctY}\nWidth:{RctW}\nHeight:{RctH}\n"; }
+        public string Description { get => tagPort == -1 ? string.Empty : $"Port:{tagPort}\nCard:{tagCard+1}\nX:{RctX}\nY:{RctY}\nWidth:{RctW}\nHeight:{RctH}\n"; }
         public bool HasPoint(Point pt) {
 
             int x = pt.X;
@@ -255,7 +281,6 @@ namespace SectionManager.Models {
             bool hasPoint = false;
 
             if ((RctX <= x && x <= RctX + RctW) && (RctY <= y && y <= RctY+RctH)) {
-                Debug.WriteLine($"hasPoint");
                 hasPoint = true;
             }
 

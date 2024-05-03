@@ -50,15 +50,17 @@ namespace SectionManager {
             btnTBRL.Click += (s, e) => sectionCtrl.QuickBridgeTBRL();
             btnBTRL.Click += (s, e) => sectionCtrl.QuickBridgeBTRL();
 
-            btnDeleteNode.Click += (s, e) => sectionCtrl.DelLinker();
-            btnClearNode.Click += (s, e) => sectionCtrl.ClearBridge();
+            btnDeleteBox.Click += (s, e) => sectionCtrl.DelBox();
+            btnClearBox.Click += (s, e) => sectionCtrl.ClearBox();
         }
 
         private void BoxInfoChanged(Box box) {
-            nmrcPosX.Value = box != null ? box.RctX : 0;
-            nmrcPosY.Value = box != null ? box.RctY : 0;
-            nmrcBoxWidth.Value = box != null ? box.RctW : MINIMUM_SIZE;
-            nmrcBoxHeight.Value = box != null ? box.RctH : MINIMUM_SIZE;
+            if (box.Description != string.Empty) { 
+                nmrcPosX.Value = box != null ? box.RctX : 0;
+                nmrcPosY.Value = box != null ? box.RctY : 0;
+                nmrcBoxWidth.Value = box != null ? box.RctW : MINIMUM_SIZE;
+                nmrcBoxHeight.Value = box != null ? box.RctH : MINIMUM_SIZE;
+            }
         }
 
         private void BoxSizeValueChanged(object s) {
@@ -70,9 +72,8 @@ namespace SectionManager {
             // set value from saved file to model.
 
             // else
-            if (model == null) {
+            if (model == null)
                 model = new DrawerModel();
-            }
 
         }
 
