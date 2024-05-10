@@ -37,11 +37,16 @@ namespace SectionManager {
 
         private void InitializeEvent() {
             btnAdd.Click += (s, e) => CreateBox();
-            nmrcBoxWidth.ValueChanged += (s, e) => BoxSizeValueChanged(s);
-            nmrcBoxHeight.ValueChanged += (s, e) => BoxSizeValueChanged(s);
-            nmrcBaseWidth.ValueChanged += (s, e) => BaseBoxValueChanged(s);
-            nmrcBaseHeight.ValueChanged += (s, e) => BaseBoxValueChanged(s);
             sectionCtrl.BoxInfoRefreshEvent += (s, e) => BoxInfoChanged(e);
+            var rbList = grpPort.Controls.OfType<RadioButton>().ToList();
+            sectionCtrl.PortAddedEvent += (s, e) => { var rb = rbList.Where(i => Int32.Parse(i.Tag.ToString()) == e+1).FirstOrDefault(); if(rb!=null) rb.Checked = true; };
+            foreach (var rb in rbList) {
+                rb.CheckedChanged += (s, e) => {
+                    if (rb.Checked) {
+                        sectionCtrl.SetModelPort(Int32.Parse(rb.Tag.ToString())-1);
+                    }
+                };
+            }
 
             btnLRTB.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.LRTB);
             btnRLTB.Click += (s, e) => sectionCtrl.QuickBridge(LineDirection.RLTB);
@@ -83,16 +88,6 @@ namespace SectionManager {
             }
         }
 
-        private void BoxSizeValueChanged(object s) {
-            if (s is NumericUpDown nmrc)
-                nmrc.Value = ((int)nmrc.Value + MINIMUM_SIZE / 2) / MINIMUM_SIZE * MINIMUM_SIZE;
-        }
-
-        private void BaseBoxValueChanged(object s ) {
-            if (s is NumericUpDown nmrc)
-                nmrc.Value = ((int)nmrc.Value + MINIMUM_SIZE / 2) / MINIMUM_SIZE * MINIMUM_SIZE;
-        }
-
         private void LoadValue() {
             // set value from saved file to model.
 
@@ -111,16 +106,6 @@ namespace SectionManager {
         // 새 Box 생성
         private void CreateBox() {
             sectionCtrl.RegistBox((int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
-        }
-
-        // 새 박스 등록
-        private void RegistBox() {
-            
-        }
-
-        // 선택 박스 삭제
-        private void DeleteBox() { 
-
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {

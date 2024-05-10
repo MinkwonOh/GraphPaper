@@ -7,9 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SectionManager {
@@ -18,6 +16,7 @@ namespace SectionManager {
         private static readonly int MINIMUM_SIZE = 16;
 
         public EventHandler<Box> BoxInfoRefreshEvent;
+        public EventHandler<int> PortAddedEvent;
 
         private Bitmap StartImg = Properties.Resources.Start;
         private Bitmap FinishImg = Properties.Resources.Finish;
@@ -48,6 +47,10 @@ namespace SectionManager {
         private SolidBrush BlackBrush, BlueBrush;
         private Size GapXY;
         private StringFormat sf;
+        private List<Color> ColorList = new List<Color> { 
+            Color.Transparent, Color.Aquamarine, Color.Beige, Color.Bisque, Color.CadetBlue,
+            Color.Crimson,  Color.Olive,  Color.DodgerBlue,  Color.Violet
+        };
 
         public SectionControl() {
             DoubleBuffered = true;
@@ -334,12 +337,14 @@ namespace SectionManager {
                 Point halfPoint = new Point(0, 0);
                 int imgSize = 40;
                 var boxList = _model?.BoxGroupList;
+                Color color = Color.FromName(Enum.GetName(typeof(ColorSpec), ColorSpec.Transparent));
                 if (boxList?.Count >= 0) {
                     using (var g = Graphics.FromImage(layer.Bitmap)) {
                         for (int i = 0; i < boxList.Count; i++) {
                             var boxGroup = boxList[i].BoxList;
                             for (int j = 0; j < boxGroup.Count; j++) {
                                 g.DrawRectangle(BlackPen, boxGroup[j].Rect);
+                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);
                                 string desc = boxGroup[j].RctW < MINIMUM_SIZE*4 || boxGroup[j].RctH < MINIMUM_SIZE*4 ? (boxGroup[j].tagCard+1).ToString() : boxGroup[j].Description;
                                 g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
                                 // 여기가 selectedbox인데 grouping 으로 변경하고 그룹핑 된 박스를 그릴것
@@ -360,7 +365,7 @@ namespace SectionManager {
 
                                     if (j == 0)
                                         g.DrawImage(StartImg, new Rectangle(rct1.MidX- imgSize/2, rct1.MidY- imgSize/2, imgSize, imgSize));
-                                    else if (j == _lstLinker.Count - 2)
+                                    if (j+1 == _lstLinker.Count - 1)
                                         g.DrawImage(FinishImg, new Rectangle(rct2.MidX- imgSize/2, rct2.MidY- imgSize/2, imgSize, imgSize));
 
                                     halfPoint = new Point(rct1.MidX + (rct2.MidX - rct1.MidX) / 2, rct1.MidY + (rct2.MidY - rct1.MidY) / 2);
@@ -390,6 +395,40 @@ namespace SectionManager {
 
         public void SetModelValue(DrawerModel model) {
             _model = model;
+            _model.PortAddedEvent += (s, e) => { PortAddedEvent?.Invoke(this, e); };
+        }
+
+        public void SetModelPort(int port) {
+            if (_model == null) return;
+            _model.SelectedPort = port;
+            CurrentBox = new Box(-1) { Rect = new Rectangle() };
+            var bgl = _model.BoxGroupList.Where(i => i.Port == port).FirstOrDefault();
+            if (bgl == null) {
+                _dradBox.Rect = new Rectangle();
+                return; 
+            }
+            List<Box> _lstChildBox = bgl.BoxList.Where(i => i.Selected).ToList();
+
+            if (_lstChildBox.Count > 0) {
+                Rectangle subRct = _lstChildBox[0].Rect;
+                int endX = subRct.X + subRct.Width;
+                int endY = subRct.Y + subRct.Height;
+                foreach (var childBox in _lstChildBox) {
+                    if (endX < childBox.RctX + childBox.RctW)
+                        endX = childBox.RctX + childBox.RctW;
+                    if (endY < childBox.RctY + childBox.RctH)
+                        endY = childBox.RctY + childBox.RctH;
+                    if (childBox.RctX < subRct.X)
+                        subRct.X = childBox.RctX;
+                    if (childBox.RctY < subRct.Y)
+                        subRct.Y = childBox.RctY;
+                }
+                subRct.Width = endX - subRct.X;
+                subRct.Height = endY - subRct.Y;
+
+                _dradBox.Rect = subRct;
+                CurrentBox.Rect = subRct;
+            }
         }
 
         public BoxGroup CurrentBoxGroup() {
@@ -506,7 +545,7 @@ namespace SectionManager {
             List<Box> _lstChildBox = boxGroup.BoxList.Where(i => i.Selected).ToList();
 
             if (_lstChildBox.Count <= 1) return;
-            int topY = CurrentBox.RctY ,botY = CurrentBox.RctY + CurrentBox.RctH, leftX = CurrentBox.RctX, rightX = CurrentBox.RctX + CurrentBox.RctH;
+            int topY = CurrentBox.RctY ,botY = CurrentBox.RctY + CurrentBox.RctH, leftX = CurrentBox.RctX, rightX = CurrentBox.RctX + CurrentBox.RctW;
 
             // base t,b,l,r
             switch (direction) {
@@ -539,15 +578,15 @@ namespace SectionManager {
             // add lr / horizontal alignment
             switch (direction) {
                 case AlignDirection.LeftTop:
-                case AlignDirection.RightTop:
-                    _lstChildBox.OrderBy(i => i.RctX).ToList().ForEach(i => {
+                case AlignDirection.LeftBottom:
+                    _lstChildBox.OrderBy(i => i.RctX).ThenBy(i => i.tagCard).ToList().ForEach(i => {
                         i.RctX = leftX;
                         leftX = i.RctX + i.RctW;
                     });
                     break;
-                case AlignDirection.LeftBottom:
                 case AlignDirection.RightBottom:
-                    _lstChildBox.OrderBy(i => i.RctX + i.RctW).ToList().ForEach(i => {
+                case AlignDirection.RightTop:
+                    _lstChildBox.OrderBy(i => i.RctY).ThenBy(i => -i.tagCard).ToList().ForEach(i => {
                         i.RctX = rightX - i.RctW;
                         rightX = i.RctX;
                     });
@@ -558,14 +597,14 @@ namespace SectionManager {
             switch (direction) {
                 case AlignDirection.TopLeft:
                 case AlignDirection.TopRight:
-                    _lstChildBox.OrderBy(i => i.RctY).ToList().ForEach(i => {
+                    _lstChildBox.OrderBy(i => i.RctY).ThenBy(i => i.tagCard).ToList().ForEach(i => {
                         i.RctY = topY;
                         topY = i.RctY + i.RctH;
                     });
                     break;
                 case AlignDirection.BottomLeft:
                 case AlignDirection.BottomRight:
-                    _lstChildBox.OrderByDescending(i => i.RctY + i.RctH).ToList().ForEach(i => {
+                    _lstChildBox.OrderBy(i => -(i.RctY + i.RctH)).ThenBy(i => -i.tagCard).ToList().ForEach(i => {
                         i.RctY = botY - i.RctH;
                         botY = i.RctY;
                     });

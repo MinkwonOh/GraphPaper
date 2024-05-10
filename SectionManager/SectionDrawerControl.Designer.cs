@@ -28,6 +28,7 @@ namespace SectionManager {
             this.nmrcBoxWidth = new System.Windows.Forms.NumericUpDown();
             this.nmrcBoxHeight = new System.Windows.Forms.NumericUpDown();
             this.pnlBackground = new System.Windows.Forms.Panel();
+            this.sectionCtrl = new SectionManager.SectionControl();
             this.btnDeleteBox = new System.Windows.Forms.Button();
             this.btnClearBox = new System.Windows.Forms.Button();
             this.btnLRTB = new System.Windows.Forms.Button();
@@ -52,8 +53,6 @@ namespace SectionManager {
             this.lblBoxWidth = new System.Windows.Forms.Label();
             this.nmrcBaseHeight = new System.Windows.Forms.NumericUpDown();
             this.nmrcBaseWidth = new System.Windows.Forms.NumericUpDown();
-            this.cbxLan1 = new System.Windows.Forms.CheckBox();
-            this.cbxLan2 = new System.Windows.Forms.CheckBox();
             this.btnAlignLeft = new System.Windows.Forms.Button();
             this.btnAlignRight = new System.Windows.Forms.Button();
             this.btnAlignTop = new System.Windows.Forms.Button();
@@ -70,7 +69,9 @@ namespace SectionManager {
             this.btnBottomRight = new System.Windows.Forms.Button();
             this.btnTopRight = new System.Windows.Forms.Button();
             this.lblAlignCol = new System.Windows.Forms.Label();
-            this.sectionCtrl = new SectionManager.SectionControl();
+            this.rdoPort1 = new System.Windows.Forms.RadioButton();
+            this.rdoPort2 = new System.Windows.Forms.RadioButton();
+            this.grpPort = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -80,6 +81,7 @@ namespace SectionManager {
             ((System.ComponentModel.ISupportInitialize)(this.nmrcCol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBaseHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBaseWidth)).BeginInit();
+            this.grpPort.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnAdd
@@ -93,11 +95,6 @@ namespace SectionManager {
             // 
             // nmrcBoxWidth
             // 
-            this.nmrcBoxWidth.Increment = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
             this.nmrcBoxWidth.Location = new System.Drawing.Point(819, 166);
             this.nmrcBoxWidth.Maximum = new decimal(new int[] {
             512,
@@ -105,7 +102,7 @@ namespace SectionManager {
             0,
             0});
             this.nmrcBoxWidth.Minimum = new decimal(new int[] {
-            16,
+            8,
             0,
             0,
             0});
@@ -120,11 +117,6 @@ namespace SectionManager {
             // 
             // nmrcBoxHeight
             // 
-            this.nmrcBoxHeight.Increment = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
             this.nmrcBoxHeight.Location = new System.Drawing.Point(950, 166);
             this.nmrcBoxHeight.Maximum = new decimal(new int[] {
             512,
@@ -132,7 +124,7 @@ namespace SectionManager {
             0,
             0});
             this.nmrcBoxHeight.Minimum = new decimal(new int[] {
-            16,
+            8,
             0,
             0,
             0});
@@ -153,6 +145,15 @@ namespace SectionManager {
             this.pnlBackground.Name = "pnlBackground";
             this.pnlBackground.Size = new System.Drawing.Size(747, 456);
             this.pnlBackground.TabIndex = 4;
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(18, 17);
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(729, 439);
+            this.sectionCtrl.TabIndex = 0;
+            this.sectionCtrl.Text = "sectionCtrl";
             // 
             // btnDeleteBox
             // 
@@ -366,11 +367,6 @@ namespace SectionManager {
             // 
             // nmrcBaseHeight
             // 
-            this.nmrcBaseHeight.Increment = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
             this.nmrcBaseHeight.Location = new System.Drawing.Point(945, 259);
             this.nmrcBaseHeight.Maximum = new decimal(new int[] {
             512,
@@ -378,7 +374,7 @@ namespace SectionManager {
             0,
             0});
             this.nmrcBaseHeight.Minimum = new decimal(new int[] {
-            16,
+            8,
             0,
             0,
             0});
@@ -393,11 +389,6 @@ namespace SectionManager {
             // 
             // nmrcBaseWidth
             // 
-            this.nmrcBaseWidth.Increment = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
             this.nmrcBaseWidth.Location = new System.Drawing.Point(814, 259);
             this.nmrcBaseWidth.Maximum = new decimal(new int[] {
             512,
@@ -405,7 +396,7 @@ namespace SectionManager {
             0,
             0});
             this.nmrcBaseWidth.Minimum = new decimal(new int[] {
-            16,
+            8,
             0,
             0,
             0});
@@ -417,26 +408,6 @@ namespace SectionManager {
             0,
             0,
             0});
-            // 
-            // cbxLan1
-            // 
-            this.cbxLan1.AutoSize = true;
-            this.cbxLan1.Location = new System.Drawing.Point(780, 25);
-            this.cbxLan1.Name = "cbxLan1";
-            this.cbxLan1.Size = new System.Drawing.Size(54, 16);
-            this.cbxLan1.TabIndex = 31;
-            this.cbxLan1.Text = "LAN1";
-            this.cbxLan1.UseVisualStyleBackColor = true;
-            // 
-            // cbxLan2
-            // 
-            this.cbxLan2.AutoSize = true;
-            this.cbxLan2.Location = new System.Drawing.Point(901, 25);
-            this.cbxLan2.Name = "cbxLan2";
-            this.cbxLan2.Size = new System.Drawing.Size(54, 16);
-            this.cbxLan2.TabIndex = 32;
-            this.cbxLan2.Text = "LAN2";
-            this.cbxLan2.UseVisualStyleBackColor = true;
             // 
             // btnAlignLeft
             // 
@@ -582,14 +553,40 @@ namespace SectionManager {
             this.lblAlignCol.TabIndex = 48;
             this.lblAlignCol.Text = "열 모서리 정렬";
             // 
-            // sectionCtrl
+            // rdoPort1
             // 
-            this.sectionCtrl.BackColor = System.Drawing.Color.White;
-            this.sectionCtrl.Location = new System.Drawing.Point(18, 17);
-            this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(729, 439);
-            this.sectionCtrl.TabIndex = 0;
-            this.sectionCtrl.Text = "sectionCtrl";
+            this.rdoPort1.AutoSize = true;
+            this.rdoPort1.Location = new System.Drawing.Point(40, 20);
+            this.rdoPort1.Name = "rdoPort1";
+            this.rdoPort1.Size = new System.Drawing.Size(66, 16);
+            this.rdoPort1.TabIndex = 53;
+            this.rdoPort1.TabStop = true;
+            this.rdoPort1.Tag = "1";
+            this.rdoPort1.Text = "PORT 1";
+            this.rdoPort1.UseVisualStyleBackColor = true;
+            // 
+            // rdoPort2
+            // 
+            this.rdoPort2.AutoSize = true;
+            this.rdoPort2.Location = new System.Drawing.Point(159, 20);
+            this.rdoPort2.Name = "rdoPort2";
+            this.rdoPort2.Size = new System.Drawing.Size(66, 16);
+            this.rdoPort2.TabIndex = 54;
+            this.rdoPort2.TabStop = true;
+            this.rdoPort2.Tag = "2";
+            this.rdoPort2.Text = "PORT 2";
+            this.rdoPort2.UseVisualStyleBackColor = true;
+            // 
+            // grpPort
+            // 
+            this.grpPort.Controls.Add(this.rdoPort2);
+            this.grpPort.Controls.Add(this.rdoPort1);
+            this.grpPort.Location = new System.Drawing.Point(752, 3);
+            this.grpPort.Name = "grpPort";
+            this.grpPort.Size = new System.Drawing.Size(269, 54);
+            this.grpPort.TabIndex = 55;
+            this.grpPort.TabStop = false;
+            this.grpPort.Text = "LAN Port";
             // 
             // SectionDrawerControl
             // 
@@ -612,8 +609,6 @@ namespace SectionManager {
             this.Controls.Add(this.btnAlignTop);
             this.Controls.Add(this.btnAlignRight);
             this.Controls.Add(this.btnAlignLeft);
-            this.Controls.Add(this.cbxLan2);
-            this.Controls.Add(this.cbxLan1);
             this.Controls.Add(this.lblBoxHeight);
             this.Controls.Add(this.lblBoxWidth);
             this.Controls.Add(this.nmrcBaseHeight);
@@ -642,6 +637,7 @@ namespace SectionManager {
             this.Controls.Add(this.nmrcBoxHeight);
             this.Controls.Add(this.nmrcBoxWidth);
             this.Controls.Add(this.btnAdd);
+            this.Controls.Add(this.grpPort);
             this.Name = "SectionDrawerControl";
             this.Size = new System.Drawing.Size(1036, 526);
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).EndInit();
@@ -653,6 +649,8 @@ namespace SectionManager {
             ((System.ComponentModel.ISupportInitialize)(this.nmrcCol)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBaseHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBaseWidth)).EndInit();
+            this.grpPort.ResumeLayout(false);
+            this.grpPort.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -688,8 +686,6 @@ namespace SectionManager {
         private System.Windows.Forms.Label lblBoxWidth;
         private System.Windows.Forms.NumericUpDown nmrcBaseHeight;
         private System.Windows.Forms.NumericUpDown nmrcBaseWidth;
-        private System.Windows.Forms.CheckBox cbxLan1;
-        private System.Windows.Forms.CheckBox cbxLan2;
         private System.Windows.Forms.Button btnAlignLeft;
         private System.Windows.Forms.Button btnAlignRight;
         private System.Windows.Forms.Button btnAlignTop;
@@ -706,5 +702,8 @@ namespace SectionManager {
         private System.Windows.Forms.Button btnBottomRight;
         private System.Windows.Forms.Button btnTopRight;
         private System.Windows.Forms.Label lblAlignCol;
+        private System.Windows.Forms.RadioButton rdoPort1;
+        private System.Windows.Forms.RadioButton rdoPort2;
+        private System.Windows.Forms.GroupBox grpPort;
     }
 }

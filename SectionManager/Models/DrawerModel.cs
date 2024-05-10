@@ -11,6 +11,10 @@ namespace SectionManager.Models {
     // 파일로 저장할 전체 관리 데이터
     public class DrawerModel {
 
+        #region
+        public EventHandler<int> PortAddedEvent;
+        #endregion
+
         #region Vars
         private static readonly int MINIMUM_SIZE = 16;
 
@@ -59,12 +63,15 @@ namespace SectionManager.Models {
             var boxGroup = new BoxGroup(idx);
             _boxGroupList.Add(boxGroup);
             SelectedPort = _boxGroupList.IndexOf(boxGroup);
+            PortAddedEvent.Invoke(this, SelectedPort);
         }
 
         public void AppendBox() {
             if (_boxGroupList.Count == 0) 
                 AppendBoxGroup(0);
 
+            if (_boxGroupList.Count <= SelectedPort)
+                AppendBoxGroup(SelectedPort);
             _boxGroupList[SelectedPort].AppendBox();
         }
 
@@ -328,5 +335,23 @@ namespace SectionManager.Models {
         TopRight,
         BottomLeft,
         BottomRight
+    }
+
+    public enum ColorSpec { 
+        Transparent,
+        Aquamarine,
+        Beige,
+        Bisque,
+        Brown,
+        //BurlyWood,
+        CadetBlue,
+        //Chartreuse,
+        Crimson,
+        //Gold,
+        Olive,
+        DodgerBlue,
+        Violet,
+        //Yellow,
+        //Green
     }
 }
