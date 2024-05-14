@@ -28,7 +28,6 @@ namespace SectionManager {
             this.nmrcBoxWidth = new System.Windows.Forms.NumericUpDown();
             this.nmrcBoxHeight = new System.Windows.Forms.NumericUpDown();
             this.pnlBackground = new System.Windows.Forms.Panel();
-            this.sectionCtrl = new SectionManager.SectionControl();
             this.btnDeleteBox = new System.Windows.Forms.Button();
             this.btnClearBox = new System.Windows.Forms.Button();
             this.btnLRTB = new System.Windows.Forms.Button();
@@ -72,6 +71,9 @@ namespace SectionManager {
             this.rdoPort1 = new System.Windows.Forms.RadioButton();
             this.rdoPort2 = new System.Windows.Forms.RadioButton();
             this.grpPort = new System.Windows.Forms.GroupBox();
+            this.cbxZoom = new System.Windows.Forms.ComboBox();
+            this.lblZoom = new System.Windows.Forms.Label();
+            this.sectionCtrl = new SectionManager.SectionControl();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -145,15 +147,6 @@ namespace SectionManager {
             this.pnlBackground.Name = "pnlBackground";
             this.pnlBackground.Size = new System.Drawing.Size(747, 456);
             this.pnlBackground.TabIndex = 4;
-            // 
-            // sectionCtrl
-            // 
-            this.sectionCtrl.BackColor = System.Drawing.Color.White;
-            this.sectionCtrl.Location = new System.Drawing.Point(18, 17);
-            this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(729, 439);
-            this.sectionCtrl.TabIndex = 0;
-            this.sectionCtrl.Text = "sectionCtrl";
             // 
             // btnDeleteBox
             // 
@@ -588,11 +581,40 @@ namespace SectionManager {
             this.grpPort.TabStop = false;
             this.grpPort.Text = "LAN Port";
             // 
+            // cbxZoom
+            // 
+            this.cbxZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxZoom.FormattingEnabled = true;
+            this.cbxZoom.Location = new System.Drawing.Point(682, 24);
+            this.cbxZoom.Name = "cbxZoom";
+            this.cbxZoom.Size = new System.Drawing.Size(58, 20);
+            this.cbxZoom.TabIndex = 56;
+            // 
+            // lblZoom
+            // 
+            this.lblZoom.AutoSize = true;
+            this.lblZoom.Location = new System.Drawing.Point(606, 27);
+            this.lblZoom.Name = "lblZoom";
+            this.lblZoom.Size = new System.Drawing.Size(66, 12);
+            this.lblZoom.TabIndex = 57;
+            this.lblZoom.Text = "Zoom(%) :";
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(18, 17);
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(729, 439);
+            this.sectionCtrl.TabIndex = 0;
+            this.sectionCtrl.Text = "sectionCtrl";
+            // 
             // SectionDrawerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.lblZoom);
+            this.Controls.Add(this.cbxZoom);
             this.Controls.Add(this.btnBottomLeft);
             this.Controls.Add(this.btnTopLeft);
             this.Controls.Add(this.btnBottomRight);
@@ -705,5 +727,7 @@ namespace SectionManager {
         private System.Windows.Forms.RadioButton rdoPort1;
         private System.Windows.Forms.RadioButton rdoPort2;
         private System.Windows.Forms.GroupBox grpPort;
+        private System.Windows.Forms.ComboBox cbxZoom;
+        private System.Windows.Forms.Label lblZoom;
     }
 }

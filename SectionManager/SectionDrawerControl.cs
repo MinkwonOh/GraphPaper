@@ -17,6 +17,7 @@ namespace SectionManager {
         private static readonly int MINIMUM_SIZE = 16;
 
         private DrawerModel model;
+        private BindingSource bs = new BindingSource();
 
         public SectionDrawerControl() {
             InitializeComponent();
@@ -26,6 +27,11 @@ namespace SectionManager {
 
         private void InitializeValue() {
             DoubleBuffered = true;
+
+            List<int> zoomVals = Enum.GetValues(typeof(ZoomPer)).Cast<int>().ToList();
+            bs.DataSource = zoomVals;
+            cbxZoom.DataSource = bs;
+            cbxZoom.SelectedItem = (int)ZoomPer.z100;
 
             LoadValue();
         }

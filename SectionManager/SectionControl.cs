@@ -39,8 +39,6 @@ namespace SectionManager {
         public bool RunThread { set => thRunning = value; }
 
         private BoxState _boxState = BoxState.None;
-        private Box CurrentBox = null;
-        private List<Box> CurrentBoxes = new List<Box>();
         private Stack Z_Index = new Stack();
         private Pen BlackPen, PinkPen, BluePen, RedPen;
         private Pen BlackBorderPen, PinkBorderPen, BlueBorderPen, RedBorderPen, RedBorderPenHalf, BlueBorderDashPen;
@@ -117,58 +115,63 @@ namespace SectionManager {
             _pressedPoint.X = e.X;
             _pressedPoint.Y = e.Y;
             if (e.Button == MouseButtons.Left) {
-                
+                _dradBox.Selected = false;
                 Point pt = e.Location;
                 // 리스트 역순으로 area 먼저 겹치는 객체를 move
-                // 객체가 저장되어있는 리스트의 순서가 아니라 order로 설정되어 있는 순서여야 함.
                 switch (_boxState) {
                     case BoxState.None:
                         if (_model.BoxGroupList == null || _model.BoxGroupList.Count <= 0) return;
                         var lstBox = _model.BoxGroupList[_model.SelectedPort].BoxList;
 
-                        // 처음 마우스 다운한 point에 currentbox가 있을때는 selected된 항목 전부 선택. 유지.
-                        if (CurrentBox != null && CurrentBox.HasPoint(pt)) {
-                            _boxState = BoxState.Move;
-                            GapXY = new Size(pt.X - CurrentBox.RctX, pt.Y - CurrentBox.RctY);
-                        }
-                        else { 
-                            CurrentBox = null;
-                            var bgl = _model.BoxGroupList[_model.SelectedPort];
-                            bgl.BoxList.ForEach(k => k.Selected = false);
-                            // 처음 마우스 다운한 point에 박스가 있을때는 해당 박스만 선택
-                            for (int i = lstBox.Count - 1; i >= 0; i--) {
-                                if (lstBox[i].HasPoint(pt)) {
-                                    _boxState = BoxState.Move;
-                                    CurrentBox = lstBox[i];
-                                    Debug.WriteLine($"CurrentBoxRect : {CurrentBox.Rect}");
-                                    _model.BoxGroupList[_model.SelectedPort].ToTop(CurrentBox);
-                                    GapXY = new Size(pt.X - CurrentBox.RctX, pt.Y - CurrentBox.RctY);
-                                    BoxInfoRefreshEvent?.Invoke(this, CurrentBox);
-                                    // order 후처리 해줘야함
-                                    // route에 포함되지 않은 ids라면 route의 마지막 idx로 추가시키고 end 처리
-                                    i = -1;
+                        // 마우스 다운 경우의수
+                        // drag상자 선택 안되고 Contain 상자도 없음 > 영역 밖
+                        // drag 상자 선택 안되고 Contain 상자 > 새 단일 상자 선택
+                        //  > ***** 드래그 상자 없어져야함
+                        // drag상자 선택 > 영역 내
+
+                        if (!_dradBox.Rect.Contains(pt)) {
+                            if (lstBox.Where(i => i.Rect.Contains(pt)).ToList().Count == 0) {
+                                // 영역 밖
+                                _dradBox.Rect = new Rectangle { 
+                                    X = e.X,
+                                    Y = e.Y,
+                                    Width = 0,
+                                    Height = 0
+                                };
+                                
+                                BoxInfoRefreshEvent?.Invoke(this, _dradBox);
+                            }
+                            else {
+                                // 새 단일 상자 선택
+                                _boxState = BoxState.Move;
+                                lstBox.ForEach(i => i.Selected = false);
+                                var selectBox = lstBox.Where(i => i.Rect.Contains(pt)).FirstOrDefault();
+                                if (selectBox != null) {
+                                    selectBox.Selected = true;
+                                    _model.BoxGroupList[_model.SelectedPort].ToTop(selectBox);
+                                    GapXY = new Size(pt.X - selectBox.RctX, pt.Y - selectBox.RctY);
+                                    BoxInfoRefreshEvent?.Invoke(this,selectBox);
                                 }
+                                _dradBox.Rect = selectBox.Rect;
+                                _dradBox.Selected = true;
                             }
                         }
+                        else {
+                            // 영역 내
+                            _boxState = BoxState.Move;
+                            lstBox.ForEach(i => i.Selected = false);
 
-                        // 마우스다운한 곳이 비어있다면 새로운 드래그박스 시작.
-                        if (CurrentBox == null) {
-                            // 드래그 영역으 ㅣ박스 보내줘야함.
-                            _dradBox.Rect = new Rectangle {
-                                X = e.X,
-                                Y = e.Y,
-                                Width = 0,
-                                Height = 0
-                            };
-                            BoxInfoRefreshEvent?.Invoke(this, _dradBox);
+                            GapXY = new Size(pt.X - _dradBox.RctX, pt.Y - _dradBox.RctY);
+                            
+                            lstBox.Where(i => _dradBox.Rect.Contains(i.Rect)).ToList().ForEach(i => i.Selected = true);
+                            _dradBox.Selected = true;
                         }
-                        /*if (CurrentBox.Count ==0) { 
 
-                        }*/
                         break;
                     case BoxState.Select:
                         break;
                     case BoxState.Move:
+                        // 나중에 수정.. 아예 switch 위쪽에서 선처리?
                         _boxState = BoxState.None;
                         break;
                 }
@@ -181,43 +184,43 @@ namespace SectionManager {
                 Point pt = e.Location;
                 switch (_boxState) {
                     case BoxState.None:
-                        if (CurrentBox == null) {
-                            if (_mousePressed) {
-                                _dradBox.RctX = Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
-                                _dradBox.RctY = Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
-                                _dradBox.RctW = Math.Max(e.X < 0 ? 0 : e.X, _pressedPoint.X) - Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
-                                _dradBox.RctH = Math.Max(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y) - Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
-                                BoxInfoRefreshEvent?.Invoke(this, _dradBox);
-                            }
+                        if (_mousePressed) {
+                            _dradBox.RctX = Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
+                            _dradBox.RctY = Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
+                            _dradBox.RctW = Math.Max(e.X < 0 ? 0 : e.X, _pressedPoint.X) - Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
+                            _dradBox.RctH = Math.Max(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y) - Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
+                            BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         }
                         break;
                     case BoxState.Select:
                         break;
                     case BoxState.Move:
-                        if (CurrentBox != null) {
-                            int prvBoxX = CurrentBox.RctX;
-                            int prvBoxY = CurrentBox.RctY;
-                            int newX = pt.X - GapXY.Width;
-                            int newY = pt.Y - GapXY.Height;
-                            int subGapX = newX < 0 ? prvBoxX : prvBoxX - newX;
-                            int subGapY = newY < 0 ? prvBoxY : prvBoxY - newY;
+                        // 드래그상자, 그냥 박스 누르고 있을때
+                        // 드래그상자 있으면 드래그 상자 움직임,
+                        // selected된 상자들은 GapXY 계산해서 옮기기
+                        var bgl = _model.BoxGroupList[_model.SelectedPort];
+                        var lstBox = bgl.BoxList;
 
-                            CurrentBox.RctX = newX;
-                            CurrentBox.RctY = newY;
+                        if (_mousePressed) {
 
-                            Debug.WriteLine($"prvBoxX,prvBoxY = {prvBoxX},{prvBoxY} || newXY : {newX},{newY} || Current XY = {CurrentBox.RctX},{CurrentBox.RctY}");
+                            var lstSelBox = lstBox.Where(i => i.Selected == true).ToList();
 
-                            var bgl = _model.BoxGroupList[_model.SelectedPort];
-                            foreach (var box in bgl.BoxList.Where(i => i.Selected)) {
-                                if(prvBoxX != CurrentBox.RctX)
-                                    box.RctX -= subGapX;
-                                if(prvBoxY != CurrentBox.RctY)
-                                    box.RctY -= subGapY;
+                            Point prvDragPt = new Point(_dradBox.RctX, _dradBox.RctY);
+
+                            _dradBox.RctX = pt.X - GapXY.Width;
+                            _dradBox.RctY = pt.Y - GapXY.Height;
+
+                            int mvX = _dradBox.RctX - prvDragPt.X;
+                            int mvY = _dradBox.RctY - prvDragPt.Y;
+
+                            foreach (var selBox in lstSelBox) {
+                                selBox.RctX += mvX;
+                                selBox.RctY += mvY;
                             }
                         }
-                        BoxInfoRefreshEvent?.Invoke(this, CurrentBox);
+                        
+                        BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         Invalidate(false);
-                        _boxState = BoxState.Move;
                         break;
                 }
             }
@@ -229,8 +232,7 @@ namespace SectionManager {
                 Point pt = e.Location;
                 switch (_boxState) {
                     case BoxState.None:
-
-                        if (_model.SelectedPort < 0) {
+                        if (_model.SelectedPort < 0 || _model.BoxGroupList.Count == 0) {
                             _dradBox.Rect = new Rectangle();
                             return;
                         }
@@ -239,7 +241,6 @@ namespace SectionManager {
                         _dradBox.RctY = Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
                         _dradBox.RctW = Math.Max(e.X < 0 ? 0 : e.X, _pressedPoint.X) - Math.Min(e.X < 0 ? 0 : e.X, _pressedPoint.X);
                         _dradBox.RctH = Math.Max(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y) - Math.Min(e.Y < 0 ? 0 : e.Y, _pressedPoint.Y);
-                        
 
                         var bgl = _model.BoxGroupList[_model.SelectedPort];
                         for (int i = 0; i < bgl.BoxList.Count; i++) {
@@ -266,25 +267,29 @@ namespace SectionManager {
                             subRct.Height = endY - subRct.Y;
 
                             _dradBox.Rect = subRct;
-                            CurrentBox = new Box(-1) { Rect = subRct};
+                            _dradBox.Selected = true;
                         }
                         else {
                             _dradBox.Rect = new Rectangle();
+                            _dradBox.Selected = false;
                         }
 
+                        BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         break;
                     case BoxState.Select:
                         break;
                     case BoxState.Move:
-                        if (CurrentBox != null) {
-                            CurrentBox.RctX = pt.X - GapXY.Width;
-                            CurrentBox.RctY = pt.Y - GapXY.Height;
+                        if (_dradBox.RctW == 0 && _dradBox.RctH == 0) { 
 
-                            BoxInfoRefreshEvent?.Invoke(this, CurrentBox);
+                            _dradBox.RctX = pt.X - GapXY.Width;
+                            _dradBox.RctY = pt.Y - GapXY.Height;
 
+                            BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                             // 현재박스의 너비,높이가 캔버스를 벗어나면 캔버스를 늘리고 스크롤바를 + 알파만큼 이동시켜줘야 함.
                             // 전체 박스의 너비, 높이가 확장된 캔버스보다 더 축소된다면 캔버스를 줄이고 스크롤바를 - 알파만큼 이동시켜줌
+
                         }
+                        
                         //Invalidate(false);
                         _boxState = BoxState.None;
                         break;
@@ -338,6 +343,7 @@ namespace SectionManager {
                 int imgSize = 40;
                 var boxList = _model?.BoxGroupList;
                 Color color = Color.FromName(Enum.GetName(typeof(ColorSpec), ColorSpec.Transparent));
+
                 if (boxList?.Count >= 0) {
                     using (var g = Graphics.FromImage(layer.Bitmap)) {
                         for (int i = 0; i < boxList.Count; i++) {
@@ -347,9 +353,9 @@ namespace SectionManager {
                                 g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);
                                 string desc = boxGroup[j].RctW < MINIMUM_SIZE*4 || boxGroup[j].RctH < MINIMUM_SIZE*4 ? (boxGroup[j].tagCard+1).ToString() : boxGroup[j].Description;
                                 g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
-                                // 여기가 selectedbox인데 grouping 으로 변경하고 그룹핑 된 박스를 그릴것
-                                if (CurrentBox != null)
-                                    g.DrawRectangle(PinkPen, CurrentBox.Rect);
+
+                                // 그룹핑 된 박스
+                                g.DrawRectangle(_dradBox.Selected ? BlueBorderDashPen: PinkPen , _dradBox.Rect);
 
                                 if (i == _model.SelectedPort && boxGroup[j].Selected)
                                     g.DrawRectangle(BlueBorderPen, boxGroup[j].Rect);
@@ -374,9 +380,9 @@ namespace SectionManager {
                                     g.DrawLine(RedBorderPen, halfPoint, new Point(rct2.MidX, rct2.MidY));
                                 }
                             }
-                            
                         }
-                        if (CurrentBox == null) {
+                        /////
+                        if (_dradBox.RctX == 0 || _dradBox.RctY == 0) {
                             g.DrawRectangle(BlueBorderDashPen, _dradBox.Rect);
                         }
                     }
@@ -401,13 +407,16 @@ namespace SectionManager {
         public void SetModelPort(int port) {
             if (_model == null) return;
             _model.SelectedPort = port;
-            CurrentBox = new Box(-1) { Rect = new Rectangle() };
+            _dradBox = new Box(-1) { Rect = new Rectangle() };
             var bgl = _model.BoxGroupList.Where(i => i.Port == port).FirstOrDefault();
             if (bgl == null) {
                 _dradBox.Rect = new Rectangle();
                 return; 
             }
+
+            // 포트를 변경했을때 그 전에 선택되었던 박스를 가지고 있는게 편할지 or 전체 박스를 고르는게 편할지 결정할것.
             List<Box> _lstChildBox = bgl.BoxList.Where(i => i.Selected).ToList();
+            // List<Box> _lstChildBox = bgl.BoxList;
 
             if (_lstChildBox.Count > 0) {
                 Rectangle subRct = _lstChildBox[0].Rect;
@@ -426,8 +435,8 @@ namespace SectionManager {
                 subRct.Width = endX - subRct.X;
                 subRct.Height = endY - subRct.Y;
 
+                _dradBox.Selected = true;
                 _dradBox.Rect = subRct;
-                CurrentBox.Rect = subRct;
             }
         }
 
@@ -463,15 +472,17 @@ namespace SectionManager {
 
             int selIdx = _model.SelectedPort;
 
-            if (selIdx < 0 || CurrentBox == null) return;
+            if (selIdx < 0 || (_dradBox.RctW == 0 && _dradBox.RctY == 0)) return;
 
             var grpBox = _model.BoxGroupList[_model.SelectedPort];
-            grpBox.DelLinker(grpBox.BoxList.Where(i => i.tagCard == CurrentBox.tagCard).FirstOrDefault());
+            // selectedbox 전부다 삭제하도록, 그냥 라인은 최근 라인 연결방법으로 고정.
 
-            grpBox.BoxList.Remove(grpBox.BoxList.Where(i => i.tagCard == CurrentBox.tagCard).FirstOrDefault());
+            foreach (var selbox in grpBox.BoxList.Where(i => i.Selected == true).ToList()) {
+                grpBox.DelLinker(selbox);
+                grpBox.BoxList.Remove(selbox);
+            }
 
             _dradBox.Rect = new Rectangle();
-            CurrentBox = null;
         }
 
         public void ClearBox() {
@@ -481,7 +492,6 @@ namespace SectionManager {
             }
 
             _dradBox.Rect = new Rectangle();
-            CurrentBox = null;
         }
 
         /// <summary>
@@ -545,7 +555,7 @@ namespace SectionManager {
             List<Box> _lstChildBox = boxGroup.BoxList.Where(i => i.Selected).ToList();
 
             if (_lstChildBox.Count <= 1) return;
-            int topY = CurrentBox.RctY ,botY = CurrentBox.RctY + CurrentBox.RctH, leftX = CurrentBox.RctX, rightX = CurrentBox.RctX + CurrentBox.RctW;
+            int topY = _dradBox.RctY ,botY = _dradBox.RctY + _dradBox.RctH, leftX = _dradBox.RctX, rightX = _dradBox.RctX + _dradBox.RctW;
 
             // base t,b,l,r
             switch (direction) {
@@ -630,7 +640,6 @@ namespace SectionManager {
             subRct.Height = endY - subRct.Y;
 
             _dradBox.Rect = subRct;
-            CurrentBox = new Box(-1) { Rect = subRct };
 
         }
 
@@ -659,8 +668,6 @@ namespace SectionManager {
                 RctW = boxList.Max(i => i.RctX + i.RctW),
                 RctH = boxList.Max(i => i.RctY + i.RctH)
             };
-
-            CurrentBox = _dradBox;
         }
 
 

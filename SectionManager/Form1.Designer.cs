@@ -29,19 +29,20 @@ namespace SectionManager {
             // 
             // sectionDrawerControl1
             // 
-            this.sectionDrawerControl1.AllowDrop = true;
             this.sectionDrawerControl1.BackColor = System.Drawing.SystemColors.Control;
             this.sectionDrawerControl1.Location = new System.Drawing.Point(12, 12);
             this.sectionDrawerControl1.Name = "sectionDrawerControl1";
-            this.sectionDrawerControl1.Size = new System.Drawing.Size(1080, 550);
+            this.sectionDrawerControl1.Size = new System.Drawing.Size(1026, 534);
             this.sectionDrawerControl1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1109, 597);
+            this.ClientSize = new System.Drawing.Size(1050, 550);
             this.Controls.Add(this.sectionDrawerControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
