@@ -144,11 +144,14 @@ namespace SectionManager {
                             else {
                                 // 새 단일 상자 선택
                                 _boxState = BoxState.Move;
+                                //var lastBox = lstBox.Where(i => i.Rect.Contains(pt)).LastOrDefault();
+
                                 lstBox.ForEach(i => i.Selected = false);
-                                var selectBox = lstBox.Where(i => i.Rect.Contains(pt)).FirstOrDefault();
+                                var selectBox = lstBox.Where(i => i.Rect.Contains(pt)).LastOrDefault();
                                 if (selectBox != null) {
+                                    lstBox.Remove(selectBox);
+                                    lstBox.Add(selectBox);
                                     selectBox.Selected = true;
-                                    _model.BoxGroupList[_model.SelectedPort].ToTop(selectBox);
                                     GapXY = new Size(pt.X - selectBox.RctX, pt.Y - selectBox.RctY);
                                     BoxInfoRefreshEvent?.Invoke(this,selectBox);
                                 }
@@ -399,6 +402,23 @@ namespace SectionManager {
             // zoom에 따라 변경
         }
 
+        private void PullTheBoxUp() {
+            if (_model.SelectedPort == -1) return;
+
+            var boxGroupList = _model.BoxGroupList[_model.SelectedPort];
+            var boxList = boxGroupList?.BoxList;
+            var lastBox = boxGroupList?.BoxList?.LastOrDefault();
+            if (boxList == null || lastBox == null) return;
+
+            boxList.ForEach(i => i.Selected = false);
+            boxGroupList.DelLinker(lastBox);
+            boxGroupList.BoxList.Remove(lastBox);
+            boxGroupList.BoxList.Add(lastBox);
+            boxGroupList.AddLinker();
+            lastBox.Selected = true;
+            BoxInfoRefreshEvent?.Invoke(this, lastBox);
+        }
+
         public void SetModelValue(DrawerModel model) {
             _model = model;
             _model.PortAddedEvent += (s, e) => { PortAddedEvent?.Invoke(this, e); };
@@ -448,13 +468,15 @@ namespace SectionManager {
         public void RegistBox(int width, int height, bool setCenter = true) {
             if (_model == null) return;
             _model.AppendBox(setCenter ? (Width-width)/2 : 0, setCenter ? (Height-height)/2 : 0, width, height);
-            AddLinker();
+            //AddLinker();
+            PullTheBoxUp();
         }
 
         public void RegistBox(int x, int y, int width, int height, bool setCenter = true) {
             if (_model == null) return;
             _model.AppendBox(setCenter ? (Width - width) / 2 : x, setCenter ? (Height - height) / 2 : y, width, height);
-            AddLinker();
+            //AddLinker();
+            PullTheBoxUp();
         }
 
         public void AddLinker() {
@@ -539,7 +561,7 @@ namespace SectionManager {
             for (int i = 0; i < bridgeList.Count - 1; i++) {
                 boxGroup._lstLinker.Add((bridgeList[i].tagCard, bridgeList[i + 1].tagCard));
             }
-            boxGroup._lstLinker.Add((bridgeList.Last().tagPort, -1));
+            boxGroup._lstLinker.Add((bridgeList.Last().tagCard, -1));
 
         }
 
