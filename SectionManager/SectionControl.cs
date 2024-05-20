@@ -419,6 +419,79 @@ namespace SectionManager {
             BoxInfoRefreshEvent?.Invoke(this, lastBox);
         }
 
+        private void SetLineLRTB(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderBy(i => i.RctY).GroupBy(i => i.RctY).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderBy(p => p.RctX).ToList() : bridgeGroup[i].OrderByDescending(p => p.RctX).ToList());
+            }
+        }
+
+        private void SetLineRLTB(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderBy(i => i.RctY).GroupBy(i => i.RctY).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderByDescending(p => p.RctX).ToList() : bridgeGroup[i].OrderBy(p => p.RctX).ToList());
+            }
+        }
+
+        private void SetLineLRBT(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderByDescending(i => i.RctY).GroupBy(i => i.RctY).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderBy(p => p.RctX).ToList() : bridgeGroup[i].OrderByDescending(p => p.RctX).ToList());
+            }
+        }
+
+        // 연산 속도 여부에 따라 차후 변경
+        /*private void SetLineLRBT(ref List<int> indexes, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderByDescending(i => i.RctY).ThenBy(i => i.RctX).GroupBy(i => i.RctY).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                if (i % 2 == 0) {
+                    for (int j = 0; j < bridgeGroup[i].Count(); j++) {
+                        indexes.Add(boxList.IndexOf(bridgeGroup[i].ElementAt(j)));
+                    }
+                }
+                else {
+                    for (int j = bridgeGroup[i].Count()-1; j >= 0; j--) {
+                        indexes.Add(boxList.IndexOf(bridgeGroup[i].ElementAt(j)));
+                    }
+                }
+            }
+        }*/
+
+        private void SetLineRLBT(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderByDescending(i => i.RctY).GroupBy(i => i.RctY).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderByDescending(p => p.RctX).ToList() : bridgeGroup[i].OrderBy(p => p.RctX).ToList());
+            }
+        }
+
+        private void SetLineTBLR(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderBy(i => i.RctX).GroupBy(i => i.RctX).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderBy(p => p.RctY).ToList() : bridgeGroup[i].OrderByDescending(p => p.RctY).ToList());
+            }
+        }
+
+        private void SetLineBTLR(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderBy(i => i.RctX).GroupBy(i => i.RctX).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderByDescending(p => p.RctY).ToList() : bridgeGroup[i].OrderBy(p => p.RctY).ToList());
+            }
+        }
+
+        private void SetLineTBRL(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderByDescending(i => i.RctX).GroupBy(i => i.RctX).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderBy(p => p.RctY).ToList() : bridgeGroup[i].OrderByDescending(p => p.RctY).ToList());
+            }
+        }
+
+        private void SetLineBTRL(ref List<Box> bridgeList, ref List<Box> boxList) {
+            var bridgeGroup = boxList.OrderByDescending(i => i.RctX).GroupBy(i => i.RctX).ToList();
+            for (int i = 0; i < bridgeGroup.Count(); i++) {
+                bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderByDescending(p => p.RctY).ToList() : bridgeGroup[i].OrderBy(p => p.RctY).ToList());
+            }
+        }
+
         public void SetModelValue(DrawerModel model) {
             _model = model;
             _model.PortAddedEvent += (s, e) => { PortAddedEvent?.Invoke(this, e); };
@@ -531,32 +604,45 @@ namespace SectionManager {
             boxGroup._lstLinker.Clear();
 
             List<Box> bridgeList = new List<Box>();
+            // 연산 속도 여부에 따라 차후 변경
+            //List<int> indexes = new List<int>();
             switch (ld) {
                 case LineDirection.LRTB:
-                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctY).ThenBy(q => q.RctX).ToList();
+                    SetLineLRTB(ref bridgeList, ref boxGroup.BoxList);
                     break;
                 case LineDirection.RLTB:
-                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctY).ThenByDescending(q => q.RctX).ToList();
+                    SetLineRLTB(ref bridgeList, ref boxGroup.BoxList);
                     break;
                 case LineDirection.LRBT:
-                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctY).ThenBy(q => q.RctX).ToList();
+                    SetLineLRBT(ref bridgeList, ref boxGroup.BoxList);
+
+                    // 연산 속도 여부에 따라 차후 변경
+                    /*SetLineLRBT(ref indexes, ref boxGroup.BoxList);
+                    for (int i = 0; i < indexes.Count; i++) {
+                        bridgeList.Add(boxGroup.BoxList[indexes[i]]);
+                    }*/
                     break;
                 case LineDirection.RLBT:
-                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctY).ThenByDescending(q => q.RctX).ToList();
+                    SetLineRLBT(ref bridgeList, ref boxGroup.BoxList);
                     break;
                 case LineDirection.TBLR:
-                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctX).ThenBy(q => q.RctY).ToList();
+                    SetLineTBLR(ref bridgeList, ref boxGroup.BoxList);
                     break;
                 case LineDirection.BTLR:
-                    bridgeList = boxGroup.BoxList.OrderBy(p => p.RctX).ThenByDescending(q => q.RctY).ToList();
+                    SetLineBTLR(ref bridgeList, ref boxGroup.BoxList);
                     break;
                 case LineDirection.TBRL:
-                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctX).ThenBy(q => q.RctY).ToList();
+                    SetLineTBRL(ref bridgeList, ref boxGroup.BoxList);
                     break;
                 case LineDirection.BTRL:
-                    bridgeList = boxGroup.BoxList.OrderByDescending(p => p.RctX).ThenByDescending(q => q.RctY).ToList();
+                    SetLineBTRL(ref bridgeList, ref boxGroup.BoxList);
                     break;
             }
+
+            for (int i = 0; i < bridgeList.Count; i++) {
+                bridgeList[i].tagCard = i;
+            }
+
 
             for (int i = 0; i < bridgeList.Count - 1; i++) {
                 boxGroup._lstLinker.Add((bridgeList[i].tagCard, bridgeList[i + 1].tagCard));
