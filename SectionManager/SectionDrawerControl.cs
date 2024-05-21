@@ -16,6 +16,8 @@ namespace SectionManager {
 
         private static readonly int MINIMUM_SIZE = 16;
 
+        internal DrawerModel Model { get => model; }
+
         private DrawerModel model;
         private BindingSource bs = new BindingSource();
 
@@ -23,6 +25,10 @@ namespace SectionManager {
             InitializeComponent();
             InitializeEvent();
             InitializeValue();
+        }
+
+        public SectionDrawerControl(DrawerModel model) : this() {
+            this.model = model;
         }
 
         private void InitializeValue() {
@@ -33,11 +39,12 @@ namespace SectionManager {
             cbxZoom.DataSource = bs;
             cbxZoom.SelectedItem = (int)ZoomPer.z100;
 
-            LoadValue();
+            
         }
 
         protected override void OnLoad(EventArgs e) {
             base.OnLoad(e);
+            LoadValue();
             CreateView();
         }
 
@@ -118,6 +125,7 @@ namespace SectionManager {
             base.OnHandleDestroyed(e);
             sectionCtrl.RunThread = false;
             Thread.Sleep(50);
+
         }
     }
 }

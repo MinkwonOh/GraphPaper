@@ -171,6 +171,8 @@ namespace SectionManager.Models {
                 }
                 
                 _lstLinker.Remove(self);
+
+                Reorder();
             }
         }
 
@@ -228,6 +230,20 @@ namespace SectionManager.Models {
 
 
             return resultRect;
+        }
+
+        private void Reorder() {
+            for (int i = 0; i < _lstLinker.Count; i++) {
+                var box = BoxList.Where(p => p.tagCard == _lstLinker[i].Item1).FirstOrDefault();
+                var newChild = _lstLinker[i];
+                newChild.Item1 = i;
+                newChild.Item2 = i == _lstLinker.Count ? -1 : i + 1;
+                _lstLinker[i] = newChild;
+
+                if (box != null) {
+                    box.tagCard = i;
+                }
+            }
         }
     }
 

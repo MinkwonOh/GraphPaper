@@ -30,14 +30,6 @@ namespace SectionManager {
             this.pnlBackground = new System.Windows.Forms.Panel();
             this.btnDeleteBox = new System.Windows.Forms.Button();
             this.btnClearBox = new System.Windows.Forms.Button();
-            this.btnLRTB = new System.Windows.Forms.Button();
-            this.btnRLTB = new System.Windows.Forms.Button();
-            this.btnRLBT = new System.Windows.Forms.Button();
-            this.btnLRBT = new System.Windows.Forms.Button();
-            this.btnBTRL = new System.Windows.Forms.Button();
-            this.btnTBRL = new System.Windows.Forms.Button();
-            this.btnBTLR = new System.Windows.Forms.Button();
-            this.btnTBLR = new System.Windows.Forms.Button();
             this.lblWidth = new System.Windows.Forms.Label();
             this.lblHeight = new System.Windows.Forms.Label();
             this.lblPosY = new System.Windows.Forms.Label();
@@ -60,7 +52,6 @@ namespace SectionManager {
             this.lblLine = new System.Windows.Forms.Label();
             this.lblAlignRow = new System.Windows.Forms.Label();
             this.btnLeftBot = new System.Windows.Forms.Button();
-            this.btnLeftTop = new System.Windows.Forms.Button();
             this.btnRightBot = new System.Windows.Forms.Button();
             this.btnRightTop = new System.Windows.Forms.Button();
             this.btnBottomLeft = new System.Windows.Forms.Button();
@@ -74,6 +65,15 @@ namespace SectionManager {
             this.cbxZoom = new System.Windows.Forms.ComboBox();
             this.lblZoom = new System.Windows.Forms.Label();
             this.sectionCtrl = new SectionManager.SectionControl();
+            this.btnLeftTop = new System.Windows.Forms.Button();
+            this.btnBTRL = new System.Windows.Forms.Button();
+            this.btnTBRL = new System.Windows.Forms.Button();
+            this.btnBTLR = new System.Windows.Forms.Button();
+            this.btnTBLR = new System.Windows.Forms.Button();
+            this.btnRLBT = new System.Windows.Forms.Button();
+            this.btnLRBT = new System.Windows.Forms.Button();
+            this.btnRLTB = new System.Windows.Forms.Button();
+            this.btnLRTB = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -145,7 +145,7 @@ namespace SectionManager {
             this.pnlBackground.Controls.Add(this.sectionCtrl);
             this.pnlBackground.Location = new System.Drawing.Point(3, 63);
             this.pnlBackground.Name = "pnlBackground";
-            this.pnlBackground.Size = new System.Drawing.Size(747, 456);
+            this.pnlBackground.Size = new System.Drawing.Size(747, 595);
             this.pnlBackground.TabIndex = 4;
             // 
             // btnDeleteBox
@@ -165,78 +165,6 @@ namespace SectionManager {
             this.btnClearBox.TabIndex = 6;
             this.btnClearBox.Text = "박스 전체삭제";
             this.btnClearBox.UseVisualStyleBackColor = true;
-            // 
-            // btnLRTB
-            // 
-            this.btnLRTB.Location = new System.Drawing.Point(775, 318);
-            this.btnLRTB.Name = "btnLRTB";
-            this.btnLRTB.Size = new System.Drawing.Size(57, 23);
-            this.btnLRTB.TabIndex = 7;
-            this.btnLRTB.Text = "LRTB";
-            this.btnLRTB.UseVisualStyleBackColor = true;
-            // 
-            // btnRLTB
-            // 
-            this.btnRLTB.Location = new System.Drawing.Point(838, 318);
-            this.btnRLTB.Name = "btnRLTB";
-            this.btnRLTB.Size = new System.Drawing.Size(57, 23);
-            this.btnRLTB.TabIndex = 8;
-            this.btnRLTB.Text = "RLTB";
-            this.btnRLTB.UseVisualStyleBackColor = true;
-            // 
-            // btnRLBT
-            // 
-            this.btnRLBT.Location = new System.Drawing.Point(964, 318);
-            this.btnRLBT.Name = "btnRLBT";
-            this.btnRLBT.Size = new System.Drawing.Size(57, 23);
-            this.btnRLBT.TabIndex = 10;
-            this.btnRLBT.Text = "RLBT";
-            this.btnRLBT.UseVisualStyleBackColor = true;
-            // 
-            // btnLRBT
-            // 
-            this.btnLRBT.Location = new System.Drawing.Point(901, 318);
-            this.btnLRBT.Name = "btnLRBT";
-            this.btnLRBT.Size = new System.Drawing.Size(57, 23);
-            this.btnLRBT.TabIndex = 9;
-            this.btnLRBT.Text = "LRBT";
-            this.btnLRBT.UseVisualStyleBackColor = true;
-            // 
-            // btnBTRL
-            // 
-            this.btnBTRL.Location = new System.Drawing.Point(964, 347);
-            this.btnBTRL.Name = "btnBTRL";
-            this.btnBTRL.Size = new System.Drawing.Size(57, 23);
-            this.btnBTRL.TabIndex = 14;
-            this.btnBTRL.Text = "BTRL";
-            this.btnBTRL.UseVisualStyleBackColor = true;
-            // 
-            // btnTBRL
-            // 
-            this.btnTBRL.Location = new System.Drawing.Point(901, 347);
-            this.btnTBRL.Name = "btnTBRL";
-            this.btnTBRL.Size = new System.Drawing.Size(57, 23);
-            this.btnTBRL.TabIndex = 13;
-            this.btnTBRL.Text = "TBRL";
-            this.btnTBRL.UseVisualStyleBackColor = true;
-            // 
-            // btnBTLR
-            // 
-            this.btnBTLR.Location = new System.Drawing.Point(838, 347);
-            this.btnBTLR.Name = "btnBTLR";
-            this.btnBTLR.Size = new System.Drawing.Size(57, 23);
-            this.btnBTLR.TabIndex = 12;
-            this.btnBTLR.Text = "BTLR";
-            this.btnBTLR.UseVisualStyleBackColor = true;
-            // 
-            // btnTBLR
-            // 
-            this.btnTBLR.Location = new System.Drawing.Point(775, 347);
-            this.btnTBLR.Name = "btnTBLR";
-            this.btnTBLR.Size = new System.Drawing.Size(57, 23);
-            this.btnTBLR.TabIndex = 11;
-            this.btnTBLR.Text = "TBLR";
-            this.btnTBLR.UseVisualStyleBackColor = true;
             // 
             // lblWidth
             // 
@@ -404,44 +332,52 @@ namespace SectionManager {
             // 
             // btnAlignLeft
             // 
-            this.btnAlignLeft.Location = new System.Drawing.Point(901, 496);
+            this.btnAlignLeft.BackColor = System.Drawing.Color.White;
+            this.btnAlignLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAlignLeft.Location = new System.Drawing.Point(901, 590);
             this.btnAlignLeft.Name = "btnAlignLeft";
-            this.btnAlignLeft.Size = new System.Drawing.Size(57, 23);
+            this.btnAlignLeft.Size = new System.Drawing.Size(57, 50);
             this.btnAlignLeft.TabIndex = 33;
             this.btnAlignLeft.Text = "좌";
-            this.btnAlignLeft.UseVisualStyleBackColor = true;
+            this.btnAlignLeft.UseVisualStyleBackColor = false;
             // 
             // btnAlignRight
             // 
-            this.btnAlignRight.Location = new System.Drawing.Point(964, 496);
+            this.btnAlignRight.BackColor = System.Drawing.Color.White;
+            this.btnAlignRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAlignRight.Location = new System.Drawing.Point(964, 590);
             this.btnAlignRight.Name = "btnAlignRight";
-            this.btnAlignRight.Size = new System.Drawing.Size(57, 23);
+            this.btnAlignRight.Size = new System.Drawing.Size(57, 50);
             this.btnAlignRight.TabIndex = 34;
             this.btnAlignRight.Text = "우";
-            this.btnAlignRight.UseVisualStyleBackColor = true;
+            this.btnAlignRight.UseVisualStyleBackColor = false;
             // 
             // btnAlignTop
             // 
-            this.btnAlignTop.Location = new System.Drawing.Point(775, 496);
+            this.btnAlignTop.BackColor = System.Drawing.Color.White;
+            this.btnAlignTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAlignTop.Location = new System.Drawing.Point(775, 590);
             this.btnAlignTop.Name = "btnAlignTop";
-            this.btnAlignTop.Size = new System.Drawing.Size(55, 23);
+            this.btnAlignTop.Size = new System.Drawing.Size(55, 50);
             this.btnAlignTop.TabIndex = 35;
             this.btnAlignTop.Text = "상";
-            this.btnAlignTop.UseVisualStyleBackColor = true;
+            this.btnAlignTop.UseVisualStyleBackColor = false;
             // 
             // btnAlignBottom
             // 
-            this.btnAlignBottom.Location = new System.Drawing.Point(838, 496);
+            this.btnAlignBottom.BackColor = System.Drawing.Color.White;
+            this.btnAlignBottom.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAlignBottom.Location = new System.Drawing.Point(838, 590);
             this.btnAlignBottom.Name = "btnAlignBottom";
-            this.btnAlignBottom.Size = new System.Drawing.Size(57, 23);
+            this.btnAlignBottom.Size = new System.Drawing.Size(57, 50);
             this.btnAlignBottom.TabIndex = 36;
             this.btnAlignBottom.Text = "하";
-            this.btnAlignBottom.UseVisualStyleBackColor = true;
+            this.btnAlignBottom.UseVisualStyleBackColor = false;
             // 
             // lblAlignSide
             // 
             this.lblAlignSide.AutoSize = true;
-            this.lblAlignSide.Location = new System.Drawing.Point(773, 481);
+            this.lblAlignSide.Location = new System.Drawing.Point(773, 575);
             this.lblAlignSide.Name = "lblAlignSide";
             this.lblAlignSide.Size = new System.Drawing.Size(45, 12);
             this.lblAlignSide.TabIndex = 37;
@@ -459,7 +395,7 @@ namespace SectionManager {
             // lblAlignRow
             // 
             this.lblAlignRow.AutoSize = true;
-            this.lblAlignRow.Location = new System.Drawing.Point(773, 381);
+            this.lblAlignRow.Location = new System.Drawing.Point(773, 439);
             this.lblAlignRow.Name = "lblAlignRow";
             this.lblAlignRow.Size = new System.Drawing.Size(85, 12);
             this.lblAlignRow.TabIndex = 43;
@@ -467,80 +403,85 @@ namespace SectionManager {
             // 
             // btnLeftBot
             // 
-            this.btnLeftBot.Location = new System.Drawing.Point(901, 396);
+            this.btnLeftBot.BackColor = System.Drawing.Color.White;
+            this.btnLeftBot.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_7to5;
+            this.btnLeftBot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnLeftBot.Location = new System.Drawing.Point(901, 454);
             this.btnLeftBot.Name = "btnLeftBot";
-            this.btnLeftBot.Size = new System.Drawing.Size(57, 23);
+            this.btnLeftBot.Size = new System.Drawing.Size(57, 50);
             this.btnLeftBot.TabIndex = 47;
-            this.btnLeftBot.Text = "좌하";
-            this.btnLeftBot.UseVisualStyleBackColor = true;
-            // 
-            // btnLeftTop
-            // 
-            this.btnLeftTop.Location = new System.Drawing.Point(775, 396);
-            this.btnLeftTop.Name = "btnLeftTop";
-            this.btnLeftTop.Size = new System.Drawing.Size(55, 23);
-            this.btnLeftTop.TabIndex = 46;
-            this.btnLeftTop.Text = "좌상";
-            this.btnLeftTop.UseVisualStyleBackColor = true;
+            this.btnLeftBot.UseVisualStyleBackColor = false;
             // 
             // btnRightBot
             // 
-            this.btnRightBot.Location = new System.Drawing.Point(964, 396);
+            this.btnRightBot.BackColor = System.Drawing.Color.White;
+            this.btnRightBot.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_5to7;
+            this.btnRightBot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRightBot.Location = new System.Drawing.Point(964, 454);
             this.btnRightBot.Name = "btnRightBot";
-            this.btnRightBot.Size = new System.Drawing.Size(57, 23);
+            this.btnRightBot.Size = new System.Drawing.Size(57, 50);
             this.btnRightBot.TabIndex = 45;
-            this.btnRightBot.Text = "우하";
-            this.btnRightBot.UseVisualStyleBackColor = true;
+            this.btnRightBot.UseVisualStyleBackColor = false;
             // 
             // btnRightTop
             // 
-            this.btnRightTop.Location = new System.Drawing.Point(838, 396);
+            this.btnRightTop.BackColor = System.Drawing.Color.White;
+            this.btnRightTop.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_1to11;
+            this.btnRightTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRightTop.Location = new System.Drawing.Point(838, 454);
             this.btnRightTop.Name = "btnRightTop";
-            this.btnRightTop.Size = new System.Drawing.Size(57, 23);
+            this.btnRightTop.Size = new System.Drawing.Size(57, 50);
             this.btnRightTop.TabIndex = 44;
-            this.btnRightTop.Text = "우상";
-            this.btnRightTop.UseVisualStyleBackColor = true;
+            this.btnRightTop.UseVisualStyleBackColor = false;
             // 
             // btnBottomLeft
             // 
-            this.btnBottomLeft.Location = new System.Drawing.Point(901, 442);
+            this.btnBottomLeft.BackColor = System.Drawing.Color.White;
+            this.btnBottomLeft.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_7to11;
+            this.btnBottomLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBottomLeft.Location = new System.Drawing.Point(901, 522);
             this.btnBottomLeft.Name = "btnBottomLeft";
-            this.btnBottomLeft.Size = new System.Drawing.Size(57, 23);
+            this.btnBottomLeft.Size = new System.Drawing.Size(57, 50);
             this.btnBottomLeft.TabIndex = 52;
-            this.btnBottomLeft.Text = "하좌";
-            this.btnBottomLeft.UseVisualStyleBackColor = true;
+            this.btnBottomLeft.UseVisualStyleBackColor = false;
             // 
             // btnTopLeft
             // 
-            this.btnTopLeft.Location = new System.Drawing.Point(775, 442);
+            this.btnTopLeft.BackColor = System.Drawing.Color.White;
+            this.btnTopLeft.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_11to7;
+            this.btnTopLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnTopLeft.Location = new System.Drawing.Point(775, 522);
             this.btnTopLeft.Name = "btnTopLeft";
-            this.btnTopLeft.Size = new System.Drawing.Size(55, 23);
+            this.btnTopLeft.Size = new System.Drawing.Size(55, 50);
             this.btnTopLeft.TabIndex = 51;
-            this.btnTopLeft.Text = "상좌";
-            this.btnTopLeft.UseVisualStyleBackColor = true;
+            this.btnTopLeft.UseVisualStyleBackColor = false;
             // 
             // btnBottomRight
             // 
-            this.btnBottomRight.Location = new System.Drawing.Point(964, 442);
+            this.btnBottomRight.BackColor = System.Drawing.Color.White;
+            this.btnBottomRight.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_5to1;
+            this.btnBottomRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBottomRight.Location = new System.Drawing.Point(964, 522);
             this.btnBottomRight.Name = "btnBottomRight";
-            this.btnBottomRight.Size = new System.Drawing.Size(57, 23);
+            this.btnBottomRight.Size = new System.Drawing.Size(57, 50);
             this.btnBottomRight.TabIndex = 50;
-            this.btnBottomRight.Text = "하우";
-            this.btnBottomRight.UseVisualStyleBackColor = true;
+            this.btnBottomRight.UseVisualStyleBackColor = false;
             // 
             // btnTopRight
             // 
-            this.btnTopRight.Location = new System.Drawing.Point(838, 442);
+            this.btnTopRight.BackColor = System.Drawing.Color.White;
+            this.btnTopRight.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_1to5;
+            this.btnTopRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnTopRight.Location = new System.Drawing.Point(838, 522);
             this.btnTopRight.Name = "btnTopRight";
-            this.btnTopRight.Size = new System.Drawing.Size(57, 23);
+            this.btnTopRight.Size = new System.Drawing.Size(57, 50);
             this.btnTopRight.TabIndex = 49;
-            this.btnTopRight.Text = "상우";
-            this.btnTopRight.UseVisualStyleBackColor = true;
+            this.btnTopRight.UseVisualStyleBackColor = false;
             // 
             // lblAlignCol
             // 
             this.lblAlignCol.AutoSize = true;
-            this.lblAlignCol.Location = new System.Drawing.Point(773, 427);
+            this.lblAlignCol.Location = new System.Drawing.Point(773, 507);
             this.lblAlignCol.Name = "lblAlignCol";
             this.lblAlignCol.Size = new System.Drawing.Size(85, 12);
             this.lblAlignCol.TabIndex = 48;
@@ -604,9 +545,109 @@ namespace SectionManager {
             this.sectionCtrl.BackColor = System.Drawing.Color.White;
             this.sectionCtrl.Location = new System.Drawing.Point(18, 17);
             this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(729, 439);
+            this.sectionCtrl.Size = new System.Drawing.Size(729, 577);
             this.sectionCtrl.TabIndex = 0;
             this.sectionCtrl.Text = "sectionCtrl";
+            // 
+            // btnLeftTop
+            // 
+            this.btnLeftTop.BackColor = System.Drawing.Color.White;
+            this.btnLeftTop.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_11to1;
+            this.btnLeftTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnLeftTop.Location = new System.Drawing.Point(775, 454);
+            this.btnLeftTop.Name = "btnLeftTop";
+            this.btnLeftTop.Size = new System.Drawing.Size(55, 50);
+            this.btnLeftTop.TabIndex = 46;
+            this.btnLeftTop.UseVisualStyleBackColor = false;
+            // 
+            // btnBTRL
+            // 
+            this.btnBTRL.BackColor = System.Drawing.Color.White;
+            this.btnBTRL.BackgroundImage = global::SectionManager.Properties.Resources.BTRL;
+            this.btnBTRL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBTRL.Location = new System.Drawing.Point(964, 374);
+            this.btnBTRL.Name = "btnBTRL";
+            this.btnBTRL.Size = new System.Drawing.Size(57, 50);
+            this.btnBTRL.TabIndex = 14;
+            this.btnBTRL.UseVisualStyleBackColor = false;
+            // 
+            // btnTBRL
+            // 
+            this.btnTBRL.BackColor = System.Drawing.Color.White;
+            this.btnTBRL.BackgroundImage = global::SectionManager.Properties.Resources.TBRL;
+            this.btnTBRL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnTBRL.Location = new System.Drawing.Point(901, 374);
+            this.btnTBRL.Name = "btnTBRL";
+            this.btnTBRL.Size = new System.Drawing.Size(57, 50);
+            this.btnTBRL.TabIndex = 13;
+            this.btnTBRL.UseVisualStyleBackColor = false;
+            // 
+            // btnBTLR
+            // 
+            this.btnBTLR.BackColor = System.Drawing.Color.White;
+            this.btnBTLR.BackgroundImage = global::SectionManager.Properties.Resources.BTLR;
+            this.btnBTLR.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBTLR.Location = new System.Drawing.Point(838, 374);
+            this.btnBTLR.Name = "btnBTLR";
+            this.btnBTLR.Size = new System.Drawing.Size(57, 50);
+            this.btnBTLR.TabIndex = 12;
+            this.btnBTLR.UseVisualStyleBackColor = false;
+            // 
+            // btnTBLR
+            // 
+            this.btnTBLR.BackColor = System.Drawing.Color.White;
+            this.btnTBLR.BackgroundImage = global::SectionManager.Properties.Resources.TBLR;
+            this.btnTBLR.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnTBLR.Location = new System.Drawing.Point(775, 374);
+            this.btnTBLR.Name = "btnTBLR";
+            this.btnTBLR.Size = new System.Drawing.Size(57, 50);
+            this.btnTBLR.TabIndex = 11;
+            this.btnTBLR.UseVisualStyleBackColor = false;
+            // 
+            // btnRLBT
+            // 
+            this.btnRLBT.BackColor = System.Drawing.Color.White;
+            this.btnRLBT.BackgroundImage = global::SectionManager.Properties.Resources.RLBT;
+            this.btnRLBT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRLBT.Location = new System.Drawing.Point(964, 318);
+            this.btnRLBT.Name = "btnRLBT";
+            this.btnRLBT.Size = new System.Drawing.Size(57, 50);
+            this.btnRLBT.TabIndex = 10;
+            this.btnRLBT.UseVisualStyleBackColor = false;
+            // 
+            // btnLRBT
+            // 
+            this.btnLRBT.BackColor = System.Drawing.Color.White;
+            this.btnLRBT.BackgroundImage = global::SectionManager.Properties.Resources.LRBT;
+            this.btnLRBT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnLRBT.Location = new System.Drawing.Point(901, 318);
+            this.btnLRBT.Name = "btnLRBT";
+            this.btnLRBT.Size = new System.Drawing.Size(57, 50);
+            this.btnLRBT.TabIndex = 9;
+            this.btnLRBT.UseVisualStyleBackColor = false;
+            // 
+            // btnRLTB
+            // 
+            this.btnRLTB.BackColor = System.Drawing.Color.White;
+            this.btnRLTB.BackgroundImage = global::SectionManager.Properties.Resources.RLTB;
+            this.btnRLTB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnRLTB.Location = new System.Drawing.Point(838, 318);
+            this.btnRLTB.Name = "btnRLTB";
+            this.btnRLTB.Size = new System.Drawing.Size(57, 50);
+            this.btnRLTB.TabIndex = 8;
+            this.btnRLTB.UseVisualStyleBackColor = false;
+            // 
+            // btnLRTB
+            // 
+            this.btnLRTB.BackColor = System.Drawing.Color.White;
+            this.btnLRTB.BackgroundImage = global::SectionManager.Properties.Resources.LRTB;
+            this.btnLRTB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnLRTB.Location = new System.Drawing.Point(775, 318);
+            this.btnLRTB.Name = "btnLRTB";
+            this.btnLRTB.Size = new System.Drawing.Size(57, 50);
+            this.btnLRTB.TabIndex = 7;
+            this.btnLRTB.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
+            this.btnLRTB.UseVisualStyleBackColor = false;
             // 
             // SectionDrawerControl
             // 
@@ -661,7 +702,7 @@ namespace SectionManager {
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.grpPort);
             this.Name = "SectionDrawerControl";
-            this.Size = new System.Drawing.Size(1036, 526);
+            this.Size = new System.Drawing.Size(1036, 661);
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).EndInit();
             this.pnlBackground.ResumeLayout(false);
