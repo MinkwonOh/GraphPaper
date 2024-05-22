@@ -318,25 +318,21 @@ namespace SectionManager {
 
             */
 
+            lock (thLock) { 
+                try {
 
-            try {
+                    if (layer != null) {
+                        var bitmap = layer.Bitmap;
+                        e.Graphics.DrawImage(bitmap, ClientRectangle, box, GraphicsUnit.Pixel);
 
-                if (layer != null) {
-                    var bitmap = layer.Bitmap;
-
-                    e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-                    e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-                    e.Graphics.DrawImage(bitmap, ClientRectangle, box, GraphicsUnit.Pixel);
-
-                    DrawTracker(e.Graphics);
+                        DrawTracker(e.Graphics);
+                    }
                 }
-            }
-            catch (Exception ex) {
-                Debug.WriteLine($"err - SectionControl - OnPaint(PaintEventArgs)");
-                Debug.WriteLine($"msg : {ex.Message}");
-                layer.Bitmap.Dispose();
-                throw;
+                catch (Exception ex) {
+                    Debug.WriteLine($"err - SectionControl - OnPaint(PaintEventArgs)");
+                    Debug.WriteLine($"msg : {ex.Message}");
+                    layer.Bitmap.Dispose();
+                }
             }
         }
 
@@ -795,21 +791,10 @@ namespace SectionManager {
             try {
                 while (thRunning) {
                     lock (thLock) {
-                        if (InvokeRequired) {
-                            Invoke(new EventHandler(delegate {
-                                if (layer != null) {
-                                    layer.Clear();
-                                    DrawBoxGroup(layer);
-                                    Invalidate(false);
-                                }
-                            }));
-                        }
-                        else {
-                            if (layer != null) {
-                                layer.Clear();
-                                DrawBoxGroup(layer);
-                                Invalidate(false);
-                            }
+                        if (layer != null) {
+                            layer.Clear();
+                            DrawBoxGroup(layer);
+                            Invalidate(false);
                         }
                     }
                     Thread.Sleep(20);
