@@ -55,6 +55,11 @@ namespace SectionManager.Drawer {
                 mBitmap = new Bitmap(Math.Abs(Width % int.MaxValue), Math.Abs(Height % int.MaxValue));
         }
 
+        public void SetLayerSize(int width, int height) {
+            if (width > 0 && height > 0)
+                mBitmap = new Bitmap(Math.Abs(Width % int.MaxValue), Math.Abs(Height % int.MaxValue));
+        }
+
         public void Clear() {
             try {
                 if (mBitmap != null) {

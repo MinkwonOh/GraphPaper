@@ -38,6 +38,9 @@ namespace SectionManager {
             // 
             // sectionDrawerControl1
             // 
+            this.sectionDrawerControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.sectionDrawerControl1.BackColor = System.Drawing.SystemColors.Control;
             this.sectionDrawerControl1.Location = new System.Drawing.Point(12, 60);
             this.sectionDrawerControl1.Name = "sectionDrawerControl1";

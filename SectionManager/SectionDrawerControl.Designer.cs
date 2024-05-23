@@ -64,7 +64,6 @@ namespace SectionManager {
             this.grpPort = new System.Windows.Forms.GroupBox();
             this.cbxZoom = new System.Windows.Forms.ComboBox();
             this.lblZoom = new System.Windows.Forms.Label();
-            this.sectionCtrl = new SectionManager.SectionControl();
             this.btnLeftTop = new System.Windows.Forms.Button();
             this.btnBTRL = new System.Windows.Forms.Button();
             this.btnTBRL = new System.Windows.Forms.Button();
@@ -74,6 +73,7 @@ namespace SectionManager {
             this.btnLRBT = new System.Windows.Forms.Button();
             this.btnRLTB = new System.Windows.Forms.Button();
             this.btnLRTB = new System.Windows.Forms.Button();
+            this.sectionCtrl = new SectionManager.SectionControl();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -141,6 +141,7 @@ namespace SectionManager {
             // 
             // pnlBackground
             // 
+            this.pnlBackground.AutoScroll = true;
             this.pnlBackground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlBackground.Controls.Add(this.sectionCtrl);
             this.pnlBackground.Location = new System.Drawing.Point(3, 63);
@@ -540,15 +541,6 @@ namespace SectionManager {
             this.lblZoom.TabIndex = 57;
             this.lblZoom.Text = "Zoom(%) :";
             // 
-            // sectionCtrl
-            // 
-            this.sectionCtrl.BackColor = System.Drawing.Color.White;
-            this.sectionCtrl.Location = new System.Drawing.Point(18, 17);
-            this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(729, 577);
-            this.sectionCtrl.TabIndex = 0;
-            this.sectionCtrl.Text = "sectionCtrl";
-            // 
             // btnLeftTop
             // 
             this.btnLeftTop.BackColor = System.Drawing.Color.White;
@@ -648,6 +640,15 @@ namespace SectionManager {
             this.btnLRTB.TabIndex = 7;
             this.btnLRTB.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.btnLRTB.UseVisualStyleBackColor = false;
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.AutoScroll = true;
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
+            this.sectionCtrl.TabIndex = 0;
             // 
             // SectionDrawerControl
             // 

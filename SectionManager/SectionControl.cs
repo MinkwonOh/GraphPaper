@@ -11,11 +11,12 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace SectionManager {
-    public class SectionControl : Control, IDisposable {
+    public class SectionControl : UserControl, IDisposable {
 
         private static readonly int MINIMUM_SIZE = 16;
 
         public EventHandler<Box> BoxInfoRefreshEvent;
+        public EventHandler<(int, int)> LayerSizeChangeEvent;
         public EventHandler<int> PortAddedEvent;
 
         private Bitmap StartImg = Properties.Resources.Start;
@@ -28,6 +29,7 @@ namespace SectionManager {
         private Box _dradBox;
         private bool _mousePressed;
         private Point _pressedPoint;
+        private Size _baseSize;
         public ZoomPer Zoom { set => zoom = value; }
 
         private bool thRunning;
@@ -52,6 +54,7 @@ namespace SectionManager {
 
         public SectionControl() {
             DoubleBuffered = true;
+            AutoScroll = true;
 
             box = new Rectangle(0,0, MINIMUM_SIZE, MINIMUM_SIZE);
 
@@ -287,12 +290,29 @@ namespace SectionManager {
                             _dradBox.RctX = pt.X - GapXY.Width;
                             _dradBox.RctY = pt.Y - GapXY.Height;
 
-                            BoxInfoRefreshEvent?.Invoke(this, _dradBox);
-                            // 현재박스의 너비,높이가 캔버스를 벗어나면 캔버스를 늘리고 스크롤바를 + 알파만큼 이동시켜줘야 함.
-                            // 전체 박스의 너비, 높이가 확장된 캔버스보다 더 축소된다면 캔버스를 줄이고 스크롤바를 - 알파만큼 이동시켜줌
-
+                            
                         }
-                        
+                        // 현재박스의 너비,높이가 캔버스를 벗어나면 캔버스를 늘리고 스크롤바를 + 알파만큼 이동시켜줘야 함.
+                        // 전체 박스의 너비, 높이가 확장된 캔버스보다 더 축소된다면 캔버스를 줄이고 스크롤바를 - 알파만큼 이동시켜줌
+                        var boxGroupList = _model.BoxGroupList[_model.SelectedPort];
+                        List<Box> selectedBoxes = boxGroupList.BoxList.Where(i => i.Selected).ToList();
+                        int maxX = selectedBoxes.Max(i => i.RctX + i.RctW);
+                        int maxY = selectedBoxes.Max(i => i.RctY + i.RctH);
+
+                        if (Width < maxX + 50)
+                            Width = layer.Width = maxX + 50;
+                        else if (_baseSize.Width < Width)
+                            Width = layer.Width = _baseSize.Width < maxX + 50 ? maxX + 50 : _baseSize.Width;
+
+                        if (Height < maxY + 50)
+                            Height = layer.Height = maxY + 50;
+                        else if (_baseSize.Height < Height)
+                            Height = layer.Height = _baseSize.Height < maxY + 50 ? maxY + 50 : _baseSize.Height;
+
+                        SetViewSize(Width, Height);
+                        layer.SetLayerSize(Width, Height);
+
+                        BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         //Invalidate(false);
                         _boxState = BoxState.None;
                         break;
@@ -305,7 +325,6 @@ namespace SectionManager {
 
             _mousePressed = false;
         }
-
 
         protected override void OnPaint(PaintEventArgs e) {
             base.OnPaint(e);
@@ -486,6 +505,10 @@ namespace SectionManager {
             for (int i = 0; i < bridgeGroup.Count(); i++) {
                 bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderByDescending(p => p.RctY).ToList() : bridgeGroup[i].OrderBy(p => p.RctY).ToList());
             }
+        }
+
+        public void SetBaseSize(Size size) {
+            _baseSize = size;
         }
 
         public void SetModelValue(DrawerModel model) {

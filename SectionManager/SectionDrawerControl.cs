@@ -34,12 +34,14 @@ namespace SectionManager {
         private void InitializeValue() {
             DoubleBuffered = true;
 
+            sectionCtrl.Location = new Point(0,0);
+            sectionCtrl.Size = new Size(pnlBackground.ClientSize.Width, pnlBackground.ClientSize.Height);
+            sectionCtrl.SetBaseSize(sectionCtrl.Size);
+
             List<int> zoomVals = Enum.GetValues(typeof(ZoomPer)).Cast<int>().ToList();
             bs.DataSource = zoomVals;
             cbxZoom.DataSource = bs;
             cbxZoom.SelectedItem = (int)ZoomPer.z100;
-
-            
         }
 
         protected override void OnLoad(EventArgs e) {
