@@ -27,13 +27,18 @@ namespace SectionManager {
         private void InitializeEvent() {
             btnConnect.Click += (s, e) => btnConnClicked();
             btnDisconnect.Click += (s, e) => btnDisConnClicked();
+            btnSend.Click += (s, e) => btnSendClicked();
+        }
 
+        private void btnSendClicked() {
+            
         }
 
         private void btnConnClicked() {
             packetManager.IO = new Tcp { Host = tbxIp.EditValue.ToString(), Port = (int)nmrcPort.Value};
 
             isConn = true;
+            EnableControl();
         }
 
         private void btnDisConnClicked() {
@@ -42,7 +47,14 @@ namespace SectionManager {
             }
 
             isConn = false;
+            EnableControl();
+        }
 
+        private void EnableControl() {
+            btnConnect.Enabled = !isConn;
+
+            btnDisconnect.Enabled = isConn;
+            btnSend.Enabled = isConn;
         }
 
         private void InitializeValue() {
