@@ -99,7 +99,7 @@ namespace SectionManager {
         }
 
         private void SetPositionOfDragbox() {
-            sectionCtrl.SetPosOfDragbox(int.Parse(tbxRctX.Text),int.Parse(tbxRctY.Text));
+            sectionCtrl.SetPosOfDragbox(tbxRctX.Text.Length == 0 ? 0 : int.Parse(tbxRctX.Text), tbxRctY.Text.Length == 0 ? 0 : int.Parse(tbxRctY.Text));
         }
 
         private void OnlyNumberAllower(object s, KeyPressEventArgs e) {
