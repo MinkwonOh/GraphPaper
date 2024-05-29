@@ -92,15 +92,29 @@ namespace SectionManager {
 
             nmrcRow.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
             nmrcCol.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
+
+            tbxRctX.KeyPress += (s, e) => OnlyNumberAllower(s, e);
+            tbxRctY.KeyPress += (s, e) => OnlyNumberAllower(s, e);
+            btnSetPosDragbox.Click += (s, e) => SetPositionOfDragbox();
+        }
+
+        private void SetPositionOfDragbox() {
+            sectionCtrl.SetPosOfDragbox(int.Parse(tbxRctX.Text),int.Parse(tbxRctY.Text));
+        }
+
+        private void OnlyNumberAllower(object s, KeyPressEventArgs e) {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)) {
+                e.Handled = true;
+            }
         }
 
         private void BoxInfoChanged(Box box) {
-            if (box.Description != string.Empty) { 
-                nmrcPosX.Value = box != null ? box.RctX : 0;
-                nmrcPosY.Value = box != null ? box.RctY : 0;
-                nmrcBoxWidth.Value = box != null ? box.RctW : MINIMUM_SIZE;
-                nmrcBoxHeight.Value = box != null ? box.RctH : MINIMUM_SIZE;
-            }
+            /*if (!box.Description.Equals(string.Empty)) { 
+            }*/
+            nmrcPosX.Value = box != null ? box.RctX : 0;
+            nmrcPosY.Value = box != null ? box.RctY : 0;
+            nmrcBoxWidth.Value = box != null ? box.RctW : MINIMUM_SIZE;
+            nmrcBoxHeight.Value = box != null ? box.RctH : MINIMUM_SIZE;
         }
 
         private void LoadValue() {

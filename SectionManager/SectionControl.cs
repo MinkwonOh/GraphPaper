@@ -156,21 +156,24 @@ namespace SectionManager {
                                     lstBox.Add(selectBox);
                                     selectBox.Selected = true;
                                     GapXY = new Size(pt.X - selectBox.RctX, pt.Y - selectBox.RctY);
-                                    BoxInfoRefreshEvent?.Invoke(this,selectBox);
                                 }
                                 _dradBox.Rect = selectBox.Rect;
                                 _dradBox.Selected = true;
+                                BoxInfoRefreshEvent?.Invoke(this,selectBox);
                             }
                         }
                         else {
                             // 영역 내
                             _boxState = BoxState.Move;
-                            lstBox.ForEach(i => i.Selected = false);
+                            var rects = lstBox.Where(i => _dradBox.Rect.Contains(i.Rect)).ToList();
+
+                            //lstBox.ForEach(i => i.Selected = false);
 
                             GapXY = new Size(pt.X - _dradBox.RctX, pt.Y - _dradBox.RctY);
                             
-                            lstBox.Where(i => _dradBox.Rect.Contains(i.Rect)).ToList().ForEach(i => i.Selected = true);
+                            //lstBox.Where(i => _dradBox.Rect.Contains(i.Rect)).ToList().ForEach(i => i.Selected = true);
                             _dradBox.Selected = true;
+                            BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         }
 
                         break;
@@ -223,9 +226,9 @@ namespace SectionManager {
                                 selBox.RctX += mvX;
                                 selBox.RctY += mvY;
                             }
+                            BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         }
                         
-                        BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         Invalidate(false);
                         break;
                 }
@@ -431,7 +434,8 @@ namespace SectionManager {
             boxGroupList.BoxList.Add(lastBox);
             boxGroupList.AddLinker();
             lastBox.Selected = true;
-            BoxInfoRefreshEvent?.Invoke(this, lastBox);
+            _dradBox.Rect = lastBox.Rect;
+            BoxInfoRefreshEvent?.Invoke(this, _dradBox);
         }
 
         private void SetLineLRTB(ref List<Box> bridgeList, ref List<Box> boxList) {
@@ -505,6 +509,26 @@ namespace SectionManager {
             for (int i = 0; i < bridgeGroup.Count(); i++) {
                 bridgeList.AddRange(i % 2 == 0 ? bridgeGroup[i].OrderByDescending(p => p.RctY).ToList() : bridgeGroup[i].OrderBy(p => p.RctY).ToList());
             }
+        }
+
+        public void SetPosOfDragbox(int x, int y) {
+            if (_model == null && _model.SelectedPort < 0) return;
+
+            var bgl = _model.BoxGroupList.Where(i => i.Port == _model.SelectedPort).FirstOrDefault();
+            if (bgl != null) {
+                List<Box> _lstChildBox = bgl.BoxList.Where(i => i.Selected == true).ToList();
+
+                int drx = _dradBox.RctX;
+                int dry = _dradBox.RctY;
+
+                int gapx = x - drx;
+                int gapy = y - dry;
+
+                _lstChildBox.ForEach(i => { i.RctX = i.RctX + gapx; i.RctY = i.RctY + gapy; });
+                _dradBox.RctX = x;
+                _dradBox.RctY = y;
+            }
+
         }
 
         public void SetBaseSize(Size size) {

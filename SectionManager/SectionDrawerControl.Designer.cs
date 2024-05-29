@@ -73,6 +73,11 @@ namespace SectionManager {
             this.btnLRBT = new System.Windows.Forms.Button();
             this.btnRLTB = new System.Windows.Forms.Button();
             this.btnLRTB = new System.Windows.Forms.Button();
+            this.tbxRctX = new System.Windows.Forms.TextBox();
+            this.lblX = new System.Windows.Forms.Label();
+            this.lblY = new System.Windows.Forms.Label();
+            this.btnSetPosDragbox = new System.Windows.Forms.Button();
+            this.tbxRctY = new System.Windows.Forms.TextBox();
             this.sectionCtrl = new SectionManager.SectionControl();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
@@ -90,43 +95,28 @@ namespace SectionManager {
             // 
             this.btnAdd.Location = new System.Drawing.Point(911, 63);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(110, 39);
+            this.btnAdd.Size = new System.Drawing.Size(110, 48);
             this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "박스 추가";
             this.btnAdd.UseVisualStyleBackColor = true;
             // 
             // nmrcBoxWidth
             // 
-            this.nmrcBoxWidth.Location = new System.Drawing.Point(819, 166);
+            this.nmrcBoxWidth.Location = new System.Drawing.Point(819, 222);
             this.nmrcBoxWidth.Maximum = new decimal(new int[] {
-            512,
-            0,
-            0,
-            0});
-            this.nmrcBoxWidth.Minimum = new decimal(new int[] {
-            8,
+            65535,
             0,
             0,
             0});
             this.nmrcBoxWidth.Name = "nmrcBoxWidth";
             this.nmrcBoxWidth.Size = new System.Drawing.Size(71, 21);
             this.nmrcBoxWidth.TabIndex = 2;
-            this.nmrcBoxWidth.Value = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
             // 
             // nmrcBoxHeight
             // 
-            this.nmrcBoxHeight.Location = new System.Drawing.Point(950, 166);
+            this.nmrcBoxHeight.Location = new System.Drawing.Point(950, 222);
             this.nmrcBoxHeight.Maximum = new decimal(new int[] {
-            512,
-            0,
-            0,
-            0});
-            this.nmrcBoxHeight.Minimum = new decimal(new int[] {
-            8,
+            65535,
             0,
             0,
             0});
@@ -151,7 +141,7 @@ namespace SectionManager {
             // 
             // btnDeleteBox
             // 
-            this.btnDeleteBox.Location = new System.Drawing.Point(793, 203);
+            this.btnDeleteBox.Location = new System.Drawing.Point(793, 249);
             this.btnDeleteBox.Name = "btnDeleteBox";
             this.btnDeleteBox.Size = new System.Drawing.Size(97, 29);
             this.btnDeleteBox.TabIndex = 5;
@@ -160,7 +150,7 @@ namespace SectionManager {
             // 
             // btnClearBox
             // 
-            this.btnClearBox.Location = new System.Drawing.Point(906, 203);
+            this.btnClearBox.Location = new System.Drawing.Point(906, 249);
             this.btnClearBox.Name = "btnClearBox";
             this.btnClearBox.Size = new System.Drawing.Size(94, 29);
             this.btnClearBox.TabIndex = 6;
@@ -170,7 +160,7 @@ namespace SectionManager {
             // lblWidth
             // 
             this.lblWidth.AutoSize = true;
-            this.lblWidth.Location = new System.Drawing.Point(778, 168);
+            this.lblWidth.Location = new System.Drawing.Point(778, 224);
             this.lblWidth.Name = "lblWidth";
             this.lblWidth.Size = new System.Drawing.Size(35, 12);
             this.lblWidth.TabIndex = 15;
@@ -179,7 +169,7 @@ namespace SectionManager {
             // lblHeight
             // 
             this.lblHeight.AutoSize = true;
-            this.lblHeight.Location = new System.Drawing.Point(904, 168);
+            this.lblHeight.Location = new System.Drawing.Point(904, 224);
             this.lblHeight.Name = "lblHeight";
             this.lblHeight.Size = new System.Drawing.Size(40, 12);
             this.lblHeight.TabIndex = 16;
@@ -188,7 +178,7 @@ namespace SectionManager {
             // lblPosY
             // 
             this.lblPosY.AutoSize = true;
-            this.lblPosY.Location = new System.Drawing.Point(904, 141);
+            this.lblPosY.Location = new System.Drawing.Point(904, 197);
             this.lblPosY.Name = "lblPosY";
             this.lblPosY.Size = new System.Drawing.Size(35, 12);
             this.lblPosY.TabIndex = 20;
@@ -197,7 +187,7 @@ namespace SectionManager {
             // lblPosX
             // 
             this.lblPosX.AutoSize = true;
-            this.lblPosX.Location = new System.Drawing.Point(778, 141);
+            this.lblPosX.Location = new System.Drawing.Point(778, 197);
             this.lblPosX.Name = "lblPosX";
             this.lblPosX.Size = new System.Drawing.Size(35, 12);
             this.lblPosX.TabIndex = 19;
@@ -205,7 +195,7 @@ namespace SectionManager {
             // 
             // nmrcPosY
             // 
-            this.nmrcPosY.Location = new System.Drawing.Point(950, 139);
+            this.nmrcPosY.Location = new System.Drawing.Point(950, 195);
             this.nmrcPosY.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -217,7 +207,7 @@ namespace SectionManager {
             // 
             // nmrcPosX
             // 
-            this.nmrcPosX.Location = new System.Drawing.Point(819, 139);
+            this.nmrcPosX.Location = new System.Drawing.Point(819, 195);
             this.nmrcPosX.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -230,7 +220,7 @@ namespace SectionManager {
             // lblRow
             // 
             this.lblRow.AutoSize = true;
-            this.lblRow.Location = new System.Drawing.Point(778, 114);
+            this.lblRow.Location = new System.Drawing.Point(778, 170);
             this.lblRow.Name = "lblRow";
             this.lblRow.Size = new System.Drawing.Size(30, 12);
             this.lblRow.TabIndex = 22;
@@ -238,7 +228,7 @@ namespace SectionManager {
             // 
             // nmrcRow
             // 
-            this.nmrcRow.Location = new System.Drawing.Point(819, 112);
+            this.nmrcRow.Location = new System.Drawing.Point(819, 168);
             this.nmrcRow.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -251,7 +241,7 @@ namespace SectionManager {
             // lblCol
             // 
             this.lblCol.AutoSize = true;
-            this.lblCol.Location = new System.Drawing.Point(909, 114);
+            this.lblCol.Location = new System.Drawing.Point(909, 170);
             this.lblCol.Name = "lblCol";
             this.lblCol.Size = new System.Drawing.Size(24, 12);
             this.lblCol.TabIndex = 24;
@@ -259,7 +249,7 @@ namespace SectionManager {
             // 
             // nmrcCol
             // 
-            this.nmrcCol.Location = new System.Drawing.Point(950, 112);
+            this.nmrcCol.Location = new System.Drawing.Point(950, 168);
             this.nmrcCol.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -272,7 +262,7 @@ namespace SectionManager {
             // lblBoxHeight
             // 
             this.lblBoxHeight.AutoSize = true;
-            this.lblBoxHeight.Location = new System.Drawing.Point(899, 261);
+            this.lblBoxHeight.Location = new System.Drawing.Point(773, 92);
             this.lblBoxHeight.Name = "lblBoxHeight";
             this.lblBoxHeight.Size = new System.Drawing.Size(40, 12);
             this.lblBoxHeight.TabIndex = 30;
@@ -281,7 +271,7 @@ namespace SectionManager {
             // lblBoxWidth
             // 
             this.lblBoxWidth.AutoSize = true;
-            this.lblBoxWidth.Location = new System.Drawing.Point(773, 261);
+            this.lblBoxWidth.Location = new System.Drawing.Point(778, 65);
             this.lblBoxWidth.Name = "lblBoxWidth";
             this.lblBoxWidth.Size = new System.Drawing.Size(35, 12);
             this.lblBoxWidth.TabIndex = 29;
@@ -289,7 +279,7 @@ namespace SectionManager {
             // 
             // nmrcBaseHeight
             // 
-            this.nmrcBaseHeight.Location = new System.Drawing.Point(945, 259);
+            this.nmrcBaseHeight.Location = new System.Drawing.Point(819, 90);
             this.nmrcBaseHeight.Maximum = new decimal(new int[] {
             512,
             0,
@@ -311,7 +301,7 @@ namespace SectionManager {
             // 
             // nmrcBaseWidth
             // 
-            this.nmrcBaseWidth.Location = new System.Drawing.Point(814, 259);
+            this.nmrcBaseWidth.Location = new System.Drawing.Point(819, 63);
             this.nmrcBaseWidth.Maximum = new decimal(new int[] {
             512,
             0,
@@ -641,6 +631,51 @@ namespace SectionManager {
             this.btnLRTB.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.btnLRTB.UseVisualStyleBackColor = false;
             // 
+            // tbxRctX
+            // 
+            this.tbxRctX.Location = new System.Drawing.Point(803, 122);
+            this.tbxRctX.MaxLength = 5;
+            this.tbxRctX.Name = "tbxRctX";
+            this.tbxRctX.ShortcutsEnabled = false;
+            this.tbxRctX.Size = new System.Drawing.Size(49, 21);
+            this.tbxRctX.TabIndex = 58;
+            // 
+            // lblX
+            // 
+            this.lblX.AutoSize = true;
+            this.lblX.Location = new System.Drawing.Point(779, 126);
+            this.lblX.Name = "lblX";
+            this.lblX.Size = new System.Drawing.Size(13, 12);
+            this.lblX.TabIndex = 60;
+            this.lblX.Text = "X";
+            // 
+            // lblY
+            // 
+            this.lblY.AutoSize = true;
+            this.lblY.Location = new System.Drawing.Point(860, 126);
+            this.lblY.Name = "lblY";
+            this.lblY.Size = new System.Drawing.Size(13, 12);
+            this.lblY.TabIndex = 61;
+            this.lblY.Text = "Y";
+            // 
+            // btnSetPosDragbox
+            // 
+            this.btnSetPosDragbox.Location = new System.Drawing.Point(950, 118);
+            this.btnSetPosDragbox.Name = "btnSetPosDragbox";
+            this.btnSetPosDragbox.Size = new System.Drawing.Size(71, 29);
+            this.btnSetPosDragbox.TabIndex = 62;
+            this.btnSetPosDragbox.Text = "좌표 설정";
+            this.btnSetPosDragbox.UseVisualStyleBackColor = true;
+            // 
+            // tbxRctY
+            // 
+            this.tbxRctY.Location = new System.Drawing.Point(884, 122);
+            this.tbxRctY.MaxLength = 5;
+            this.tbxRctY.Name = "tbxRctY";
+            this.tbxRctY.ShortcutsEnabled = false;
+            this.tbxRctY.Size = new System.Drawing.Size(49, 21);
+            this.tbxRctY.TabIndex = 63;
+            // 
             // sectionCtrl
             // 
             this.sectionCtrl.AutoScroll = true;
@@ -655,6 +690,11 @@ namespace SectionManager {
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.tbxRctY);
+            this.Controls.Add(this.btnSetPosDragbox);
+            this.Controls.Add(this.lblY);
+            this.Controls.Add(this.lblX);
+            this.Controls.Add(this.tbxRctX);
             this.Controls.Add(this.lblZoom);
             this.Controls.Add(this.cbxZoom);
             this.Controls.Add(this.btnBottomLeft);
@@ -771,5 +811,10 @@ namespace SectionManager {
         private System.Windows.Forms.GroupBox grpPort;
         private System.Windows.Forms.ComboBox cbxZoom;
         private System.Windows.Forms.Label lblZoom;
+        private System.Windows.Forms.TextBox tbxRctX;
+        private System.Windows.Forms.Label lblX;
+        private System.Windows.Forms.Label lblY;
+        private System.Windows.Forms.Button btnSetPosDragbox;
+        private System.Windows.Forms.TextBox tbxRctY;
     }
 }
