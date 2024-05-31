@@ -32,13 +32,10 @@ namespace SectionManager {
         private Size _baseSize;
         public ZoomPer Zoom { set => zoom = value; }
 
-        private bool thRunning;
         private Thread thUpdate;
 
         private object paintLock = new object();
         private object thLock = new object();
-
-        public bool RunThread { set => thRunning = value; }
 
         private BoxState _boxState = BoxState.None;
         private Stack Z_Index = new Stack();
@@ -61,10 +58,6 @@ namespace SectionManager {
             InitializeEvent();
             InitializeValue();
 
-            thRunning = true;
-            /*thUpdate = new Thread(() => BoxUpdate());
-            thUpdate.Name = "THUPDATE";
-            thUpdate.Start();*/
         }
 
         
@@ -371,9 +364,11 @@ namespace SectionManager {
                         for (int i = 0; i < boxList.Count; i++) {
                             var boxGroup = boxList[i].BoxList;
                             for (int j = 0; j < boxGroup.Count; j++) {
-                                g.DrawRectangle(BlackPen, boxGroup[j].Rect);
-                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);
+
+                                /*g.DrawRectangle(BlackPen, boxGroup[j].Rect);
+                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);*/
                                 string desc = boxGroup[j].RctW < MINIMUM_SIZE*4 || boxGroup[j].RctH < MINIMUM_SIZE*4 ? (boxGroup[j].tagCard+1).ToString() : boxGroup[j].Description;
+                                g.DrawImage(boxGroup[j].Bitmap,boxGroup[j].Rect.X, boxGroup[j].Rect.Y);
                                 g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
 
                                 // 그룹핑 된 박스
@@ -843,26 +838,6 @@ namespace SectionManager {
             layer = new Layer(width, height);
         }
 
-        public void BoxUpdate() {
-            try {
-                while (thRunning) {
-                    lock (thLock) {
-                        if (layer != null) {
-                            layer.Clear();
-                            DrawBoxGroup(layer);
-                            Invalidate(false);
-                        }
-                    }
-                    Thread.Sleep(20);
-                }
-            }
-            catch (Exception ex) {
-                Debug.WriteLine($"err - SectionControl - BoxUpdate()");
-                Debug.WriteLine($"msg : {ex.Message}");
-                Dispose(true);
-            }
-        }
-
         public void DrawPanel() {
             try
             {
@@ -878,24 +853,27 @@ namespace SectionManager {
             }
         }
 
+        /*public void DrawMove() {
+            try
+            {
+                layer.Clear();
+                DrawBoxGroup(layer);
+                Invalidate();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"err - SectionControl - DrawMove()");
+                Debug.WriteLine($"msg : {ex.Message}");
+                Dispose(true);
+            }
+        }*/
+
         protected override void OnHandleDestroyed(EventArgs e) {
             Dispose(true);
             base.OnHandleDestroyed(e);
         }
 
         protected override void Dispose(bool disposing) {
-            try {
-                if (disposing) {
-                    thRunning = false;
-                    //thUpdate?.Join();
-                    //layer?.Dispose();
-                }
-            }
-            catch (Exception ex) {
-
-                Debug.WriteLine($"Disposing {ex.Message}");
-            }
-            
             base.Dispose(disposing);
         }
 

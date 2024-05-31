@@ -139,8 +139,6 @@ namespace SectionManager {
 
         protected override void OnHandleDestroyed(EventArgs e) {
             base.OnHandleDestroyed(e);
-            sectionCtrl.RunThread = false;
-            Thread.Sleep(50);
 
         }
     }

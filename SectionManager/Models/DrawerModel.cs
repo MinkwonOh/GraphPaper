@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SectionManager.Models {
 
@@ -249,12 +250,61 @@ namespace SectionManager.Models {
 
     // 사각형 정보
     public class Box {
+        public Bitmap Bitmap { get {  return _bitmap; } }
+        public Color BorderColor { get => _borderColor; set => _borderColor = value; }
+        public Color FillColor { get => _fillColor; set => _fillColor = value; }
+        public SolidBrush TxtBrush { get => _txtBrush; set => _txtBrush = value; }
+        public int BorderWidth { get => _borderWidth; set => _borderWidth = value; }
+
+
+        private Bitmap _bitmap;
+        private Color _borderColor = Color.Black;
+        private Color _fillColor = Color.Transparent;
+        public SolidBrush _txtBrush = new SolidBrush(Color.Black);
+        private int _borderWidth = 1;
+
+
+        private StringFormat sf = new StringFormat()
+        {
+            LineAlignment = StringAlignment.Center,
+                Alignment = StringAlignment.Center
+            };
+
         private static readonly int MINIMUM_SIZE = 16;
+
         public Rectangle Rect { get; set; }
         public Box(int port) {
             Rect = new Rectangle(0, 0, MINIMUM_SIZE, MINIMUM_SIZE);
+            var colorName = Enum.GetName(typeof(ColorSpec), port >= Enum.GetNames(typeof(ColorSpec)).Length ? 1 : port+1);
+
+            _bitmap = new Bitmap(MINIMUM_SIZE, MINIMUM_SIZE);
+
+            if (colorName != null)
+                _fillColor = Color.FromName(colorName);
+
             tagPort = port;
+
+            DrawFullBmp();
+
         }
+
+        private void RefreshBitmap() {
+            _bitmap = new Bitmap(Rect.X, Rect.Y);
+            DrawFullBmp();
+        }
+
+        private void DrawFullBmp() {
+            if(tagPort >= 0)
+                Console.WriteLine("DrawFullBmp");
+            _bitmap = new Bitmap(Rect.Width, Rect.Height);
+            using (var g = Graphics.FromImage(_bitmap))
+            {
+                g.Clear(FillColor);
+                g.DrawRectangle(new Pen(new SolidBrush(_borderColor), _borderWidth), new Rectangle(0,0,Rect.Width, Rect.Height));
+                //g.FillRectangle(new SolidBrush(_fillColor), new Rectangle(0,0,Rect.Width,Rect.Height));
+            }
+        }
+
         public bool Selected { get; set; }
         public int RctX { get => Rect.X; set => Rect = new Rectangle(value < 0 ? 0 : value % int.MaxValue, Rect.Y, Rect.Width, Rect.Height); }
         public int RctY { get => Rect.Y; set => Rect = new Rectangle(Rect.X, value < 0 ? 0 : value % int.MaxValue, Rect.Width, Rect.Height); }
@@ -264,6 +314,8 @@ namespace SectionManager.Models {
                 //value = value < 0 ? MINIMUM_SIZE : value;
                 int x = RctW > RctX + value ? RctW - value : Rect.X;
                 Rect = new Rectangle(x, Rect.Y, value % int.MaxValue, Rect.Height); 
+                if(Rect.Width > 0 && Rect.Height > 0)
+                    DrawFullBmp();
             } 
         }
         public int RctH { 
@@ -271,7 +323,9 @@ namespace SectionManager.Models {
             set {
                 //value = value < 0 ? MINIMUM_SIZE : value;
                 int y = RctH > RctY + value ? RctH - value : Rect.Y;
-                Rect = new Rectangle(Rect.X, y, Rect.Width,value % int.MaxValue); 
+                Rect = new Rectangle(Rect.X, y, Rect.Width,value % int.MaxValue);
+                if (Rect.Width > 0 && Rect.Height > 0)
+                    DrawFullBmp();
             } 
         }
         public int MidX { get => RctX + RctW / 2; }
