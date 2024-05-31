@@ -62,9 +62,9 @@ namespace SectionManager {
             InitializeValue();
 
             thRunning = true;
-            thUpdate = new Thread(() => BoxUpdate());
+            /*thUpdate = new Thread(() => BoxUpdate());
             thUpdate.Name = "THUPDATE";
-            thUpdate.Start();
+            thUpdate.Start();*/
         }
 
         
@@ -185,6 +185,7 @@ namespace SectionManager {
                         break;
                 }
             }
+            DrawPanel();
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {
@@ -229,9 +230,10 @@ namespace SectionManager {
                             BoxInfoRefreshEvent?.Invoke(this, _dradBox);
                         }
                         
-                        Invalidate(false);
+                        //Invalidate(false);
                         break;
                 }
+                DrawPanel();
             }
         }
 
@@ -292,7 +294,6 @@ namespace SectionManager {
 
                             _dradBox.RctX = pt.X - GapXY.Width;
                             _dradBox.RctY = pt.Y - GapXY.Height;
-
                             
                         }
                         // 현재박스의 너비,높이가 캔버스를 벗어나면 캔버스를 늘리고 스크롤바를 + 알파만큼 이동시켜줘야 함.
@@ -325,7 +326,7 @@ namespace SectionManager {
                 _dradBox.Rect = new Rectangle();
                 BoxInfoRefreshEvent?.Invoke(this, _dradBox);
             }
-
+            DrawPanel();
             _mousePressed = false;
         }
 
@@ -529,6 +530,7 @@ namespace SectionManager {
                 _dradBox.RctY = y;
             }
 
+            DrawPanel();
         }
 
         public void SetBaseSize(Size size) {
@@ -586,6 +588,7 @@ namespace SectionManager {
             _model.AppendBox(setCenter ? (Width-width)/2 : 0, setCenter ? (Height-height)/2 : 0, width, height);
             //AddLinker();
             PullTheBoxUp();
+            DrawPanel();
         }
 
         public void RegistBox(int x, int y, int width, int height, bool setCenter = true) {
@@ -621,6 +624,7 @@ namespace SectionManager {
             }
 
             _dradBox.Rect = new Rectangle();
+            DrawPanel();
         }
 
         public void ClearBox() {
@@ -630,6 +634,7 @@ namespace SectionManager {
             }
 
             _dradBox.Rect = new Rectangle();
+            DrawPanel();
         }
 
         /// <summary>
@@ -692,6 +697,7 @@ namespace SectionManager {
             }
             boxGroup._lstLinker.Add((bridgeList.Last().tagCard, -1));
 
+            DrawPanel();
         }
 
 
@@ -792,6 +798,7 @@ namespace SectionManager {
 
             _dradBox.Rect = subRct;
 
+            DrawPanel();
         }
 
         public void ResetGroup(int row, int col, int boxWidth, int boxHeight) {
@@ -819,6 +826,8 @@ namespace SectionManager {
                 RctW = boxList.Max(i => i.RctX + i.RctW),
                 RctH = boxList.Max(i => i.RctY + i.RctH)
             };
+
+            DrawPanel();
         }
 
 
@@ -849,6 +858,21 @@ namespace SectionManager {
             }
             catch (Exception ex) {
                 Debug.WriteLine($"err - SectionControl - BoxUpdate()");
+                Debug.WriteLine($"msg : {ex.Message}");
+                Dispose(true);
+            }
+        }
+
+        public void DrawPanel() {
+            try
+            {
+                layer.Clear();
+                DrawBoxGroup(layer);
+                Invalidate();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"err - SectionControl - DrawPanel()");
                 Debug.WriteLine($"msg : {ex.Message}");
                 Dispose(true);
             }
