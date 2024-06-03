@@ -22,6 +22,8 @@ namespace SectionManager.Models {
         // 박스그룹 리스트
         private List<BoxGroup> _boxGroupList;
         private int _port = -1;
+        // 모듈
+        private int _module = 0;
         // 확대비율(100% 기준)
         public ZoomPer zoom = ZoomPer.z100;
         // standard모드? => 고정비율로 계산.
@@ -49,11 +51,19 @@ namespace SectionManager.Models {
         public int BoxWidth { get => _boxWidth; set => _boxWidth = value; }
         public int BoxHeight { get => _boxHeight; set => _boxHeight = value; }
         public bool IsGroupHide { get => _isGroupHide; set => _isGroupHide = value; }
+        public int Module { get => _module; set => SetModuleIdx(value); }
 
         #endregion
 
         public DrawerModel() {
             _boxGroupList = new List<BoxGroup>();
+        }
+
+        public void SetModuleIdx(int moduleIdx) {
+            _module = moduleIdx;
+            foreach (var box in _boxGroupList) {
+                box.Module = moduleIdx;
+            }
         }
 
         public void AppendBoxGroup() {
@@ -101,6 +111,7 @@ namespace SectionManager.Models {
     public class BoxGroup {
         public static readonly int MAX_LENGTH = 655360;
         public int Port;
+        public int Module;
         public List<Box> BoxList;
         public List<(int, int)> _lstLinker = new List<(int, int)>();
         public Color BoxColor = Color.LemonChiffon;

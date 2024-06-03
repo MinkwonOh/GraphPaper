@@ -16,10 +16,11 @@ namespace SectionManager {
 
         private static readonly int MINIMUM_SIZE = 16;
 
-        internal DrawerModel Model { get => model; }
+        internal DrawerModel Model { get => sectionCtrl?.Model; }
 
-        private DrawerModel model;
+        //private DrawerModel model;
         private BindingSource bs = new BindingSource();
+        private List<int> ListModuleIdx = new List<int>();
 
         public SectionDrawerControl() {
             InitializeComponent();
@@ -28,11 +29,16 @@ namespace SectionManager {
         }
 
         public SectionDrawerControl(DrawerModel model) : this() {
-            this.model = model;
+            //this.model = model;
+            sectionCtrl?.SetModelValue(model);
         }
 
         private void InitializeValue() {
             DoubleBuffered = true;
+
+            for (int i = 0; i < 100; i++) {
+                ListModuleIdx.Add(i);
+            }
 
             sectionCtrl.Location = new Point(0,0);
             sectionCtrl.Size = new Size(pnlBackground.ClientSize.Width, pnlBackground.ClientSize.Height);
@@ -96,6 +102,20 @@ namespace SectionManager {
             tbxRctX.KeyPress += (s, e) => OnlyNumberAllower(s, e);
             tbxRctY.KeyPress += (s, e) => OnlyNumberAllower(s, e);
             btnSetPosDragbox.Click += (s, e) => SetPositionOfDragbox();
+
+            cbxModule.SelectedIndexChanged += (s, e) => ModuleIndexChanged();
+        }
+        /// <summary>
+        /// //
+        /// </summary>
+        private void ModuleIndexChanged()
+        {
+            int moduleIdx = cbxModule.SelectedIndex;
+            if (moduleIdx == -1) return;
+
+            if (sectionCtrl.Model != null) { 
+                sectionCtrl.Model.Module = moduleIdx;
+            }
         }
 
         private void SetPositionOfDragbox() {
@@ -121,20 +141,24 @@ namespace SectionManager {
             // set value from saved file to model.
 
             // else
-            if (model == null)
-                model = new DrawerModel();
+            /*if (model == null)
+                model = new DrawerModel();*/
 
+            cbxModule.DataSource = ListModuleIdx;
+            cbxModule.SelectedIndex = sectionCtrl?.Model?.Module ?? 0;
         }
 
         private void CreateView() {
-            sectionCtrl.SetModelValue(model);
+            if (sectionCtrl.Model == null) {
+                sectionCtrl.SetModelValue(new DrawerModel());
+            }
             sectionCtrl.SetViewSize(sectionCtrl.Width, sectionCtrl.Height);
             sectionCtrl.SetLayerSize(sectionCtrl.Width, sectionCtrl.Height);
         }
 
         // 새 Box 생성
         private void CreateBox() {
-            sectionCtrl.RegistBox((int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
+               sectionCtrl.RegistBox((int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {

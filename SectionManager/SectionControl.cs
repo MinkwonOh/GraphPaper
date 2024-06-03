@@ -18,6 +18,7 @@ namespace SectionManager {
         public EventHandler<Box> BoxInfoRefreshEvent;
         public EventHandler<(int, int)> LayerSizeChangeEvent;
         public EventHandler<int> PortAddedEvent;
+        public DrawerModel Model { get => _model; }
 
         private Bitmap StartImg = Properties.Resources.Start;
         private Bitmap FinishImg = Properties.Resources.Finish;
@@ -32,7 +33,7 @@ namespace SectionManager {
         private Size _baseSize;
         public ZoomPer Zoom { set => zoom = value; }
 
-        private Thread thUpdate;
+        //private Thread thUpdate;
 
         private object paintLock = new object();
         private object thLock = new object();
