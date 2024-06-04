@@ -29,6 +29,22 @@ namespace SectionManager {
             btnConnect.Click += (s, e) => btnConnClicked();
             btnDisconnect.Click += (s, e) => btnDisConnClicked();
             btnSend.Click += (s, e) => btnSendClicked();
+            btnSave.Click += (s, e) => btnSaveClicked();
+            btnLoad.Click += (s, e) => btnLoadClicked();
+
+            sectionDrawerControl1.SaveEventFired += (s, e) => { Console.WriteLine("SaveEventFired"); };
+        }
+
+        private void btnLoadClicked()
+        {
+            
+        }
+
+        private void btnSaveClicked()
+        {
+            if (preference == null) return;
+            GetCurrentData();
+            preference.Save();
         }
 
         private void btnSendClicked() {
@@ -152,7 +168,7 @@ namespace SectionManager {
 
             GetCurrentData();
 
-            sectionDrawerControl1.Dispose();
+            //sectionDrawerControl1.Dispose();
             preference.Dispose();
             preference = null;
         }

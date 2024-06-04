@@ -22,6 +22,8 @@ namespace SectionManager {
         private BindingSource bs = new BindingSource();
         private List<int> ListModuleIdx = new List<int>();
 
+        public EventHandler SaveEventFired;
+
         public SectionDrawerControl() {
             InitializeComponent();
             InitializeEvent();
@@ -30,7 +32,7 @@ namespace SectionManager {
 
         public SectionDrawerControl(DrawerModel model) : this() {
             //this.model = model;
-            sectionCtrl?.SetModelValue(model);
+            sectionCtrl.SetModelValue(model);
         }
 
         private void InitializeValue() {
@@ -162,6 +164,7 @@ namespace SectionManager {
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {
+            SaveEventFired.Invoke(this,new EventArgs());
             base.OnHandleDestroyed(e);
 
         }

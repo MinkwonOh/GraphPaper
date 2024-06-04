@@ -16,7 +16,7 @@ namespace SectionManager.Models {
     public class Preference : IDisposable {
 
         public static string PreferenceFilepath = Path.Combine(Application.StartupPath, $"{typeof(Preference).Name}.config");
-        
+
         public Model Model;
         public int NetPort;
         public string IPAddress;
