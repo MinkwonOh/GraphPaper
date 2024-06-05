@@ -18,10 +18,11 @@ namespace SectionManager {
         public EventHandler<Box> BoxInfoRefreshEvent;
         public EventHandler<(int, int)> LayerSizeChangeEvent;
         public EventHandler<int> PortAddedEvent;
-        public DrawerModel Model { get => _model; }
+        public DrawerModel Model { get => _model; set => _model = value; }
 
         private Bitmap StartImg = Properties.Resources.Start;
         private Bitmap FinishImg = Properties.Resources.Finish;
+        private int[] drawingOrder;
 
         private Layer layer;
         private Rectangle box;
@@ -354,22 +355,24 @@ namespace SectionManager {
         }
 
         private void DrawBoxGroup(Layer layer) {
-            try {
+            try
+            {
                 Point halfPoint = new Point(0, 0);
                 int imgSize = 40;
                 var boxList = _model?.BoxGroupList;
                 Color color = Color.FromName(Enum.GetName(typeof(ColorSpec), ColorSpec.Transparent));
 
-                if (boxList?.Count >= 0) {
-                    using (var g = Graphics.FromImage(layer.Bitmap)) {
+                if (boxList?.Count >= 0)
+                {
+                    using (var g = Graphics.FromImage(layer.Bitmap))
+                    {
                         int port = _model.SelectedPort;
-                        for (int i = 0; i < port; i ++) {
+                        for (int i = 0; i < port; i++)
+                        {
                             var boxGroup = boxList[i].BoxList;
                             for (int j = 0; j < boxGroup.Count; j++)
                             {
 
-                                /*g.DrawRectangle(BlackPen, boxGroup[j].Rect);
-                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);*/
                                 string desc = boxGroup[j].RctW < MINIMUM_SIZE * 4 || boxGroup[j].RctH < MINIMUM_SIZE * 4 ? (boxGroup[j].tagCard + 1).ToString() : boxGroup[j].Description;
                                 g.DrawImage(boxGroup[j].Bitmap, boxGroup[j].Rect.X, boxGroup[j].Rect.Y);
                                 g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
@@ -404,13 +407,12 @@ namespace SectionManager {
                             }
                         }
 
-                        for (int i = boxList.Count-1; i >= port; i--) {
+                        for (int i = boxList.Count - 1; i >= port; i--)
+                        {
                             var boxGroup = boxList[i].BoxList;
                             for (int j = 0; j < boxGroup.Count; j++)
                             {
 
-                                /*g.DrawRectangle(BlackPen, boxGroup[j].Rect);
-                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);*/
                                 string desc = boxGroup[j].RctW < MINIMUM_SIZE * 4 || boxGroup[j].RctH < MINIMUM_SIZE * 4 ? (boxGroup[j].tagCard + 1).ToString() : boxGroup[j].Description;
                                 g.DrawImage(boxGroup[j].Bitmap, boxGroup[j].Rect.X, boxGroup[j].Rect.Y);
                                 g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
@@ -486,13 +488,18 @@ namespace SectionManager {
 
                         /////
                         ///
-                        if (_dradBox.RctX == 0 || _dradBox.RctY == 0) {
+                        if (_dradBox.RctX == 0 || _dradBox.RctY == 0)
+                        {
                             g.DrawRectangle(BlueBorderDashPen, _dradBox.Rect);
                         }
                     }
                 }
             }
-            catch (Exception ex) {
+            catch (IndexOutOfRangeException) {
+                Debug.WriteLine($"Index Out Of Range");
+            }
+            catch (Exception ex)
+            {
                 Debug.WriteLine($"err - SectionControl - DrawBoxGroup(Layer)");
                 Debug.WriteLine($"msg : {ex.Message}");
                 Dispose(true);
@@ -619,7 +626,7 @@ namespace SectionManager {
             _baseSize = size;
         }
 
-        public void SetModelValue(DrawerModel model) {
+        public void SetModelValue(ref DrawerModel model) {
             _model = model;
             _model.PortAddedEvent += (s, e) => { PortAddedEvent?.Invoke(this, e); };
         }

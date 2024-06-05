@@ -16,7 +16,8 @@ namespace SectionManager {
 
         private static readonly int MINIMUM_SIZE = 16;
 
-        internal DrawerModel Model { get => sectionCtrl?.Model; }
+        [Browsable(false)]
+        public DrawerModel Model { get { if (sectionCtrl == null) return null; else return sectionCtrl.Model; } set => sectionCtrl.Model = value; }
 
         //private DrawerModel model;
         private BindingSource bs = new BindingSource();
@@ -30,9 +31,9 @@ namespace SectionManager {
             InitializeValue();
         }
 
-        public SectionDrawerControl(DrawerModel model) : this() {
+        public SectionDrawerControl(ref DrawerModel model) : this() {
             //this.model = model;
-            sectionCtrl.SetModelValue(model);
+            sectionCtrl.SetModelValue(ref model);
         }
 
         private void InitializeValue() {
@@ -152,7 +153,8 @@ namespace SectionManager {
 
         private void CreateView() {
             if (sectionCtrl.Model == null) {
-                sectionCtrl.SetModelValue(new DrawerModel());
+                var dm = new DrawerModel();
+                sectionCtrl.SetModelValue(ref dm);
             }
             sectionCtrl.SetViewSize(sectionCtrl.Width, sectionCtrl.Height);
             sectionCtrl.SetLayerSize(sectionCtrl.Width, sectionCtrl.Height);
@@ -164,7 +166,7 @@ namespace SectionManager {
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {
-            SaveEventFired.Invoke(this,new EventArgs());
+            //SaveEventFired.Invoke(this,new EventArgs());
             base.OnHandleDestroyed(e);
 
         }

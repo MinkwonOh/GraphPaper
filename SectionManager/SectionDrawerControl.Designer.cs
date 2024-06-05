@@ -28,7 +28,6 @@ namespace SectionManager {
             this.nmrcBoxWidth = new System.Windows.Forms.NumericUpDown();
             this.nmrcBoxHeight = new System.Windows.Forms.NumericUpDown();
             this.pnlBackground = new System.Windows.Forms.Panel();
-            this.sectionCtrl = new SectionManager.SectionControl();
             this.btnDeleteBox = new System.Windows.Forms.Button();
             this.btnClearBox = new System.Windows.Forms.Button();
             this.lblWidth = new System.Windows.Forms.Label();
@@ -81,6 +80,7 @@ namespace SectionManager {
             this.tbxRctY = new System.Windows.Forms.TextBox();
             this.lblModule = new System.Windows.Forms.Label();
             this.cbxModule = new System.Windows.Forms.ComboBox();
+            this.sectionCtrl = new SectionManager.SectionControl();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -136,22 +136,15 @@ namespace SectionManager {
             // 
             // pnlBackground
             // 
+            this.pnlBackground.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlBackground.AutoScroll = true;
-            this.pnlBackground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlBackground.Controls.Add(this.sectionCtrl);
             this.pnlBackground.Location = new System.Drawing.Point(3, 63);
             this.pnlBackground.Name = "pnlBackground";
             this.pnlBackground.Size = new System.Drawing.Size(747, 595);
             this.pnlBackground.TabIndex = 4;
-            // 
-            // sectionCtrl
-            // 
-            this.sectionCtrl.AutoScroll = true;
-            this.sectionCtrl.BackColor = System.Drawing.Color.White;
-            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
-            this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
-            this.sectionCtrl.TabIndex = 0;
             // 
             // btnDeleteBox
             // 
@@ -757,6 +750,16 @@ namespace SectionManager {
             this.cbxModule.Name = "cbxModule";
             this.cbxModule.Size = new System.Drawing.Size(81, 20);
             this.cbxModule.TabIndex = 65;
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.AutoScroll = true;
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
+            this.sectionCtrl.Model = null;
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
+            this.sectionCtrl.TabIndex = 0;
             // 
             // SectionDrawerControl
             // 

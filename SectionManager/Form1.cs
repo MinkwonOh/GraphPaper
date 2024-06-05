@@ -18,6 +18,7 @@ namespace SectionManager {
         private PacketManager packetManager = null;
         private bool isConn = false;
         private Preference preference;
+        private SectionDrawerControl sdc;
 
         public Form1() {
             InitializeComponent();
@@ -32,7 +33,7 @@ namespace SectionManager {
             btnSave.Click += (s, e) => btnSaveClicked();
             btnLoad.Click += (s, e) => btnLoadClicked();
 
-            sectionDrawerControl1.SaveEventFired += (s, e) => { Console.WriteLine("SaveEventFired"); };
+            //sectionDrawerControl1.SaveEventFired += (s, e) => { Console.WriteLine("SaveEventFired"); };
         }
 
         private void btnLoadClicked()
@@ -144,10 +145,13 @@ namespace SectionManager {
         private void InitializeValue() {
 
             preference = Preference.Load();
+            sdc = new SectionDrawerControl();
+            sdc.Dock = DockStyle.Fill;
 
-            sectionDrawerControl1 = new SectionDrawerControl(preference.DrawerModel);
             tbxIp.EditValue = preference.IPAddress;
             nmrcPort.Value = preference.NetPort;
+
+            pnlSectionCtrl.Controls.Add(sdc);
 
             packetManager = new PacketManager();
             packetManager.AddPacketType<ShortPacket>();
@@ -155,13 +159,13 @@ namespace SectionManager {
         }
 
         private void GetCurrentData() {
-            preference.DrawerModel = sectionDrawerControl1.Model;
+            //preference.DrawerModel = sectionDrawerControl1.Model;
             // total width / height 정하는 부분
 
             preference.NetPort = (int)nmrcPort.Value;
             preference.IPAddress = tbxIp.EditValue.ToString();
         }
-
+        
         protected override void OnFormClosing(FormClosingEventArgs e) {
             base.OnFormClosing(e);
             packetManager.Stop();

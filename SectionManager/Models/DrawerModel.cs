@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -44,6 +45,7 @@ namespace SectionManager.Models {
 
 
         #region Properties
+        [Browsable(false)]
         public List<BoxGroup> BoxGroupList { get => _boxGroupList; set => _boxGroupList = value; }
         public int SelectedPort { get => _port; set => _port = value; }
         public bool IsStandardMode { get => _isStandardMode; set => _isStandardMode = value; }
