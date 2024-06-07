@@ -133,6 +133,8 @@ namespace SectionManager.Models {
 
         public void AppendBox(int port) {
             var box = new Box(port) { tagCard = BoxList.Count};
+            box.RefreshBitmap();
+
             for (int i = 0; i < BoxList.Count; i++) {
                 if (BoxList.Where(j => j.tagCard == i).FirstOrDefault() == null) {
                     box.tagCard = i;
@@ -279,7 +281,7 @@ namespace SectionManager.Models {
         public int tagPort { get; set; }
         public int tagCard { get; set; }
         [JsonIgnore]
-        public Bitmap Bitmap { get { return _bitmap; } }
+        public Bitmap Bitmap { get { if (_bitmap == null) RefreshBitmap(); return _bitmap; } }
 
         private Bitmap _bitmap;
         private Color _borderColor = Color.Black;
@@ -299,19 +301,19 @@ namespace SectionManager.Models {
             Rect = new Rectangle(0, 0, MINIMUM_SIZE, MINIMUM_SIZE);
             var colorName = Enum.GetName(typeof(ColorSpec), port >= Enum.GetNames(typeof(ColorSpec)).Length ? 1 : port+1);
 
-            _bitmap = new Bitmap(MINIMUM_SIZE, MINIMUM_SIZE);
+            //_bitmap = new Bitmap(MINIMUM_SIZE, MINIMUM_SIZE);
 
             if (colorName != null)
                 _fillColor = Color.FromName(colorName);
 
             tagPort = port;
 
-            DrawFullBmp();
+            //DrawFullBmp();
 
         }
 
-        private void RefreshBitmap() {
-            _bitmap = new Bitmap(Rect.X, Rect.Y);
+        public void RefreshBitmap() {
+            _bitmap = new Bitmap(Rect.Width, Rect.Height);
             DrawFullBmp();
         }
 
