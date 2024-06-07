@@ -367,9 +367,11 @@ namespace SectionManager {
                     using (var g = Graphics.FromImage(layer.Bitmap))
                     {
                         int port = _model.SelectedPort;
+                        if (port < 0) return;
                         for (int i = 0; i < port; i++)
                         {
                             var boxGroup = boxList[i].BoxList;
+                            ///// 순서 변경
                             for (int j = 0; j < boxGroup.Count; j++)
                             {
 
@@ -486,8 +488,7 @@ namespace SectionManager {
                             }
                         }*/
 
-                        /////
-                        ///
+
                         if (_dradBox.RctX == 0 || _dradBox.RctY == 0)
                         {
                             g.DrawRectangle(BlueBorderDashPen, _dradBox.Rect);
@@ -497,6 +498,9 @@ namespace SectionManager {
             }
             catch (IndexOutOfRangeException) {
                 Debug.WriteLine($"Index Out Of Range");
+            }
+            catch (ArgumentOutOfRangeException) {
+                Debug.WriteLine($"ArgumentOutOfRange");
             }
             catch (Exception ex)
             {
@@ -634,6 +638,10 @@ namespace SectionManager {
         public void SetModelPort(int port) {
             if (_model == null) return;
             _model.SelectedPort = port;
+            if (_model.BoxGroupList.Count > port ) { 
+                _model.BoxGroupList.Where(i => i.DrawingOrder < _model.BoxGroupList[port].DrawingOrder).ToList().ForEach(i => i.DrawingOrder++);
+                _model.BoxGroupList[port].DrawingOrder = 0;
+            }
             _dradBox = new Box(-1) { Rect = new Rectangle() };
             var bgl = _model.BoxGroupList.Where(i => i.Port == port).FirstOrDefault();
             if (bgl == null) {

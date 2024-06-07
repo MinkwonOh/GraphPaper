@@ -28,6 +28,7 @@ namespace SectionManager {
             this.nmrcBoxWidth = new System.Windows.Forms.NumericUpDown();
             this.nmrcBoxHeight = new System.Windows.Forms.NumericUpDown();
             this.pnlBackground = new System.Windows.Forms.Panel();
+            this.sectionCtrl = new SectionManager.SectionControl();
             this.btnDeleteBox = new System.Windows.Forms.Button();
             this.btnClearBox = new System.Windows.Forms.Button();
             this.lblWidth = new System.Windows.Forms.Label();
@@ -59,9 +60,10 @@ namespace SectionManager {
             this.btnBottomRight = new System.Windows.Forms.Button();
             this.btnTopRight = new System.Windows.Forms.Button();
             this.lblAlignCol = new System.Windows.Forms.Label();
-            this.c = new System.Windows.Forms.RadioButton();
+            this.rdoPort1 = new System.Windows.Forms.RadioButton();
             this.rdoPort2 = new System.Windows.Forms.RadioButton();
             this.grpPort = new System.Windows.Forms.GroupBox();
+            this.rdoPort3 = new System.Windows.Forms.RadioButton();
             this.cbxZoom = new System.Windows.Forms.ComboBox();
             this.lblZoom = new System.Windows.Forms.Label();
             this.btnLeftTop = new System.Windows.Forms.Button();
@@ -80,7 +82,6 @@ namespace SectionManager {
             this.tbxRctY = new System.Windows.Forms.TextBox();
             this.lblModule = new System.Windows.Forms.Label();
             this.cbxModule = new System.Windows.Forms.ComboBox();
-            this.sectionCtrl = new SectionManager.SectionControl();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -145,6 +146,16 @@ namespace SectionManager {
             this.pnlBackground.Name = "pnlBackground";
             this.pnlBackground.Size = new System.Drawing.Size(747, 595);
             this.pnlBackground.TabIndex = 4;
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.AutoScroll = true;
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
+            this.sectionCtrl.Model = null;
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
+            this.sectionCtrl.TabIndex = 0;
             // 
             // btnDeleteBox
             // 
@@ -516,22 +527,22 @@ namespace SectionManager {
             this.lblAlignCol.TabIndex = 48;
             this.lblAlignCol.Text = "열 모서리 정렬";
             // 
-            // c
+            // rdoPort1
             // 
-            this.c.AutoSize = true;
-            this.c.Location = new System.Drawing.Point(40, 20);
-            this.c.Name = "c";
-            this.c.Size = new System.Drawing.Size(66, 16);
-            this.c.TabIndex = 53;
-            this.c.TabStop = true;
-            this.c.Tag = "1";
-            this.c.Text = "PORT 1";
-            this.c.UseVisualStyleBackColor = true;
+            this.rdoPort1.AutoSize = true;
+            this.rdoPort1.Location = new System.Drawing.Point(18, 22);
+            this.rdoPort1.Name = "rdoPort1";
+            this.rdoPort1.Size = new System.Drawing.Size(66, 16);
+            this.rdoPort1.TabIndex = 53;
+            this.rdoPort1.TabStop = true;
+            this.rdoPort1.Tag = "1";
+            this.rdoPort1.Text = "PORT 1";
+            this.rdoPort1.UseVisualStyleBackColor = true;
             // 
             // rdoPort2
             // 
             this.rdoPort2.AutoSize = true;
-            this.rdoPort2.Location = new System.Drawing.Point(159, 20);
+            this.rdoPort2.Location = new System.Drawing.Point(90, 22);
             this.rdoPort2.Name = "rdoPort2";
             this.rdoPort2.Size = new System.Drawing.Size(66, 16);
             this.rdoPort2.TabIndex = 54;
@@ -543,14 +554,27 @@ namespace SectionManager {
             // grpPort
             // 
             this.grpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpPort.Controls.Add(this.rdoPort3);
             this.grpPort.Controls.Add(this.rdoPort2);
-            this.grpPort.Controls.Add(this.c);
+            this.grpPort.Controls.Add(this.rdoPort1);
             this.grpPort.Location = new System.Drawing.Point(757, 3);
             this.grpPort.Name = "grpPort";
             this.grpPort.Size = new System.Drawing.Size(269, 48);
             this.grpPort.TabIndex = 55;
             this.grpPort.TabStop = false;
             this.grpPort.Text = "LAN Port";
+            // 
+            // rdoPort3
+            // 
+            this.rdoPort3.AutoSize = true;
+            this.rdoPort3.Location = new System.Drawing.Point(162, 22);
+            this.rdoPort3.Name = "rdoPort3";
+            this.rdoPort3.Size = new System.Drawing.Size(66, 16);
+            this.rdoPort3.TabIndex = 55;
+            this.rdoPort3.TabStop = true;
+            this.rdoPort3.Tag = "3";
+            this.rdoPort3.Text = "PORT 3";
+            this.rdoPort3.UseVisualStyleBackColor = true;
             // 
             // cbxZoom
             // 
@@ -751,16 +775,6 @@ namespace SectionManager {
             this.cbxModule.Size = new System.Drawing.Size(81, 20);
             this.cbxModule.TabIndex = 65;
             // 
-            // sectionCtrl
-            // 
-            this.sectionCtrl.AutoScroll = true;
-            this.sectionCtrl.BackColor = System.Drawing.Color.White;
-            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
-            this.sectionCtrl.Model = null;
-            this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
-            this.sectionCtrl.TabIndex = 0;
-            // 
             // SectionDrawerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -884,7 +898,7 @@ namespace SectionManager {
         private System.Windows.Forms.Button btnBottomRight;
         private System.Windows.Forms.Button btnTopRight;
         private System.Windows.Forms.Label lblAlignCol;
-        private System.Windows.Forms.RadioButton c;
+        private System.Windows.Forms.RadioButton rdoPort1;
         private System.Windows.Forms.RadioButton rdoPort2;
         private System.Windows.Forms.GroupBox grpPort;
         private System.Windows.Forms.ComboBox cbxZoom;
@@ -896,5 +910,6 @@ namespace SectionManager {
         private System.Windows.Forms.TextBox tbxRctY;
         private System.Windows.Forms.Label lblModule;
         private System.Windows.Forms.ComboBox cbxModule;
+        private System.Windows.Forms.RadioButton rdoPort3;
     }
 }

@@ -57,6 +57,10 @@ namespace SectionManager {
             base.OnLoad(e);
             LoadValue();
             CreateView();
+            var rbList = grpPort.Controls.OfType<RadioButton>().ToList();
+            var rb = rbList.Where(i => (Model.SelectedPort > 0 ? Model.SelectedPort.ToString() : "1").Equals(i.Tag)).FirstOrDefault();
+            if (rb != null)
+                rb.Checked = true;
         }
 
         private void InitializeEvent() {

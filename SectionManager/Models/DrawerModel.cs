@@ -119,6 +119,7 @@ namespace SectionManager.Models {
         public List<Box> BoxList;
         public List<(int, int)> _lstLinker = new List<(int, int)>();
         public Color BoxColor = Color.LemonChiffon;
+        public int DrawingOrder;
         [JsonIgnore]
         public int LineLength { get => BoxList.ToList().Sum(i => i.RctW); }
         [JsonIgnore]
@@ -127,6 +128,7 @@ namespace SectionManager.Models {
         public BoxGroup(int port) {
             Port = port;
             BoxList = new List<Box>(port);
+            DrawingOrder = port;
         }
 
         public void AppendBox(int port) {
@@ -267,8 +269,7 @@ namespace SectionManager.Models {
 
     // 사각형 정보
     public class Box {
-        [JsonIgnore]
-        public Bitmap Bitmap { get {  return _bitmap; } }
+        
         public Color BorderColor { get => _borderColor; set => _borderColor = value; }
         public Color FillColor { get => _fillColor; set => _fillColor = value; }
         public SolidBrush TxtBrush { get => _txtBrush; set => _txtBrush = value; }
@@ -277,6 +278,8 @@ namespace SectionManager.Models {
         public bool Selected { get; set; }
         public int tagPort { get; set; }
         public int tagCard { get; set; }
+        [JsonIgnore]
+        public Bitmap Bitmap { get { return _bitmap; } }
 
         private Bitmap _bitmap;
         private Color _borderColor = Color.Black;
@@ -316,6 +319,7 @@ namespace SectionManager.Models {
             if(tagPort >= 0)
                 Console.WriteLine("DrawFullBmp");
             _bitmap = new Bitmap(Rect.Width, Rect.Height);
+            Debug.WriteLine(FillColor);
             using (var g = Graphics.FromImage(_bitmap))
             {
                 g.Clear(FillColor);

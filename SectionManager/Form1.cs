@@ -150,6 +150,7 @@ namespace SectionManager {
 
             tbxIp.EditValue = preference.IPAddress;
             nmrcPort.Value = preference.NetPort;
+            sdc.Model = preference.DrawerModel;
 
             pnlSectionCtrl.Controls.Add(sdc);
 
@@ -159,7 +160,7 @@ namespace SectionManager {
         }
 
         private void GetCurrentData() {
-            //preference.DrawerModel = sectionDrawerControl1.Model;
+            preference.DrawerModel = sdc.Model;
             // total width / height 정하는 부분
 
             preference.NetPort = (int)nmrcPort.Value;
