@@ -18,9 +18,11 @@ namespace SectionManager {
         public EventHandler<Box> BoxInfoRefreshEvent;
         public EventHandler<(int, int)> LayerSizeChangeEvent;
         public EventHandler<int> PortAddedEvent;
+        public DrawerModel Model { get => _model; set => _model = value; }
 
         private Bitmap StartImg = Properties.Resources.Start;
         private Bitmap FinishImg = Properties.Resources.Finish;
+        private int[] drawingOrder;
 
         private Layer layer;
         private Rectangle box;
@@ -367,12 +369,93 @@ namespace SectionManager {
 
                 if (boxList?.Count >= 0) {
                     using (var g = Graphics.FromImage(layer.Bitmap)) {
-                        for (int i = 0; i < boxList.Count; i++) {
+                        int port = _model.SelectedPort;
+                        if (port < 0) return;
+                        for (int i = 0; i < port; i++) {
                             var boxGroup = boxList[i].BoxList;
                             for (int j = 0; j < boxGroup.Count; j++) {
-                                g.DrawRectangle(BlackPen, boxGroup[j].Rect);
-                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);
+                                string desc = boxGroup[j].RctW < MINIMUM_SIZE * 4 || boxGroup[j].RctH < MINIMUM_SIZE * 4 ? (boxGroup[j].tagCard + 1).ToString() : boxGroup[j].Description;
+                                g.DrawImage(boxGroup[j].Bitmap, boxGroup[j].Rect.X, boxGroup[j].Rect.Y);
+                                g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
+
+                                // 그룹핑 된 박스
+                                g.DrawRectangle(_dradBox.Selected ? BlueBorderDashPen : PinkPen, _dradBox.Rect);
+
+                                if (i == _model.SelectedPort && boxGroup[j].Selected)
+                                    g.DrawRectangle(BlueBorderPen, boxGroup[j].Rect);
+                            }
+                            var _lstLinker = boxList[i]._lstLinker;
+                            if (_lstLinker.Count > 0)
+                            {
+                                for (int j = 0; j < _lstLinker.Count - 1; j++)
+                                {
+                                    var rct1 = boxGroup.Where(p => p.tagCard == _lstLinker[j].Item1).FirstOrDefault();
+                                    var rct2 = boxGroup.Where(p => p.tagCard == _lstLinker[j].Item2).FirstOrDefault();
+
+                                    if (rct1 == null || rct2 == null) continue;
+                                    RedBorderPenHalf.CustomEndCap = new AdjustableArrowCap(4, 4);
+
+                                    if (j == 0)
+                                        g.DrawImage(StartImg, new Rectangle(rct1.MidX - imgSize / 2, rct1.MidY - imgSize / 2, imgSize, imgSize));
+                                    if (j + 1 == _lstLinker.Count - 1)
+                                        g.DrawImage(FinishImg, new Rectangle(rct2.MidX - imgSize / 2, rct2.MidY - imgSize / 2, imgSize, imgSize));
+
+                                    halfPoint = new Point(rct1.MidX + (rct2.MidX - rct1.MidX) / 2, rct1.MidY + (rct2.MidY - rct1.MidY) / 2);
+
+                                    g.DrawLine(RedBorderPenHalf, new Point(rct1.MidX, rct1.MidY), halfPoint);
+                                    g.DrawLine(RedBorderPen, halfPoint, new Point(rct2.MidX, rct2.MidY));
+                                }
+                            }
+                        }
+
+                        for (int i = boxList.Count - 1; i >= port; i--)
+                        {
+                            var boxGroup = boxList[i].BoxList;
+                            for (int j = 0; j < boxGroup.Count; j++)
+                            {
+                                string desc = boxGroup[j].RctW < MINIMUM_SIZE * 4 || boxGroup[j].RctH < MINIMUM_SIZE * 4 ? (boxGroup[j].tagCard + 1).ToString() : boxGroup[j].Description;
+                                g.DrawImage(boxGroup[j].Bitmap, boxGroup[j].Rect.X, boxGroup[j].Rect.Y);
+                                g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
+
+                                // 그룹핑 된 박스
+                                g.DrawRectangle(_dradBox.Selected ? BlueBorderDashPen : PinkPen, _dradBox.Rect);
+
+                                if (i == _model.SelectedPort && boxGroup[j].Selected)
+                                    g.DrawRectangle(BlueBorderPen, boxGroup[j].Rect);
+                            }
+                            var _lstLinker = boxList[i]._lstLinker;
+                            if (_lstLinker.Count > 0)
+                            {
+                                for (int j = 0; j < _lstLinker.Count - 1; j++)
+                                {
+                                    var rct1 = boxGroup.Where(p => p.tagCard == _lstLinker[j].Item1).FirstOrDefault();
+                                    var rct2 = boxGroup.Where(p => p.tagCard == _lstLinker[j].Item2).FirstOrDefault();
+
+                                    if (rct1 == null || rct2 == null) continue;
+                                    RedBorderPenHalf.CustomEndCap = new AdjustableArrowCap(4, 4);
+
+                                    if (j == 0)
+                                        g.DrawImage(StartImg, new Rectangle(rct1.MidX - imgSize / 2, rct1.MidY - imgSize / 2, imgSize, imgSize));
+                                    if (j + 1 == _lstLinker.Count - 1)
+                                        g.DrawImage(FinishImg, new Rectangle(rct2.MidX - imgSize / 2, rct2.MidY - imgSize / 2, imgSize, imgSize));
+
+                                    halfPoint = new Point(rct1.MidX + (rct2.MidX - rct1.MidX) / 2, rct1.MidY + (rct2.MidY - rct1.MidY) / 2);
+
+                                    g.DrawLine(RedBorderPenHalf, new Point(rct1.MidX, rct1.MidY), halfPoint);
+                                    g.DrawLine(RedBorderPen, halfPoint, new Point(rct2.MidX, rct2.MidY));
+                                }
+                            }
+                        }
+
+
+                        /*for (int i = 0; i < boxList.Count; i++) {
+                            var boxGroup = boxList[i].BoxList;
+                            for (int j = 0; j < boxGroup.Count; j++) {
+
+                                *//*g.DrawRectangle(BlackPen, boxGroup[j].Rect);
+                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);*//*
                                 string desc = boxGroup[j].RctW < MINIMUM_SIZE*4 || boxGroup[j].RctH < MINIMUM_SIZE*4 ? (boxGroup[j].tagCard+1).ToString() : boxGroup[j].Description;
+                                g.DrawImage(boxGroup[j].Bitmap,boxGroup[j].Rect.X, boxGroup[j].Rect.Y);
                                 g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
 
                                 // 그룹핑 된 박스
@@ -401,8 +484,9 @@ namespace SectionManager {
                                     g.DrawLine(RedBorderPen, halfPoint, new Point(rct2.MidX, rct2.MidY));
                                 }
                             }
-                        }
-                        /////
+                        }*/
+
+                        
                         if (_dradBox.RctX == 0 || _dradBox.RctY == 0) {
                             g.DrawRectangle(BlueBorderDashPen, _dradBox.Rect);
                         }
@@ -535,7 +619,7 @@ namespace SectionManager {
             _baseSize = size;
         }
 
-        public void SetModelValue(DrawerModel model) {
+        public void SetModelValue(ref DrawerModel model) {
             _model = model;
             _model.PortAddedEvent += (s, e) => { PortAddedEvent?.Invoke(this, e); };
         }
@@ -543,6 +627,11 @@ namespace SectionManager {
         public void SetModelPort(int port) {
             if (_model == null) return;
             _model.SelectedPort = port;
+            if (_model.BoxGroupList.Count > port)
+            {
+                _model.BoxGroupList.Where(i => i.DrawingOrder < _model.BoxGroupList[port].DrawingOrder).ToList().ForEach(i => i.DrawingOrder++);
+                _model.BoxGroupList[port].DrawingOrder = 0;
+            }
             _dradBox = new Box(-1) { Rect = new Rectangle() };
             var bgl = _model.BoxGroupList.Where(i => i.Port == port).FirstOrDefault();
             if (bgl == null) {
@@ -628,6 +717,14 @@ namespace SectionManager {
                 item.BoxList.Clear();
                 item.ClearBoxLinker();
             }
+
+            _dradBox.Rect = new Rectangle();
+        }
+
+        public void ClearBox(int port) {
+            if (port < 0 || _model.BoxGroupList.Count <= port) return;
+            _model.BoxGroupList[port].BoxList?.Clear();
+            _model.BoxGroupList[port].ClearBoxLinker();
 
             _dradBox.Rect = new Rectangle();
         }
@@ -796,7 +893,7 @@ namespace SectionManager {
 
         public void ResetGroup(int row, int col, int boxWidth, int boxHeight) {
 
-            ClearBox();
+            ClearBox(_model?.SelectedPort ?? -1);
 
             if (row <= 0 || col <= 0) return;
 
@@ -837,14 +934,27 @@ namespace SectionManager {
         public void BoxUpdate() {
             try {
                 while (thRunning) {
-                    lock (thLock) {
-                        if (layer != null) {
+                    if (InvokeRequired)
+                    {
+                        Invoke(new EventHandler(delegate {
+                            if (layer != null)
+                            {
+                                layer.Clear();
+                                DrawBoxGroup(layer);
+                                Invalidate(false);
+                            }
+                        }));
+                    }
+                    else
+                    {
+                        if (layer != null)
+                        {
                             layer.Clear();
                             DrawBoxGroup(layer);
                             Invalidate(false);
                         }
                     }
-                    Thread.Sleep(20);
+                    Thread.Sleep(50);
                 }
             }
             catch (Exception ex) {

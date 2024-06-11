@@ -83,6 +83,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DrawerModel.cs" />
+    <Compile Include="Models\NetModel.cs" />
     <Compile Include="Models\Preference.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +97,7 @@
       <DependentUpon>SectionDrawerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="StaticClass\IService.cs" />
+    <Compile Include="StaticClass\StructConverter.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

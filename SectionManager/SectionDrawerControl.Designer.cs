@@ -28,6 +28,7 @@ namespace SectionManager {
             this.nmrcBoxWidth = new System.Windows.Forms.NumericUpDown();
             this.nmrcBoxHeight = new System.Windows.Forms.NumericUpDown();
             this.pnlBackground = new System.Windows.Forms.Panel();
+            this.sectionCtrl = new SectionManager.SectionControl();
             this.btnDeleteBox = new System.Windows.Forms.Button();
             this.btnClearBox = new System.Windows.Forms.Button();
             this.lblWidth = new System.Windows.Forms.Label();
@@ -78,7 +79,8 @@ namespace SectionManager {
             this.lblY = new System.Windows.Forms.Label();
             this.btnSetPosDragbox = new System.Windows.Forms.Button();
             this.tbxRctY = new System.Windows.Forms.TextBox();
-            this.sectionCtrl = new SectionManager.SectionControl();
+            this.lblModule = new System.Windows.Forms.Label();
+            this.cbxModule = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -93,7 +95,7 @@ namespace SectionManager {
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(911, 63);
+            this.btnAdd.Location = new System.Drawing.Point(911, 97);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(110, 48);
             this.btnAdd.TabIndex = 1;
@@ -102,7 +104,7 @@ namespace SectionManager {
             // 
             // nmrcBoxWidth
             // 
-            this.nmrcBoxWidth.Location = new System.Drawing.Point(819, 222);
+            this.nmrcBoxWidth.Location = new System.Drawing.Point(819, 256);
             this.nmrcBoxWidth.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -114,7 +116,7 @@ namespace SectionManager {
             // 
             // nmrcBoxHeight
             // 
-            this.nmrcBoxHeight.Location = new System.Drawing.Point(950, 222);
+            this.nmrcBoxHeight.Location = new System.Drawing.Point(950, 256);
             this.nmrcBoxHeight.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -136,12 +138,21 @@ namespace SectionManager {
             this.pnlBackground.Controls.Add(this.sectionCtrl);
             this.pnlBackground.Location = new System.Drawing.Point(3, 63);
             this.pnlBackground.Name = "pnlBackground";
-            this.pnlBackground.Size = new System.Drawing.Size(747, 595);
+            this.pnlBackground.Size = new System.Drawing.Size(747, 611);
             this.pnlBackground.TabIndex = 4;
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.AutoScroll = true;
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
+            this.sectionCtrl.TabIndex = 0;
             // 
             // btnDeleteBox
             // 
-            this.btnDeleteBox.Location = new System.Drawing.Point(793, 249);
+            this.btnDeleteBox.Location = new System.Drawing.Point(793, 283);
             this.btnDeleteBox.Name = "btnDeleteBox";
             this.btnDeleteBox.Size = new System.Drawing.Size(97, 29);
             this.btnDeleteBox.TabIndex = 5;
@@ -150,7 +161,7 @@ namespace SectionManager {
             // 
             // btnClearBox
             // 
-            this.btnClearBox.Location = new System.Drawing.Point(906, 249);
+            this.btnClearBox.Location = new System.Drawing.Point(906, 283);
             this.btnClearBox.Name = "btnClearBox";
             this.btnClearBox.Size = new System.Drawing.Size(94, 29);
             this.btnClearBox.TabIndex = 6;
@@ -160,7 +171,7 @@ namespace SectionManager {
             // lblWidth
             // 
             this.lblWidth.AutoSize = true;
-            this.lblWidth.Location = new System.Drawing.Point(778, 224);
+            this.lblWidth.Location = new System.Drawing.Point(778, 258);
             this.lblWidth.Name = "lblWidth";
             this.lblWidth.Size = new System.Drawing.Size(35, 12);
             this.lblWidth.TabIndex = 15;
@@ -169,7 +180,7 @@ namespace SectionManager {
             // lblHeight
             // 
             this.lblHeight.AutoSize = true;
-            this.lblHeight.Location = new System.Drawing.Point(904, 224);
+            this.lblHeight.Location = new System.Drawing.Point(904, 258);
             this.lblHeight.Name = "lblHeight";
             this.lblHeight.Size = new System.Drawing.Size(40, 12);
             this.lblHeight.TabIndex = 16;
@@ -178,7 +189,7 @@ namespace SectionManager {
             // lblPosY
             // 
             this.lblPosY.AutoSize = true;
-            this.lblPosY.Location = new System.Drawing.Point(904, 197);
+            this.lblPosY.Location = new System.Drawing.Point(904, 231);
             this.lblPosY.Name = "lblPosY";
             this.lblPosY.Size = new System.Drawing.Size(35, 12);
             this.lblPosY.TabIndex = 20;
@@ -187,7 +198,7 @@ namespace SectionManager {
             // lblPosX
             // 
             this.lblPosX.AutoSize = true;
-            this.lblPosX.Location = new System.Drawing.Point(778, 197);
+            this.lblPosX.Location = new System.Drawing.Point(778, 231);
             this.lblPosX.Name = "lblPosX";
             this.lblPosX.Size = new System.Drawing.Size(35, 12);
             this.lblPosX.TabIndex = 19;
@@ -195,7 +206,7 @@ namespace SectionManager {
             // 
             // nmrcPosY
             // 
-            this.nmrcPosY.Location = new System.Drawing.Point(950, 195);
+            this.nmrcPosY.Location = new System.Drawing.Point(950, 229);
             this.nmrcPosY.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -207,7 +218,7 @@ namespace SectionManager {
             // 
             // nmrcPosX
             // 
-            this.nmrcPosX.Location = new System.Drawing.Point(819, 195);
+            this.nmrcPosX.Location = new System.Drawing.Point(819, 229);
             this.nmrcPosX.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -220,7 +231,7 @@ namespace SectionManager {
             // lblRow
             // 
             this.lblRow.AutoSize = true;
-            this.lblRow.Location = new System.Drawing.Point(778, 170);
+            this.lblRow.Location = new System.Drawing.Point(778, 204);
             this.lblRow.Name = "lblRow";
             this.lblRow.Size = new System.Drawing.Size(30, 12);
             this.lblRow.TabIndex = 22;
@@ -228,7 +239,7 @@ namespace SectionManager {
             // 
             // nmrcRow
             // 
-            this.nmrcRow.Location = new System.Drawing.Point(819, 168);
+            this.nmrcRow.Location = new System.Drawing.Point(819, 202);
             this.nmrcRow.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -241,7 +252,7 @@ namespace SectionManager {
             // lblCol
             // 
             this.lblCol.AutoSize = true;
-            this.lblCol.Location = new System.Drawing.Point(909, 170);
+            this.lblCol.Location = new System.Drawing.Point(909, 204);
             this.lblCol.Name = "lblCol";
             this.lblCol.Size = new System.Drawing.Size(24, 12);
             this.lblCol.TabIndex = 24;
@@ -249,7 +260,7 @@ namespace SectionManager {
             // 
             // nmrcCol
             // 
-            this.nmrcCol.Location = new System.Drawing.Point(950, 168);
+            this.nmrcCol.Location = new System.Drawing.Point(950, 202);
             this.nmrcCol.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -262,7 +273,7 @@ namespace SectionManager {
             // lblBoxHeight
             // 
             this.lblBoxHeight.AutoSize = true;
-            this.lblBoxHeight.Location = new System.Drawing.Point(773, 92);
+            this.lblBoxHeight.Location = new System.Drawing.Point(773, 126);
             this.lblBoxHeight.Name = "lblBoxHeight";
             this.lblBoxHeight.Size = new System.Drawing.Size(40, 12);
             this.lblBoxHeight.TabIndex = 30;
@@ -271,7 +282,7 @@ namespace SectionManager {
             // lblBoxWidth
             // 
             this.lblBoxWidth.AutoSize = true;
-            this.lblBoxWidth.Location = new System.Drawing.Point(778, 65);
+            this.lblBoxWidth.Location = new System.Drawing.Point(778, 99);
             this.lblBoxWidth.Name = "lblBoxWidth";
             this.lblBoxWidth.Size = new System.Drawing.Size(35, 12);
             this.lblBoxWidth.TabIndex = 29;
@@ -279,7 +290,7 @@ namespace SectionManager {
             // 
             // nmrcBaseHeight
             // 
-            this.nmrcBaseHeight.Location = new System.Drawing.Point(819, 90);
+            this.nmrcBaseHeight.Location = new System.Drawing.Point(819, 124);
             this.nmrcBaseHeight.Maximum = new decimal(new int[] {
             512,
             0,
@@ -301,7 +312,7 @@ namespace SectionManager {
             // 
             // nmrcBaseWidth
             // 
-            this.nmrcBaseWidth.Location = new System.Drawing.Point(819, 63);
+            this.nmrcBaseWidth.Location = new System.Drawing.Point(819, 97);
             this.nmrcBaseWidth.Maximum = new decimal(new int[] {
             512,
             0,
@@ -325,7 +336,7 @@ namespace SectionManager {
             // 
             this.btnAlignLeft.BackColor = System.Drawing.Color.White;
             this.btnAlignLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAlignLeft.Location = new System.Drawing.Point(901, 590);
+            this.btnAlignLeft.Location = new System.Drawing.Point(901, 624);
             this.btnAlignLeft.Name = "btnAlignLeft";
             this.btnAlignLeft.Size = new System.Drawing.Size(57, 50);
             this.btnAlignLeft.TabIndex = 33;
@@ -336,7 +347,7 @@ namespace SectionManager {
             // 
             this.btnAlignRight.BackColor = System.Drawing.Color.White;
             this.btnAlignRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAlignRight.Location = new System.Drawing.Point(964, 590);
+            this.btnAlignRight.Location = new System.Drawing.Point(964, 624);
             this.btnAlignRight.Name = "btnAlignRight";
             this.btnAlignRight.Size = new System.Drawing.Size(57, 50);
             this.btnAlignRight.TabIndex = 34;
@@ -347,7 +358,7 @@ namespace SectionManager {
             // 
             this.btnAlignTop.BackColor = System.Drawing.Color.White;
             this.btnAlignTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAlignTop.Location = new System.Drawing.Point(775, 590);
+            this.btnAlignTop.Location = new System.Drawing.Point(775, 624);
             this.btnAlignTop.Name = "btnAlignTop";
             this.btnAlignTop.Size = new System.Drawing.Size(55, 50);
             this.btnAlignTop.TabIndex = 35;
@@ -358,7 +369,7 @@ namespace SectionManager {
             // 
             this.btnAlignBottom.BackColor = System.Drawing.Color.White;
             this.btnAlignBottom.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAlignBottom.Location = new System.Drawing.Point(838, 590);
+            this.btnAlignBottom.Location = new System.Drawing.Point(838, 624);
             this.btnAlignBottom.Name = "btnAlignBottom";
             this.btnAlignBottom.Size = new System.Drawing.Size(57, 50);
             this.btnAlignBottom.TabIndex = 36;
@@ -368,7 +379,7 @@ namespace SectionManager {
             // lblAlignSide
             // 
             this.lblAlignSide.AutoSize = true;
-            this.lblAlignSide.Location = new System.Drawing.Point(773, 575);
+            this.lblAlignSide.Location = new System.Drawing.Point(773, 609);
             this.lblAlignSide.Name = "lblAlignSide";
             this.lblAlignSide.Size = new System.Drawing.Size(45, 12);
             this.lblAlignSide.TabIndex = 37;
@@ -377,7 +388,7 @@ namespace SectionManager {
             // lblLine
             // 
             this.lblLine.AutoSize = true;
-            this.lblLine.Location = new System.Drawing.Point(773, 303);
+            this.lblLine.Location = new System.Drawing.Point(773, 337);
             this.lblLine.Name = "lblLine";
             this.lblLine.Size = new System.Drawing.Size(57, 12);
             this.lblLine.TabIndex = 38;
@@ -386,7 +397,7 @@ namespace SectionManager {
             // lblAlignRow
             // 
             this.lblAlignRow.AutoSize = true;
-            this.lblAlignRow.Location = new System.Drawing.Point(773, 439);
+            this.lblAlignRow.Location = new System.Drawing.Point(773, 473);
             this.lblAlignRow.Name = "lblAlignRow";
             this.lblAlignRow.Size = new System.Drawing.Size(85, 12);
             this.lblAlignRow.TabIndex = 43;
@@ -397,7 +408,7 @@ namespace SectionManager {
             this.btnLeftBot.BackColor = System.Drawing.Color.White;
             this.btnLeftBot.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_7to5;
             this.btnLeftBot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLeftBot.Location = new System.Drawing.Point(901, 454);
+            this.btnLeftBot.Location = new System.Drawing.Point(901, 488);
             this.btnLeftBot.Name = "btnLeftBot";
             this.btnLeftBot.Size = new System.Drawing.Size(57, 50);
             this.btnLeftBot.TabIndex = 47;
@@ -408,7 +419,7 @@ namespace SectionManager {
             this.btnRightBot.BackColor = System.Drawing.Color.White;
             this.btnRightBot.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_5to7;
             this.btnRightBot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRightBot.Location = new System.Drawing.Point(964, 454);
+            this.btnRightBot.Location = new System.Drawing.Point(964, 488);
             this.btnRightBot.Name = "btnRightBot";
             this.btnRightBot.Size = new System.Drawing.Size(57, 50);
             this.btnRightBot.TabIndex = 45;
@@ -419,7 +430,7 @@ namespace SectionManager {
             this.btnRightTop.BackColor = System.Drawing.Color.White;
             this.btnRightTop.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_1to11;
             this.btnRightTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRightTop.Location = new System.Drawing.Point(838, 454);
+            this.btnRightTop.Location = new System.Drawing.Point(838, 488);
             this.btnRightTop.Name = "btnRightTop";
             this.btnRightTop.Size = new System.Drawing.Size(57, 50);
             this.btnRightTop.TabIndex = 44;
@@ -430,7 +441,7 @@ namespace SectionManager {
             this.btnBottomLeft.BackColor = System.Drawing.Color.White;
             this.btnBottomLeft.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_7to11;
             this.btnBottomLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBottomLeft.Location = new System.Drawing.Point(901, 522);
+            this.btnBottomLeft.Location = new System.Drawing.Point(901, 556);
             this.btnBottomLeft.Name = "btnBottomLeft";
             this.btnBottomLeft.Size = new System.Drawing.Size(57, 50);
             this.btnBottomLeft.TabIndex = 52;
@@ -441,7 +452,7 @@ namespace SectionManager {
             this.btnTopLeft.BackColor = System.Drawing.Color.White;
             this.btnTopLeft.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_11to7;
             this.btnTopLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTopLeft.Location = new System.Drawing.Point(775, 522);
+            this.btnTopLeft.Location = new System.Drawing.Point(775, 556);
             this.btnTopLeft.Name = "btnTopLeft";
             this.btnTopLeft.Size = new System.Drawing.Size(55, 50);
             this.btnTopLeft.TabIndex = 51;
@@ -452,7 +463,7 @@ namespace SectionManager {
             this.btnBottomRight.BackColor = System.Drawing.Color.White;
             this.btnBottomRight.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_5to1;
             this.btnBottomRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBottomRight.Location = new System.Drawing.Point(964, 522);
+            this.btnBottomRight.Location = new System.Drawing.Point(964, 556);
             this.btnBottomRight.Name = "btnBottomRight";
             this.btnBottomRight.Size = new System.Drawing.Size(57, 50);
             this.btnBottomRight.TabIndex = 50;
@@ -463,7 +474,7 @@ namespace SectionManager {
             this.btnTopRight.BackColor = System.Drawing.Color.White;
             this.btnTopRight.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_1to5;
             this.btnTopRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTopRight.Location = new System.Drawing.Point(838, 522);
+            this.btnTopRight.Location = new System.Drawing.Point(838, 556);
             this.btnTopRight.Name = "btnTopRight";
             this.btnTopRight.Size = new System.Drawing.Size(57, 50);
             this.btnTopRight.TabIndex = 49;
@@ -472,7 +483,7 @@ namespace SectionManager {
             // lblAlignCol
             // 
             this.lblAlignCol.AutoSize = true;
-            this.lblAlignCol.Location = new System.Drawing.Point(773, 507);
+            this.lblAlignCol.Location = new System.Drawing.Point(773, 541);
             this.lblAlignCol.Name = "lblAlignCol";
             this.lblAlignCol.Size = new System.Drawing.Size(85, 12);
             this.lblAlignCol.TabIndex = 48;
@@ -536,7 +547,7 @@ namespace SectionManager {
             this.btnLeftTop.BackColor = System.Drawing.Color.White;
             this.btnLeftTop.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_11to1;
             this.btnLeftTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLeftTop.Location = new System.Drawing.Point(775, 454);
+            this.btnLeftTop.Location = new System.Drawing.Point(775, 488);
             this.btnLeftTop.Name = "btnLeftTop";
             this.btnLeftTop.Size = new System.Drawing.Size(55, 50);
             this.btnLeftTop.TabIndex = 46;
@@ -547,7 +558,7 @@ namespace SectionManager {
             this.btnBTRL.BackColor = System.Drawing.Color.White;
             this.btnBTRL.BackgroundImage = global::SectionManager.Properties.Resources.BTRL;
             this.btnBTRL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBTRL.Location = new System.Drawing.Point(964, 374);
+            this.btnBTRL.Location = new System.Drawing.Point(964, 408);
             this.btnBTRL.Name = "btnBTRL";
             this.btnBTRL.Size = new System.Drawing.Size(57, 50);
             this.btnBTRL.TabIndex = 14;
@@ -558,7 +569,7 @@ namespace SectionManager {
             this.btnTBRL.BackColor = System.Drawing.Color.White;
             this.btnTBRL.BackgroundImage = global::SectionManager.Properties.Resources.TBRL;
             this.btnTBRL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTBRL.Location = new System.Drawing.Point(901, 374);
+            this.btnTBRL.Location = new System.Drawing.Point(901, 408);
             this.btnTBRL.Name = "btnTBRL";
             this.btnTBRL.Size = new System.Drawing.Size(57, 50);
             this.btnTBRL.TabIndex = 13;
@@ -569,7 +580,7 @@ namespace SectionManager {
             this.btnBTLR.BackColor = System.Drawing.Color.White;
             this.btnBTLR.BackgroundImage = global::SectionManager.Properties.Resources.BTLR;
             this.btnBTLR.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBTLR.Location = new System.Drawing.Point(838, 374);
+            this.btnBTLR.Location = new System.Drawing.Point(838, 408);
             this.btnBTLR.Name = "btnBTLR";
             this.btnBTLR.Size = new System.Drawing.Size(57, 50);
             this.btnBTLR.TabIndex = 12;
@@ -580,7 +591,7 @@ namespace SectionManager {
             this.btnTBLR.BackColor = System.Drawing.Color.White;
             this.btnTBLR.BackgroundImage = global::SectionManager.Properties.Resources.TBLR;
             this.btnTBLR.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTBLR.Location = new System.Drawing.Point(775, 374);
+            this.btnTBLR.Location = new System.Drawing.Point(775, 408);
             this.btnTBLR.Name = "btnTBLR";
             this.btnTBLR.Size = new System.Drawing.Size(57, 50);
             this.btnTBLR.TabIndex = 11;
@@ -591,7 +602,7 @@ namespace SectionManager {
             this.btnRLBT.BackColor = System.Drawing.Color.White;
             this.btnRLBT.BackgroundImage = global::SectionManager.Properties.Resources.RLBT;
             this.btnRLBT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRLBT.Location = new System.Drawing.Point(964, 318);
+            this.btnRLBT.Location = new System.Drawing.Point(964, 352);
             this.btnRLBT.Name = "btnRLBT";
             this.btnRLBT.Size = new System.Drawing.Size(57, 50);
             this.btnRLBT.TabIndex = 10;
@@ -602,7 +613,7 @@ namespace SectionManager {
             this.btnLRBT.BackColor = System.Drawing.Color.White;
             this.btnLRBT.BackgroundImage = global::SectionManager.Properties.Resources.LRBT;
             this.btnLRBT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLRBT.Location = new System.Drawing.Point(901, 318);
+            this.btnLRBT.Location = new System.Drawing.Point(901, 352);
             this.btnLRBT.Name = "btnLRBT";
             this.btnLRBT.Size = new System.Drawing.Size(57, 50);
             this.btnLRBT.TabIndex = 9;
@@ -613,7 +624,7 @@ namespace SectionManager {
             this.btnRLTB.BackColor = System.Drawing.Color.White;
             this.btnRLTB.BackgroundImage = global::SectionManager.Properties.Resources.RLTB;
             this.btnRLTB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRLTB.Location = new System.Drawing.Point(838, 318);
+            this.btnRLTB.Location = new System.Drawing.Point(838, 352);
             this.btnRLTB.Name = "btnRLTB";
             this.btnRLTB.Size = new System.Drawing.Size(57, 50);
             this.btnRLTB.TabIndex = 8;
@@ -624,7 +635,7 @@ namespace SectionManager {
             this.btnLRTB.BackColor = System.Drawing.Color.White;
             this.btnLRTB.BackgroundImage = global::SectionManager.Properties.Resources.LRTB;
             this.btnLRTB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLRTB.Location = new System.Drawing.Point(775, 318);
+            this.btnLRTB.Location = new System.Drawing.Point(775, 352);
             this.btnLRTB.Name = "btnLRTB";
             this.btnLRTB.Size = new System.Drawing.Size(57, 50);
             this.btnLRTB.TabIndex = 7;
@@ -633,7 +644,7 @@ namespace SectionManager {
             // 
             // tbxRctX
             // 
-            this.tbxRctX.Location = new System.Drawing.Point(803, 122);
+            this.tbxRctX.Location = new System.Drawing.Point(803, 156);
             this.tbxRctX.MaxLength = 5;
             this.tbxRctX.Name = "tbxRctX";
             this.tbxRctX.ShortcutsEnabled = false;
@@ -643,7 +654,7 @@ namespace SectionManager {
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(779, 126);
+            this.lblX.Location = new System.Drawing.Point(779, 160);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(13, 12);
             this.lblX.TabIndex = 60;
@@ -652,7 +663,7 @@ namespace SectionManager {
             // lblY
             // 
             this.lblY.AutoSize = true;
-            this.lblY.Location = new System.Drawing.Point(860, 126);
+            this.lblY.Location = new System.Drawing.Point(860, 160);
             this.lblY.Name = "lblY";
             this.lblY.Size = new System.Drawing.Size(13, 12);
             this.lblY.TabIndex = 61;
@@ -660,7 +671,7 @@ namespace SectionManager {
             // 
             // btnSetPosDragbox
             // 
-            this.btnSetPosDragbox.Location = new System.Drawing.Point(950, 118);
+            this.btnSetPosDragbox.Location = new System.Drawing.Point(950, 152);
             this.btnSetPosDragbox.Name = "btnSetPosDragbox";
             this.btnSetPosDragbox.Size = new System.Drawing.Size(71, 29);
             this.btnSetPosDragbox.TabIndex = 62;
@@ -669,27 +680,40 @@ namespace SectionManager {
             // 
             // tbxRctY
             // 
-            this.tbxRctY.Location = new System.Drawing.Point(884, 122);
+            this.tbxRctY.Location = new System.Drawing.Point(884, 156);
             this.tbxRctY.MaxLength = 5;
             this.tbxRctY.Name = "tbxRctY";
             this.tbxRctY.ShortcutsEnabled = false;
             this.tbxRctY.Size = new System.Drawing.Size(49, 21);
             this.tbxRctY.TabIndex = 63;
             // 
-            // sectionCtrl
+            // lblModule
             // 
-            this.sectionCtrl.AutoScroll = true;
-            this.sectionCtrl.BackColor = System.Drawing.Color.White;
-            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
-            this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
-            this.sectionCtrl.TabIndex = 0;
+            this.lblModule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblModule.AutoSize = true;
+            this.lblModule.Location = new System.Drawing.Point(855, 73);
+            this.lblModule.Name = "lblModule";
+            this.lblModule.Size = new System.Drawing.Size(55, 12);
+            this.lblModule.TabIndex = 64;
+            this.lblModule.Text = "Module :";
+            // 
+            // cbxModule
+            // 
+            this.cbxModule.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbxModule.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxModule.FormattingEnabled = true;
+            this.cbxModule.Location = new System.Drawing.Point(928, 70);
+            this.cbxModule.Name = "cbxModule";
+            this.cbxModule.Size = new System.Drawing.Size(93, 20);
+            this.cbxModule.TabIndex = 65;
             // 
             // SectionDrawerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.cbxModule);
+            this.Controls.Add(this.lblModule);
             this.Controls.Add(this.tbxRctY);
             this.Controls.Add(this.btnSetPosDragbox);
             this.Controls.Add(this.lblY);
@@ -743,7 +767,7 @@ namespace SectionManager {
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.grpPort);
             this.Name = "SectionDrawerControl";
-            this.Size = new System.Drawing.Size(1036, 661);
+            this.Size = new System.Drawing.Size(1036, 680);
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).EndInit();
             this.pnlBackground.ResumeLayout(false);
@@ -816,5 +840,7 @@ namespace SectionManager {
         private System.Windows.Forms.Label lblY;
         private System.Windows.Forms.Button btnSetPosDragbox;
         private System.Windows.Forms.TextBox tbxRctY;
+        private System.Windows.Forms.Label lblModule;
+        private System.Windows.Forms.ComboBox cbxModule;
     }
 }

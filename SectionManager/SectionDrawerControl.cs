@@ -16,10 +16,12 @@ namespace SectionManager {
 
         private static readonly int MINIMUM_SIZE = 16;
 
-        internal DrawerModel Model { get => model; }
+        [Browsable(false)]
+        public DrawerModel Model { get { if (sectionCtrl == null) return null; else return sectionCtrl.Model; } set => sectionCtrl.Model = value; }
 
-        private DrawerModel model;
+        //private DrawerModel model;
         private BindingSource bs = new BindingSource();
+        private List<int> ListModuleIdx = new List<int>();
 
         public SectionDrawerControl() {
             InitializeComponent();
@@ -27,13 +29,17 @@ namespace SectionManager {
             InitializeValue();
         }
 
-        public SectionDrawerControl(DrawerModel model) : this() {
-            this.model = model;
+        public SectionDrawerControl(ref DrawerModel model) : this() {
+            //this.model = model;
+            sectionCtrl.SetModelValue(ref model);
         }
 
         private void InitializeValue() {
             DoubleBuffered = true;
-
+            for (int i = 0; i < 100; i++)
+            {
+                ListModuleIdx.Add(i);
+            }
             sectionCtrl.Location = new Point(0,0);
             sectionCtrl.Size = new Size(pnlBackground.ClientSize.Width, pnlBackground.ClientSize.Height);
             sectionCtrl.SetBaseSize(sectionCtrl.Size);
@@ -48,6 +54,10 @@ namespace SectionManager {
             base.OnLoad(e);
             LoadValue();
             CreateView();
+            var rbList = grpPort.Controls.OfType<RadioButton>().ToList();
+            var rb = rbList.Where(i => (Model.SelectedPort > 0 ? Model.SelectedPort.ToString() : "1").Equals(i.Tag)).FirstOrDefault();
+            if (rb != null)
+                rb.Checked = true;
         }
 
         private void InitializeEvent() {
@@ -96,6 +106,18 @@ namespace SectionManager {
             tbxRctX.KeyPress += (s, e) => OnlyNumberAllower(s, e);
             tbxRctY.KeyPress += (s, e) => OnlyNumberAllower(s, e);
             btnSetPosDragbox.Click += (s, e) => SetPositionOfDragbox();
+            cbxModule.SelectedIndexChanged += (s, e) => ModuleIndexChanged();
+        }
+        
+        private void ModuleIndexChanged()
+        {
+            int moduleIdx = cbxModule.SelectedIndex;
+            if (moduleIdx == -1) return;
+
+            if (sectionCtrl.Model != null)
+            {
+                sectionCtrl.Model.Module = moduleIdx;
+            }
         }
 
         private void SetPositionOfDragbox() {
@@ -121,13 +143,19 @@ namespace SectionManager {
             // set value from saved file to model.
 
             // else
-            if (model == null)
-                model = new DrawerModel();
-
+            /*if (model == null)
+                model = new DrawerModel();*/
+            cbxModule.DataSource = ListModuleIdx;
+            cbxModule.SelectedIndex = sectionCtrl?.Model?.Module ?? 0;
         }
 
         private void CreateView() {
-            sectionCtrl.SetModelValue(model);
+            //sectionCtrl.SetModelValue(model);
+            if (sectionCtrl.Model == null)
+            {
+                var dm = new DrawerModel();
+                sectionCtrl.SetModelValue(ref dm);
+            }
             sectionCtrl.SetViewSize(sectionCtrl.Width, sectionCtrl.Height);
             sectionCtrl.SetLayerSize(sectionCtrl.Width, sectionCtrl.Height);
         }

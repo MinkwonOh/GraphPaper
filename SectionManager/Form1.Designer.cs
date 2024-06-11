@@ -24,7 +24,6 @@ namespace SectionManager {
         /// 이 메서드의 내용을 코드 편집기로 수정하지 마세요.
         /// </summary>
         private void InitializeComponent() {
-            this.sectionDrawerControl1 = new SectionManager.SectionDrawerControl();
             this.tbxIp = new DevExpress.XtraEditors.TextEdit();
             this.label1 = new System.Windows.Forms.Label();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -32,20 +31,12 @@ namespace SectionManager {
             this.btnSend = new System.Windows.Forms.Button();
             this.nmrcPort = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
+            this.pnlSectionCtrl = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.tbxIp.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcPort)).BeginInit();
             this.SuspendLayout();
-            // 
-            // sectionDrawerControl1
-            // 
-            this.sectionDrawerControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.sectionDrawerControl1.BackColor = System.Drawing.SystemColors.Control;
-            this.sectionDrawerControl1.Location = new System.Drawing.Point(12, 60);
-            this.sectionDrawerControl1.Name = "sectionDrawerControl1";
-            this.sectionDrawerControl1.Size = new System.Drawing.Size(1041, 685);
-            this.sectionDrawerControl1.TabIndex = 0;
             // 
             // tbxIp
             // 
@@ -127,11 +118,45 @@ namespace SectionManager {
             this.label2.TabIndex = 7;
             this.label2.Text = "PORT : ";
             // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(797, 13);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 8;
+            this.btnSave.Text = "저장";
+            this.btnSave.UseVisualStyleBackColor = true;
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLoad.Location = new System.Drawing.Point(878, 13);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(75, 23);
+            this.btnLoad.TabIndex = 9;
+            this.btnLoad.Text = "불러오기";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            // 
+            // pnlSectionCtrl
+            // 
+            this.pnlSectionCtrl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlSectionCtrl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pnlSectionCtrl.Location = new System.Drawing.Point(12, 39);
+            this.pnlSectionCtrl.Name = "pnlSectionCtrl";
+            this.pnlSectionCtrl.Size = new System.Drawing.Size(1041, 706);
+            this.pnlSectionCtrl.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1065, 757);
+            this.Controls.Add(this.pnlSectionCtrl);
+            this.Controls.Add(this.btnLoad);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.nmrcPort);
             this.Controls.Add(this.btnSend);
@@ -139,7 +164,6 @@ namespace SectionManager {
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbxIp);
-            this.Controls.Add(this.sectionDrawerControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "Form1";
@@ -152,8 +176,6 @@ namespace SectionManager {
         }
 
         #endregion
-
-        private SectionDrawerControl sectionDrawerControl1;
         private DevExpress.XtraEditors.TextEdit tbxIp;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnConnect;
@@ -161,6 +183,9 @@ namespace SectionManager {
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.NumericUpDown nmrcPort;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.Panel pnlSectionCtrl;
     }
 }
 

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace SectionManager.Models {
     public class DrawerModel {
 
         #region
+        [JsonIgnore]
         public EventHandler<int> PortAddedEvent;
         #endregion
 
@@ -21,6 +24,8 @@ namespace SectionManager.Models {
         // 박스그룹 리스트
         private List<BoxGroup> _boxGroupList;
         private int _port = -1;
+        // 모듈
+        private int _module = 0;
         // 확대비율(100% 기준)
         public ZoomPer zoom = ZoomPer.z100;
         // standard모드? => 고정비율로 계산.
@@ -39,6 +44,7 @@ namespace SectionManager.Models {
 
 
         #region Properties
+        [Browsable(false)]
         public List<BoxGroup> BoxGroupList { get => _boxGroupList; set => _boxGroupList = value; }
         public int SelectedPort { get => _port; set => _port = value; }
         public bool IsStandardMode { get => _isStandardMode; set => _isStandardMode = value; }
@@ -48,12 +54,23 @@ namespace SectionManager.Models {
         public int BoxWidth { get => _boxWidth; set => _boxWidth = value; }
         public int BoxHeight { get => _boxHeight; set => _boxHeight = value; }
         public bool IsGroupHide { get => _isGroupHide; set => _isGroupHide = value; }
+        public int Module { get => _module; set => SetModuleIdx(value); }
 
         #endregion
 
         public DrawerModel() {
             _boxGroupList = new List<BoxGroup>();
         }
+
+        public void SetModuleIdx(int moduleIdx)
+        {
+            _module = moduleIdx;
+            foreach (var box in _boxGroupList)
+            {
+                box.Module = moduleIdx;
+            }
+        }
+
 
         public void AppendBoxGroup() {
             AppendBoxGroup(_boxGroupList.Count);
@@ -63,7 +80,7 @@ namespace SectionManager.Models {
             var boxGroup = new BoxGroup(idx);
             _boxGroupList.Add(boxGroup);
             SelectedPort = _boxGroupList.IndexOf(boxGroup);
-            PortAddedEvent.Invoke(this, SelectedPort);
+            PortAddedEvent?.Invoke(this, SelectedPort);
         }
 
         public void AppendBox() {
@@ -93,26 +110,32 @@ namespace SectionManager.Models {
             box.RctY = y;
             box.RctW = w;
             box.RctH = h;
-        }
+        }                                                                                 
     }
 
     // 관리되는 사각형 리스트 정보
     public class BoxGroup {
         public static readonly int MAX_LENGTH = 655360;
         public int Port;
+        public int Module;
         public List<Box> BoxList;
         public List<(int, int)> _lstLinker = new List<(int, int)>();
         public Color BoxColor = Color.LemonChiffon;
+        public int DrawingOrder;
+        [JsonIgnore]
         public int LineLength { get => BoxList.ToList().Sum(i => i.RctW); }
+        [JsonIgnore]
         public float PortRoagd { get => LineLength / MAX_LENGTH; }
 
         public BoxGroup(int port) {
             Port = port;
             BoxList = new List<Box>(port);
+            DrawingOrder = port;
         }
 
         public void AppendBox(int port) {
             var box = new Box(port) { tagCard = BoxList.Count};
+            box.RefreshBitmap();
             for (int i = 0; i < BoxList.Count; i++) {
                 if (BoxList.Where(j => j.tagCard == i).FirstOrDefault() == null) {
                     box.tagCard = i;
@@ -249,36 +272,92 @@ namespace SectionManager.Models {
 
     // 사각형 정보
     public class Box {
-        private static readonly int MINIMUM_SIZE = 16;
+        public Color BorderColor { get => _borderColor; set => _borderColor = value; }
+        public Color FillColor { get => _fillColor; set => _fillColor = value; }
+        public SolidBrush TxtBrush { get => _txtBrush; set => _txtBrush = value; }
+        public int BorderWidth { get => _borderWidth; set => _borderWidth = value; }
         public Rectangle Rect { get; set; }
+        public bool Selected { get; set; }
+        public int tagPort { get; set; }
+        public int tagCard { get; set; }
+        public SolidBrush _txtBrush = new SolidBrush(Color.Black);
+        [JsonIgnore]
+        public Bitmap Bitmap { get { if (_bitmap == null) RefreshBitmap(); return _bitmap; } }
+
+        private Bitmap _bitmap;
+        private Color _borderColor = Color.Black;
+        private Color _fillColor = Color.Transparent;
+        private int _borderWidth = 1;
+        private static readonly int MINIMUM_SIZE = 16;
+
+        private StringFormat sf = new StringFormat()
+        {
+            LineAlignment = StringAlignment.Center,
+            Alignment = StringAlignment.Center
+        };
+
+
         public Box(int port) {
             Rect = new Rectangle(0, 0, MINIMUM_SIZE, MINIMUM_SIZE);
+            var colorName = Enum.GetName(typeof(ColorSpec), port >= Enum.GetNames(typeof(ColorSpec)).Length ? 1 : port + 1);
+
+            //_bitmap = new Bitmap(MINIMUM_SIZE, MINIMUM_SIZE);
+
+            if (colorName != null)
+                _fillColor = Color.FromName(colorName);
+
             tagPort = port;
+
+            //DrawFullBmp();
+
         }
-        public bool Selected { get; set; }
+
+        public void RefreshBitmap()
+        {
+            _bitmap = new Bitmap(Rect.Width, Rect.Height);
+            DrawFullBmp();
+        }
+
+        private void DrawFullBmp()
+        {
+            _bitmap = new Bitmap(Rect.Width, Rect.Height);
+            using (var g = Graphics.FromImage(_bitmap))
+            {
+                g.Clear(FillColor);
+                g.DrawRectangle(new Pen(new SolidBrush(_borderColor), _borderWidth), new Rectangle(0, 0, Rect.Width, Rect.Height));
+                //g.FillRectangle(new SolidBrush(_fillColor), new Rectangle(0,0,Rect.Width,Rect.Height));
+            }
+        }
+        [JsonIgnore]
         public int RctX { get => Rect.X; set => Rect = new Rectangle(value < 0 ? 0 : value % int.MaxValue, Rect.Y, Rect.Width, Rect.Height); }
+        [JsonIgnore]
         public int RctY { get => Rect.Y; set => Rect = new Rectangle(Rect.X, value < 0 ? 0 : value % int.MaxValue, Rect.Width, Rect.Height); }
+        [JsonIgnore]
         public int RctW { 
             get => Rect.Width; 
             set {
                 //value = value < 0 ? MINIMUM_SIZE : value;
                 int x = RctW > RctX + value ? RctW - value : Rect.X;
-                Rect = new Rectangle(x, Rect.Y, value % int.MaxValue, Rect.Height); 
+                Rect = new Rectangle(x, Rect.Y, value % int.MaxValue, Rect.Height);
+                if (Rect.Width > 0 && Rect.Height > 0)
+                    DrawFullBmp();
             } 
         }
+        [JsonIgnore]
         public int RctH { 
             get => Rect.Height; 
             set {
                 //value = value < 0 ? MINIMUM_SIZE : value;
                 int y = RctH > RctY + value ? RctH - value : Rect.Y;
-                Rect = new Rectangle(Rect.X, y, Rect.Width,value % int.MaxValue); 
+                Rect = new Rectangle(Rect.X, y, Rect.Width,value % int.MaxValue);
+                if (Rect.Width > 0 && Rect.Height > 0)
+                    DrawFullBmp();
             } 
         }
+        [JsonIgnore]
         public int MidX { get => RctX + RctW / 2; }
+        [JsonIgnore]
         public int MidY { get => RctY + RctH / 2; }
-
-        public int tagPort { get; set; }
-        public int tagCard { get ; set; }
         public string Description { get => tagPort == -1 ? string.Empty : $"Port:{tagPort}\nCard:{tagCard+1}\nX:{RctX}\nY:{RctY}\nWidth:{RctW}\nHeight:{RctH}\n"; }
         public bool HasPoint(Point pt) {
 
