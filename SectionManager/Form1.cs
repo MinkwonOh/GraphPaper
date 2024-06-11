@@ -81,18 +81,25 @@ namespace SectionManager {
                     maxEX = boxList[i].Rect.X + boxList[i].Rect.Width > maxEX ? boxList[i].Rect.X + boxList[i].Rect.Width : maxEX;
                     maxEY = boxList[i].Rect.Y + boxList[i].Rect.Height > maxEY ? boxList[i].Rect.Y + boxList[i].Rect.Height : maxEY;
 
+                    byte[] sxBytes = new byte[2] { (byte)(box.Rect.X >> 8), (byte)box.Rect.X };
+                    byte[] syBytes = new byte[2] { (byte)(box.Rect.Y >> 8), (byte)box.Rect.Y };
+
                     SectionData sd = new SectionData
                     {
                         idx = (byte)(j + 1),
                         port = (byte)box.tagPort,
-                        sx = (byte)box.Rect.X,
-                        sy = (byte)box.Rect.Y,
+                        sx = sxBytes ,
+                        sy = syBytes,
                         width = (byte)box.Rect.Width,
                         height = (byte)box.Rect.Height,
                         moduleIdx = (byte)boxGroupList[i].Module
                     };
                     SectionDataList.Add(sd);
                 }
+
+                // 순서 어떻게?
+                byte[] totW = new byte[2] { (byte)(maxEX - minSX >> 8), (byte)(maxEX - minSX)};
+                byte[] totH = new byte[2] { (byte)(maxEY - minSY >> 8), (byte)(maxEY - minSY)};
 
                 // 헤더
                 CommonHeader sh = new CommonHeader
@@ -101,8 +108,8 @@ namespace SectionManager {
                     port = (byte)preference.NetPort,
                     moduleIdx = (byte)boxGroupList[i].Module,
                     sectionCnt = (byte)boxList.Count,
-                    totalWidth = (byte)(maxEX - minSX), // total byte 몇 바이트로?
-                    totalHeight = (byte)(maxEY - minSY) // total byte 몇 바이트로?
+                    totalWidth = totW, // total byte 몇 바이트로?
+                    totalHeight = totH // total byte 몇 바이트로?
                 };
 
                 ListSectionPacket.Add(new SectionPacket
@@ -149,12 +156,12 @@ namespace SectionManager {
 
             preference = Preference.Load();
 
-            sdc = new SectionDrawerControl();
+            sdc = new SectionDrawerControl(ref preference.DrawerModel);
             sdc.Dock = DockStyle.Fill;
             //sectionDrawerControl1 = new SectionDrawerControl(preference.DrawerModel);
             tbxIp.EditValue = preference.IPAddress;
             nmrcPort.Value = preference.NetPort;
-            sdc.Model = preference.DrawerModel;
+            //sdc.Model = preference.DrawerModel;
 
             pnlSectionCtrl.Controls.Add(sdc);
 

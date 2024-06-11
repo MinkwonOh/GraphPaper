@@ -28,7 +28,6 @@ namespace SectionManager {
             this.nmrcBoxWidth = new System.Windows.Forms.NumericUpDown();
             this.nmrcBoxHeight = new System.Windows.Forms.NumericUpDown();
             this.pnlBackground = new System.Windows.Forms.Panel();
-            this.sectionCtrl = new SectionManager.SectionControl();
             this.btnDeleteBox = new System.Windows.Forms.Button();
             this.btnClearBox = new System.Windows.Forms.Button();
             this.lblWidth = new System.Windows.Forms.Label();
@@ -81,6 +80,7 @@ namespace SectionManager {
             this.tbxRctY = new System.Windows.Forms.TextBox();
             this.lblModule = new System.Windows.Forms.Label();
             this.cbxModule = new System.Windows.Forms.ComboBox();
+            this.sectionCtrl = new SectionManager.SectionControl();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxHeight)).BeginInit();
             this.pnlBackground.SuspendLayout();
@@ -95,6 +95,7 @@ namespace SectionManager {
             // 
             // btnAdd
             // 
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAdd.Location = new System.Drawing.Point(911, 97);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(110, 48);
@@ -104,6 +105,7 @@ namespace SectionManager {
             // 
             // nmrcBoxWidth
             // 
+            this.nmrcBoxWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcBoxWidth.Location = new System.Drawing.Point(819, 256);
             this.nmrcBoxWidth.Maximum = new decimal(new int[] {
             65535,
@@ -116,6 +118,7 @@ namespace SectionManager {
             // 
             // nmrcBoxHeight
             // 
+            this.nmrcBoxHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcBoxHeight.Location = new System.Drawing.Point(950, 256);
             this.nmrcBoxHeight.Maximum = new decimal(new int[] {
             65535,
@@ -133,6 +136,9 @@ namespace SectionManager {
             // 
             // pnlBackground
             // 
+            this.pnlBackground.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlBackground.AutoScroll = true;
             this.pnlBackground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlBackground.Controls.Add(this.sectionCtrl);
@@ -141,17 +147,9 @@ namespace SectionManager {
             this.pnlBackground.Size = new System.Drawing.Size(747, 611);
             this.pnlBackground.TabIndex = 4;
             // 
-            // sectionCtrl
-            // 
-            this.sectionCtrl.AutoScroll = true;
-            this.sectionCtrl.BackColor = System.Drawing.Color.White;
-            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
-            this.sectionCtrl.Name = "sectionCtrl";
-            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
-            this.sectionCtrl.TabIndex = 0;
-            // 
             // btnDeleteBox
             // 
+            this.btnDeleteBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDeleteBox.Location = new System.Drawing.Point(793, 283);
             this.btnDeleteBox.Name = "btnDeleteBox";
             this.btnDeleteBox.Size = new System.Drawing.Size(97, 29);
@@ -161,6 +159,7 @@ namespace SectionManager {
             // 
             // btnClearBox
             // 
+            this.btnClearBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClearBox.Location = new System.Drawing.Point(906, 283);
             this.btnClearBox.Name = "btnClearBox";
             this.btnClearBox.Size = new System.Drawing.Size(94, 29);
@@ -170,6 +169,7 @@ namespace SectionManager {
             // 
             // lblWidth
             // 
+            this.lblWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblWidth.AutoSize = true;
             this.lblWidth.Location = new System.Drawing.Point(778, 258);
             this.lblWidth.Name = "lblWidth";
@@ -179,6 +179,7 @@ namespace SectionManager {
             // 
             // lblHeight
             // 
+            this.lblHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHeight.AutoSize = true;
             this.lblHeight.Location = new System.Drawing.Point(904, 258);
             this.lblHeight.Name = "lblHeight";
@@ -188,6 +189,7 @@ namespace SectionManager {
             // 
             // lblPosY
             // 
+            this.lblPosY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPosY.AutoSize = true;
             this.lblPosY.Location = new System.Drawing.Point(904, 231);
             this.lblPosY.Name = "lblPosY";
@@ -197,6 +199,7 @@ namespace SectionManager {
             // 
             // lblPosX
             // 
+            this.lblPosX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPosX.AutoSize = true;
             this.lblPosX.Location = new System.Drawing.Point(778, 231);
             this.lblPosX.Name = "lblPosX";
@@ -206,6 +209,7 @@ namespace SectionManager {
             // 
             // nmrcPosY
             // 
+            this.nmrcPosY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcPosY.Location = new System.Drawing.Point(950, 229);
             this.nmrcPosY.Maximum = new decimal(new int[] {
             65535,
@@ -218,6 +222,7 @@ namespace SectionManager {
             // 
             // nmrcPosX
             // 
+            this.nmrcPosX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcPosX.Location = new System.Drawing.Point(819, 229);
             this.nmrcPosX.Maximum = new decimal(new int[] {
             65535,
@@ -230,6 +235,7 @@ namespace SectionManager {
             // 
             // lblRow
             // 
+            this.lblRow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRow.AutoSize = true;
             this.lblRow.Location = new System.Drawing.Point(778, 204);
             this.lblRow.Name = "lblRow";
@@ -239,6 +245,7 @@ namespace SectionManager {
             // 
             // nmrcRow
             // 
+            this.nmrcRow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcRow.Location = new System.Drawing.Point(819, 202);
             this.nmrcRow.Maximum = new decimal(new int[] {
             65535,
@@ -251,6 +258,7 @@ namespace SectionManager {
             // 
             // lblCol
             // 
+            this.lblCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblCol.AutoSize = true;
             this.lblCol.Location = new System.Drawing.Point(909, 204);
             this.lblCol.Name = "lblCol";
@@ -260,6 +268,7 @@ namespace SectionManager {
             // 
             // nmrcCol
             // 
+            this.nmrcCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcCol.Location = new System.Drawing.Point(950, 202);
             this.nmrcCol.Maximum = new decimal(new int[] {
             65535,
@@ -272,6 +281,7 @@ namespace SectionManager {
             // 
             // lblBoxHeight
             // 
+            this.lblBoxHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblBoxHeight.AutoSize = true;
             this.lblBoxHeight.Location = new System.Drawing.Point(773, 126);
             this.lblBoxHeight.Name = "lblBoxHeight";
@@ -281,6 +291,7 @@ namespace SectionManager {
             // 
             // lblBoxWidth
             // 
+            this.lblBoxWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblBoxWidth.AutoSize = true;
             this.lblBoxWidth.Location = new System.Drawing.Point(778, 99);
             this.lblBoxWidth.Name = "lblBoxWidth";
@@ -290,6 +301,7 @@ namespace SectionManager {
             // 
             // nmrcBaseHeight
             // 
+            this.nmrcBaseHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcBaseHeight.Location = new System.Drawing.Point(819, 124);
             this.nmrcBaseHeight.Maximum = new decimal(new int[] {
             512,
@@ -312,6 +324,7 @@ namespace SectionManager {
             // 
             // nmrcBaseWidth
             // 
+            this.nmrcBaseWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.nmrcBaseWidth.Location = new System.Drawing.Point(819, 97);
             this.nmrcBaseWidth.Maximum = new decimal(new int[] {
             512,
@@ -334,6 +347,7 @@ namespace SectionManager {
             // 
             // btnAlignLeft
             // 
+            this.btnAlignLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAlignLeft.BackColor = System.Drawing.Color.White;
             this.btnAlignLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAlignLeft.Location = new System.Drawing.Point(901, 624);
@@ -345,6 +359,7 @@ namespace SectionManager {
             // 
             // btnAlignRight
             // 
+            this.btnAlignRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAlignRight.BackColor = System.Drawing.Color.White;
             this.btnAlignRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAlignRight.Location = new System.Drawing.Point(964, 624);
@@ -356,6 +371,7 @@ namespace SectionManager {
             // 
             // btnAlignTop
             // 
+            this.btnAlignTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAlignTop.BackColor = System.Drawing.Color.White;
             this.btnAlignTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAlignTop.Location = new System.Drawing.Point(775, 624);
@@ -367,6 +383,7 @@ namespace SectionManager {
             // 
             // btnAlignBottom
             // 
+            this.btnAlignBottom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAlignBottom.BackColor = System.Drawing.Color.White;
             this.btnAlignBottom.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAlignBottom.Location = new System.Drawing.Point(838, 624);
@@ -378,6 +395,7 @@ namespace SectionManager {
             // 
             // lblAlignSide
             // 
+            this.lblAlignSide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAlignSide.AutoSize = true;
             this.lblAlignSide.Location = new System.Drawing.Point(773, 609);
             this.lblAlignSide.Name = "lblAlignSide";
@@ -387,6 +405,7 @@ namespace SectionManager {
             // 
             // lblLine
             // 
+            this.lblLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblLine.AutoSize = true;
             this.lblLine.Location = new System.Drawing.Point(773, 337);
             this.lblLine.Name = "lblLine";
@@ -396,6 +415,7 @@ namespace SectionManager {
             // 
             // lblAlignRow
             // 
+            this.lblAlignRow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAlignRow.AutoSize = true;
             this.lblAlignRow.Location = new System.Drawing.Point(773, 473);
             this.lblAlignRow.Name = "lblAlignRow";
@@ -405,6 +425,7 @@ namespace SectionManager {
             // 
             // btnLeftBot
             // 
+            this.btnLeftBot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLeftBot.BackColor = System.Drawing.Color.White;
             this.btnLeftBot.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_7to5;
             this.btnLeftBot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -416,6 +437,7 @@ namespace SectionManager {
             // 
             // btnRightBot
             // 
+            this.btnRightBot.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRightBot.BackColor = System.Drawing.Color.White;
             this.btnRightBot.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_5to7;
             this.btnRightBot.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -427,6 +449,7 @@ namespace SectionManager {
             // 
             // btnRightTop
             // 
+            this.btnRightTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRightTop.BackColor = System.Drawing.Color.White;
             this.btnRightTop.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_1to11;
             this.btnRightTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -438,6 +461,7 @@ namespace SectionManager {
             // 
             // btnBottomLeft
             // 
+            this.btnBottomLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBottomLeft.BackColor = System.Drawing.Color.White;
             this.btnBottomLeft.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_7to11;
             this.btnBottomLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -449,6 +473,7 @@ namespace SectionManager {
             // 
             // btnTopLeft
             // 
+            this.btnTopLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTopLeft.BackColor = System.Drawing.Color.White;
             this.btnTopLeft.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_11to7;
             this.btnTopLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -460,6 +485,7 @@ namespace SectionManager {
             // 
             // btnBottomRight
             // 
+            this.btnBottomRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBottomRight.BackColor = System.Drawing.Color.White;
             this.btnBottomRight.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_5to1;
             this.btnBottomRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -471,6 +497,7 @@ namespace SectionManager {
             // 
             // btnTopRight
             // 
+            this.btnTopRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTopRight.BackColor = System.Drawing.Color.White;
             this.btnTopRight.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_1to5;
             this.btnTopRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -482,6 +509,7 @@ namespace SectionManager {
             // 
             // lblAlignCol
             // 
+            this.lblAlignCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAlignCol.AutoSize = true;
             this.lblAlignCol.Location = new System.Drawing.Point(773, 541);
             this.lblAlignCol.Name = "lblAlignCol";
@@ -515,6 +543,7 @@ namespace SectionManager {
             // 
             // grpPort
             // 
+            this.grpPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.grpPort.Controls.Add(this.rdoPort2);
             this.grpPort.Controls.Add(this.rdoPort1);
             this.grpPort.Location = new System.Drawing.Point(752, 3);
@@ -526,6 +555,7 @@ namespace SectionManager {
             // 
             // cbxZoom
             // 
+            this.cbxZoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxZoom.FormattingEnabled = true;
             this.cbxZoom.Location = new System.Drawing.Point(682, 24);
@@ -535,6 +565,7 @@ namespace SectionManager {
             // 
             // lblZoom
             // 
+            this.lblZoom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblZoom.AutoSize = true;
             this.lblZoom.Location = new System.Drawing.Point(606, 27);
             this.lblZoom.Name = "lblZoom";
@@ -544,6 +575,7 @@ namespace SectionManager {
             // 
             // btnLeftTop
             // 
+            this.btnLeftTop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLeftTop.BackColor = System.Drawing.Color.White;
             this.btnLeftTop.BackgroundImage = global::SectionManager.Properties.Resources.Arrow_11to1;
             this.btnLeftTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -555,6 +587,7 @@ namespace SectionManager {
             // 
             // btnBTRL
             // 
+            this.btnBTRL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBTRL.BackColor = System.Drawing.Color.White;
             this.btnBTRL.BackgroundImage = global::SectionManager.Properties.Resources.BTRL;
             this.btnBTRL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -566,6 +599,7 @@ namespace SectionManager {
             // 
             // btnTBRL
             // 
+            this.btnTBRL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTBRL.BackColor = System.Drawing.Color.White;
             this.btnTBRL.BackgroundImage = global::SectionManager.Properties.Resources.TBRL;
             this.btnTBRL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -577,6 +611,7 @@ namespace SectionManager {
             // 
             // btnBTLR
             // 
+            this.btnBTLR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBTLR.BackColor = System.Drawing.Color.White;
             this.btnBTLR.BackgroundImage = global::SectionManager.Properties.Resources.BTLR;
             this.btnBTLR.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -588,6 +623,7 @@ namespace SectionManager {
             // 
             // btnTBLR
             // 
+            this.btnTBLR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnTBLR.BackColor = System.Drawing.Color.White;
             this.btnTBLR.BackgroundImage = global::SectionManager.Properties.Resources.TBLR;
             this.btnTBLR.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -599,6 +635,7 @@ namespace SectionManager {
             // 
             // btnRLBT
             // 
+            this.btnRLBT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRLBT.BackColor = System.Drawing.Color.White;
             this.btnRLBT.BackgroundImage = global::SectionManager.Properties.Resources.RLBT;
             this.btnRLBT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -610,6 +647,7 @@ namespace SectionManager {
             // 
             // btnLRBT
             // 
+            this.btnLRBT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLRBT.BackColor = System.Drawing.Color.White;
             this.btnLRBT.BackgroundImage = global::SectionManager.Properties.Resources.LRBT;
             this.btnLRBT.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -621,6 +659,7 @@ namespace SectionManager {
             // 
             // btnRLTB
             // 
+            this.btnRLTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRLTB.BackColor = System.Drawing.Color.White;
             this.btnRLTB.BackgroundImage = global::SectionManager.Properties.Resources.RLTB;
             this.btnRLTB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -632,6 +671,7 @@ namespace SectionManager {
             // 
             // btnLRTB
             // 
+            this.btnLRTB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLRTB.BackColor = System.Drawing.Color.White;
             this.btnLRTB.BackgroundImage = global::SectionManager.Properties.Resources.LRTB;
             this.btnLRTB.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -644,6 +684,7 @@ namespace SectionManager {
             // 
             // tbxRctX
             // 
+            this.tbxRctX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbxRctX.Location = new System.Drawing.Point(803, 156);
             this.tbxRctX.MaxLength = 5;
             this.tbxRctX.Name = "tbxRctX";
@@ -653,6 +694,7 @@ namespace SectionManager {
             // 
             // lblX
             // 
+            this.lblX.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblX.AutoSize = true;
             this.lblX.Location = new System.Drawing.Point(779, 160);
             this.lblX.Name = "lblX";
@@ -662,6 +704,7 @@ namespace SectionManager {
             // 
             // lblY
             // 
+            this.lblY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblY.AutoSize = true;
             this.lblY.Location = new System.Drawing.Point(860, 160);
             this.lblY.Name = "lblY";
@@ -671,6 +714,7 @@ namespace SectionManager {
             // 
             // btnSetPosDragbox
             // 
+            this.btnSetPosDragbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetPosDragbox.Location = new System.Drawing.Point(950, 152);
             this.btnSetPosDragbox.Name = "btnSetPosDragbox";
             this.btnSetPosDragbox.Size = new System.Drawing.Size(71, 29);
@@ -680,6 +724,7 @@ namespace SectionManager {
             // 
             // tbxRctY
             // 
+            this.tbxRctY.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tbxRctY.Location = new System.Drawing.Point(884, 156);
             this.tbxRctY.MaxLength = 5;
             this.tbxRctY.Name = "tbxRctY";
@@ -706,6 +751,16 @@ namespace SectionManager {
             this.cbxModule.Name = "cbxModule";
             this.cbxModule.Size = new System.Drawing.Size(93, 20);
             this.cbxModule.TabIndex = 65;
+            // 
+            // sectionCtrl
+            // 
+            this.sectionCtrl.AutoScroll = true;
+            this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
+            this.sectionCtrl.Model = null;
+            this.sectionCtrl.Name = "sectionCtrl";
+            this.sectionCtrl.Size = new System.Drawing.Size(480, 422);
+            this.sectionCtrl.TabIndex = 0;
             // 
             // SectionDrawerControl
             // 

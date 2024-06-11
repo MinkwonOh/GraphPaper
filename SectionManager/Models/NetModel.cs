@@ -26,65 +26,99 @@ namespace SectionManager.Models
     }
 
     /// <summary>
-    /// 768 바이트
-    /// 헤더? 데이터
-    /// 
+    /// 64 바이트
+    /// 패킷의 헤더
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct CommonHeader
     {
-
-        // header : 0 - 고정
+        /// <summary>
+        /// 2차 헤더 - CommonHeader의 idx는 0 고정, Section 부터 + 1
+        /// </summary>
         public byte idx;
-        // port : 랜포트 번호
+
+        /// <summary>
+        /// port - 랜포트 번호 - 0번 부터? 1번 부터 ? 미정
+        /// </summary>
         public byte port;
 
-        // rsv1 : 헤더 리저브
+        /// <summary>
+        /// 헤더 데이터의 2차 헤더 리저브
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16 - 2)]
         private byte[] rsv1;
 
+        /// <summary>
+        /// 전체 너비, 최대 2048px -> 2바이트 사용
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] totalWidth;
 
-        // 전체 너비/높이
-        public byte totalWidth;
-        public byte totalHeight;
-        // 모듈번호
+        /// <summary>
+        /// 전체 높이, 최대 2바이트 사용
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] totalHeight;
+
+        /// <summary>
+        /// 섹션에 설정할 모듈 번호, 0부터 시작
+        /// </summary>
         public byte moduleIdx;
-        // 섹션(SectionData)갯수
+
+        /// <summary>
+        /// 섹션(SectionData)의 갯수 - total 99개
+        /// </summary>
         public byte sectionCnt;
 
-        // rsv2 : 데이터 리저브
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 768 - 16 - 4)]
+        /// <summary>
+        /// 헤더 데이터의 데이터 리저브
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64 - 16 - 6)]
         private byte[] rsv2;
     }
 
     /// <summary>
-    /// 768 바이트
-    /// 박스 데이터
-    /// 
+    /// 64 바이트
+    /// 패킷의 박스 데이터
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct SectionData
     {
-
-        // header : 0 - 고정 / Section 추가될때마다 +1
+        /// <summary>
+        /// 2차 헤더 - CommonHeader의 idx는 0 고정, Section 부터 + 1
+        /// </summary>
         public byte idx;
-        // port : 랜포트 번호
+
+        /// <summary>
+        /// port - 랜포트 번호
+        /// </summary>
         public byte port;
-        // rsv1 : 헤더 리저브
+
+        /// <summary>
+        /// 헤더 데이터의 2차 헤더 리저브
+        /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16 - 2)]
         private byte[] rsv1;
 
-        // 영역
-        public byte sx;
-        public byte sy;
+        /// <summary>
+        /// 영역 크기 데이터, 
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] sx;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] sy;
         public byte width;
         public byte height;
 
-        // 모듈번호
+        /// <summary>
+        /// 섹션에 설정할 모듈 번호, 0부터 시작
+        /// </summary>
         public byte moduleIdx;
 
-        //rsv2 : 데이터 리저브
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 768 - 16 - 5)]
+        /// <summary>
+        /// 헤더 데이터의 데이터 리저브
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64 - 16 - 7)]
         private byte[] rsv2;
     }
 }

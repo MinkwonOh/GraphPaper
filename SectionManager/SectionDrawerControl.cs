@@ -30,7 +30,8 @@ namespace SectionManager {
         }
 
         public SectionDrawerControl(ref DrawerModel model) : this() {
-            //this.model = model;
+            nmrcBaseWidth.Value = model.BoxWidth;
+            nmrcBaseHeight.Value = model.BoxHeight;
             sectionCtrl.SetModelValue(ref model);
         }
 
@@ -48,6 +49,7 @@ namespace SectionManager {
             bs.DataSource = zoomVals;
             cbxZoom.DataSource = bs;
             cbxZoom.SelectedItem = (int)ZoomPer.z100;
+
         }
 
         protected override void OnLoad(EventArgs e) {
@@ -58,6 +60,7 @@ namespace SectionManager {
             var rb = rbList.Where(i => (Model.SelectedPort > 0 ? Model.SelectedPort.ToString() : "1").Equals(i.Tag)).FirstOrDefault();
             if (rb != null)
                 rb.Checked = true;
+
         }
 
         private void InitializeEvent() {
@@ -100,6 +103,11 @@ namespace SectionManager {
             btnBottomLeft.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.BottomLeft);
             btnBottomRight.Click += (s, e) => sectionCtrl.QuickAlign(AlignDirection.BottomRight);
 
+            nmrcBaseWidth.ValueChanged += (s, e) => sectionCtrl.SetBoxWidth((int)nmrcBaseWidth.Value);
+            nmrcBaseHeight.ValueChanged += (s, e) => sectionCtrl.SetBoxHeight((int)nmrcBaseHeight.Value);
+
+            pnlBackground.SizeChanged += (s, e) => SetControlSize(pnlBackground.ClientSize.Width, pnlBackground.ClientSize.Height);
+
             nmrcRow.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
             nmrcCol.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
 
@@ -131,8 +139,6 @@ namespace SectionManager {
         }
 
         private void BoxInfoChanged(Box box) {
-            /*if (!box.Description.Equals(string.Empty)) { 
-            }*/
             nmrcPosX.Value = box != null ? box.RctX : 0;
             nmrcPosY.Value = box != null ? box.RctY : 0;
             nmrcBoxWidth.Value = box != null ? box.RctW : MINIMUM_SIZE;
@@ -140,17 +146,11 @@ namespace SectionManager {
         }
 
         private void LoadValue() {
-            // set value from saved file to model.
-
-            // else
-            /*if (model == null)
-                model = new DrawerModel();*/
             cbxModule.DataSource = ListModuleIdx;
             cbxModule.SelectedIndex = sectionCtrl?.Model?.Module ?? 0;
         }
 
         private void CreateView() {
-            //sectionCtrl.SetModelValue(model);
             if (sectionCtrl.Model == null)
             {
                 var dm = new DrawerModel();
@@ -163,6 +163,14 @@ namespace SectionManager {
         // 새 Box 생성
         private void CreateBox() {
             sectionCtrl.RegistBox((int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
+        }
+
+        public void SetControlSize(int w, int h) {
+            var size = new Size(w,h);
+            sectionCtrl.Size = size;
+            sectionCtrl.SetBaseSize(size);
+            sectionCtrl.SetViewSize(w, h);
+            sectionCtrl.SetLayerSize(w, h);
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {

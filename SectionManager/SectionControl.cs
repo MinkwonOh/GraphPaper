@@ -447,45 +447,6 @@ namespace SectionManager {
                             }
                         }
 
-
-                        /*for (int i = 0; i < boxList.Count; i++) {
-                            var boxGroup = boxList[i].BoxList;
-                            for (int j = 0; j < boxGroup.Count; j++) {
-
-                                *//*g.DrawRectangle(BlackPen, boxGroup[j].Rect);
-                                g.FillRectangle(new SolidBrush(ColorList[i+1]), boxGroup[j].Rect);*//*
-                                string desc = boxGroup[j].RctW < MINIMUM_SIZE*4 || boxGroup[j].RctH < MINIMUM_SIZE*4 ? (boxGroup[j].tagCard+1).ToString() : boxGroup[j].Description;
-                                g.DrawImage(boxGroup[j].Bitmap,boxGroup[j].Rect.X, boxGroup[j].Rect.Y);
-                                g.DrawString(desc, DefaultFont, BlackBrush, boxGroup[j].Rect, sf);
-
-                                // 그룹핑 된 박스
-                                g.DrawRectangle(_dradBox.Selected ? BlueBorderDashPen: PinkPen , _dradBox.Rect);
-
-                                if (i == _model.SelectedPort && boxGroup[j].Selected)
-                                    g.DrawRectangle(BlueBorderPen, boxGroup[j].Rect);
-                            }
-                            var _lstLinker = boxList[i]._lstLinker;
-                            if (_lstLinker.Count > 0) { 
-                                for (int j = 0; j < _lstLinker.Count-1; j++) {
-                                    var rct1 = boxGroup.Where(p => p.tagCard == _lstLinker[j].Item1).FirstOrDefault();
-                                    var rct2 = boxGroup.Where(p => p.tagCard == _lstLinker[j].Item2).FirstOrDefault();
-                                    
-                                    if (rct1 == null || rct2 == null) continue;
-                                    RedBorderPenHalf.CustomEndCap = new AdjustableArrowCap(4, 4);
-
-                                    if (j == 0)
-                                        g.DrawImage(StartImg, new Rectangle(rct1.MidX- imgSize/2, rct1.MidY- imgSize/2, imgSize, imgSize));
-                                    if (j+1 == _lstLinker.Count - 1)
-                                        g.DrawImage(FinishImg, new Rectangle(rct2.MidX- imgSize/2, rct2.MidY- imgSize/2, imgSize, imgSize));
-
-                                    halfPoint = new Point(rct1.MidX + (rct2.MidX - rct1.MidX) / 2, rct1.MidY + (rct2.MidY - rct1.MidY) / 2);
-
-                                    g.DrawLine(RedBorderPenHalf, new Point(rct1.MidX, rct1.MidY), halfPoint);
-                                    g.DrawLine(RedBorderPen, halfPoint, new Point(rct2.MidX, rct2.MidY));
-                                }
-                            }
-                        }*/
-
                         
                         if (_dradBox.RctX == 0 || _dradBox.RctY == 0) {
                             g.DrawRectangle(BlueBorderDashPen, _dradBox.Rect);
@@ -729,6 +690,67 @@ namespace SectionManager {
             _dradBox.Rect = new Rectangle();
         }
 
+        public void SetBoxWidth(int width) {
+            try
+            {
+                if (_model == null) return;
+                int selIdx = _model.SelectedPort;
+                if (selIdx < 0 || (_dradBox.RctW == 0 && _dradBox.RctY == 0)) return;
+                var grpBox = _model.BoxGroupList[_model.SelectedPort].BoxList.Where(i => i.Selected).ToList();
+
+                foreach(var box in grpBox){
+                    box.RctW = width;
+                }
+                _model.BoxWidth = width;
+
+                int minX = grpBox.Min(i => i.RctX);
+                int minY = grpBox.Min(i => i.RctY);
+
+                _dradBox = new Box(-1)
+                {
+                    RctX = minX,
+                    RctY = minY,
+                    RctW = grpBox.Max(i => i.RctX + i.RctW)-minX,
+                    RctH = grpBox.Max(i => i.RctY + i.RctH)-minY
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"SectionControl - SetBoxWidth // {ex.Message}");   
+            }
+        }
+
+        public void SetBoxHeight(int height) {
+            try
+            {
+                if (_model == null) return;
+                int selIdx = _model.SelectedPort;
+                if (selIdx < 0 || (_dradBox.RctW == 0 && _dradBox.RctY == 0)) return;
+                var grpBox = _model.BoxGroupList[_model.SelectedPort].BoxList.Where(i => i.Selected).ToList();
+
+                foreach (var box in grpBox)
+                {
+                    box.RctH = height;
+                }
+                _model.BoxHeight = height;
+
+                int minX = grpBox.Min(i => i.RctX);
+                int minY = grpBox.Min(i => i.RctY);
+
+                _dradBox = new Box(-1)
+                {
+                    RctX = minX,
+                    RctY = minY,
+                    RctW = grpBox.Max(i => i.RctX + i.RctW)-minX,
+                    RctH = grpBox.Max(i => i.RctY + i.RctH)-minY
+                };
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"SectionControl - SetBoxHeight // {ex.Message}");
+            }
+        }
+
         /// <summary>
         /// 간편 연결
         /// L : Left
@@ -917,8 +939,6 @@ namespace SectionManager {
                 RctH = boxList.Max(i => i.RctY + i.RctH)
             };
         }
-
-
 
         public void SetViewSize(int width, int height) {
             box = new Rectangle(new Point(0,0), new Size(width, height));
