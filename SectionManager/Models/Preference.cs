@@ -41,6 +41,15 @@ namespace SectionManager.Models {
             }
         }
 
+        internal static Preference Load(string path) {
+            if (File.Exists(PreferenceFilepath))
+            {
+                var json = File.ReadAllText(PreferenceFilepath);
+                return JsonConvert.DeserializeObject<Preference>(json);
+            }
+            else return null;
+        }
+
         internal void Save() {
             var json = JsonConvert.SerializeObject(this, Formatting.None);
             File.WriteAllText(PreferenceFilepath, json);

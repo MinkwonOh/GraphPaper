@@ -14,6 +14,8 @@ namespace SectionManager {
     public class SectionControl : UserControl, IDisposable {
 
         private static readonly int MINIMUM_SIZE = 16;
+        private static readonly int THREAD_SHORT_TERM = 20;
+        private static readonly int THREAD_LONG_TERM = 80;
 
         public EventHandler<Box> BoxInfoRefreshEvent;
         public EventHandler<(int, int)> LayerSizeChangeEvent;
@@ -53,6 +55,8 @@ namespace SectionManager {
             Color.Transparent, Color.Aquamarine, Color.Beige, Color.Bisque, Color.CadetBlue,
             Color.Crimson,  Color.Olive,  Color.DodgerBlue,  Color.Violet
         };
+        private int thread_term;
+        
 
         public SectionControl() {
             DoubleBuffered = true;
@@ -75,6 +79,9 @@ namespace SectionManager {
         }
 
         private void InitializeValue() {
+
+            thread_term = THREAD_LONG_TERM;
+
             // pens
             BlackPen = new Pen(Color.Black, 1);
             PinkPen = new Pen(Color.Pink, 1);
@@ -119,6 +126,7 @@ namespace SectionManager {
             _mousePressed = true;
             _pressedPoint.X = e.X;
             _pressedPoint.Y = e.Y;
+            thread_term = THREAD_SHORT_TERM;
             if (e.Button == MouseButtons.Left) {
                 _dradBox.Selected = false;
                 Point pt = e.Location;
@@ -239,6 +247,7 @@ namespace SectionManager {
 
         protected override void OnMouseUp(MouseEventArgs e) {
             base.OnMouseUp(e);
+            thread_term = THREAD_LONG_TERM;
             if (e.Button == MouseButtons.Left) {
                 Point pt = e.Location;
                 switch (_boxState) {
@@ -951,6 +960,10 @@ namespace SectionManager {
             layer = new Layer(width, height);
         }
 
+        public void ModLayerSize(int w, int h) {
+            layer?.SetLayerSize(w, h);
+        }
+
         public void BoxUpdate() {
             try {
                 while (thRunning) {
@@ -974,7 +987,7 @@ namespace SectionManager {
                             Invalidate(false);
                         }
                     }
-                    Thread.Sleep(50);
+                    Thread.Sleep(thread_term);
                 }
             }
             catch (Exception ex) {

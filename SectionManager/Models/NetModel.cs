@@ -19,7 +19,6 @@ namespace SectionManager.Models
     public struct SectionPacket
     {
         // 테스트 해볼 부분 > 적용 or 미적용 할지
-        [MarshalAs(UnmanagedType.ByValArray)]
         public CommonHeader commonHeader;
         [MarshalAs(UnmanagedType.ByValArray)]
         public SectionData[] sectionDatas;

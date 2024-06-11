@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MagiColor.IO;
 using MagiColor.Net;
+using Newtonsoft.Json;
 using SectionManager.Models;
 using SectionManager.StaticClass;
 
@@ -39,6 +41,31 @@ namespace SectionManager {
         private void btnLoadClicked()
         {
 
+            btnDisConnClicked();
+
+            string filePath = string.Empty;
+            // filedialog > cfg파일 선택
+            using (OpenFileDialog ofd = new OpenFileDialog()) {
+                ofd.InitialDirectory = "C:\\";
+                ofd.Filter = "config files (*.config)|*.config";
+                ofd.FilterIndex = 0;
+                ofd.RestoreDirectory = true;
+
+                if (ofd.ShowDialog() == DialogResult.OK) { 
+                    filePath = ofd.FileName;
+                
+                    if (File.Exists(filePath))
+                    {
+                        preference = Preference.Load(filePath);
+
+                        tbxIp.EditValue = preference.IPAddress;
+                        nmrcPort.Value = preference.NetPort;
+                        if (sdc != null) { 
+                            sdc.Model = preference.DrawerModel;
+                        }
+                    }
+                }
+            }
         }
 
         private void btnSaveClicked()
@@ -49,83 +76,89 @@ namespace SectionManager {
         }
 
         private void btnSendClicked() {
-            GetCurrentData();
-
-            var drawerModel = preference.DrawerModel;
-
-            var boxGroupList = drawerModel.BoxGroupList;
-
-            List<SectionPacket> ListSectionPacket = new List<SectionPacket>();
-
-            for (int i = 0; i < boxGroupList.Count; i++)
+            try
             {
 
-                var boxList = boxGroupList[i].BoxList;
+                GetCurrentData();
 
-                List<SectionData> SectionDataList = new List<SectionData>();
+                var drawerModel = preference.DrawerModel;
 
-                if (boxList.Count == 0) continue;
+                var boxGroupList = drawerModel.BoxGroupList;
 
-                int minSX = boxList[i].Rect.X;
-                int minSY = boxList[i].Rect.Y;
-                int maxEX = boxList[i].Rect.X + boxList[i].Rect.Width;
-                int maxEY = boxList[i].Rect.Y + boxList[i].Rect.Height;
+                SectionPacket ListSectionPacket = new SectionPacket();
 
-                // 포트별 섹션
-                for (int j = 0; j < boxList.Count; j++)
+                for (int i = 0; i < boxGroupList.Count; i++)
                 {
-                    var box = boxList[j];
 
-                    minSX = boxList[i].Rect.X < minSX ? boxList[i].Rect.X : minSX;
-                    minSY = boxList[i].Rect.Y < minSY ? boxList[i].Rect.Y : minSY;
-                    maxEX = boxList[i].Rect.X + boxList[i].Rect.Width > maxEX ? boxList[i].Rect.X + boxList[i].Rect.Width : maxEX;
-                    maxEY = boxList[i].Rect.Y + boxList[i].Rect.Height > maxEY ? boxList[i].Rect.Y + boxList[i].Rect.Height : maxEY;
+                    var boxList = boxGroupList[i].BoxList;
 
-                    byte[] sxBytes = new byte[2] { (byte)(box.Rect.X >> 8), (byte)box.Rect.X };
-                    byte[] syBytes = new byte[2] { (byte)(box.Rect.Y >> 8), (byte)box.Rect.Y };
+                    SectionData[] SectionDataList = new SectionData[boxList.Count];
 
-                    SectionData sd = new SectionData
+                    if (boxList.Count == 0) continue;
+
+                    int minSX = boxList[i].Rect.X;
+                    int minSY = boxList[i].Rect.Y;
+                    int maxEX = boxList[i].Rect.X + boxList[i].Rect.Width;
+                    int maxEY = boxList[i].Rect.Y + boxList[i].Rect.Height;
+
+                    // 포트별 섹션
+                    for (int j = 0; j < boxList.Count; j++)
                     {
-                        idx = (byte)(j + 1),
-                        port = (byte)box.tagPort,
-                        sx = sxBytes ,
-                        sy = syBytes,
-                        width = (byte)box.Rect.Width,
-                        height = (byte)box.Rect.Height,
-                        moduleIdx = (byte)boxGroupList[i].Module
+                        var box = boxList[j];
+
+                        minSX = boxList[i].Rect.X < minSX ? boxList[i].Rect.X : minSX;
+                        minSY = boxList[i].Rect.Y < minSY ? boxList[i].Rect.Y : minSY;
+                        maxEX = boxList[i].Rect.X + boxList[i].Rect.Width > maxEX ? boxList[i].Rect.X + boxList[i].Rect.Width : maxEX;
+                        maxEY = boxList[i].Rect.Y + boxList[i].Rect.Height > maxEY ? boxList[i].Rect.Y + boxList[i].Rect.Height : maxEY;
+
+                        byte[] sxBytes = new byte[2] { (byte)(box.Rect.X >> 8), (byte)box.Rect.X };
+                        byte[] syBytes = new byte[2] { (byte)(box.Rect.Y >> 8), (byte)box.Rect.Y };
+
+                        SectionData sd = new SectionData
+                        {
+                            idx = (byte)(j + 1),
+                            port = (byte)box.tagPort,
+                            sx = sxBytes ,
+                            sy = syBytes,
+                            width = (byte)box.Rect.Width,
+                            height = (byte)box.Rect.Height,
+                            moduleIdx = (byte)boxGroupList[i].Module
+                        };
+                        SectionDataList[j]=sd;
+                    }
+
+                    // 순서 어떻게?
+                    byte[] totW = new byte[2] { (byte)(maxEX - minSX >> 8), (byte)(maxEX - minSX)};
+                    byte[] totH = new byte[2] { (byte)(maxEY - minSY >> 8), (byte)(maxEY - minSY)};
+
+                    // 헤더
+                    CommonHeader sh = new CommonHeader
+                    {
+                        idx = 0,
+                        port = (byte)boxGroupList[i].BoxList[0].tagPort,
+                        moduleIdx = (byte)boxGroupList[i].Module,
+                        sectionCnt = (byte)boxList.Count,
+                        totalWidth = totW, // total byte 몇 바이트로?
+                        totalHeight = totH // total byte 몇 바이트로?
                     };
-                    SectionDataList.Add(sd);
+
+                    ListSectionPacket.commonHeader = sh;
+                    ListSectionPacket.sectionDatas = SectionDataList;
+
                 }
 
-                // 순서 어떻게?
-                byte[] totW = new byte[2] { (byte)(maxEX - minSX >> 8), (byte)(maxEX - minSX)};
-                byte[] totH = new byte[2] { (byte)(maxEY - minSY >> 8), (byte)(maxEY - minSY)};
+                byte[] packetbytes = StructConverter.StructToByte(ListSectionPacket);
 
-                // 헤더
-                CommonHeader sh = new CommonHeader
-                {
-                    idx = 0,
-                    port = (byte)preference.NetPort,
-                    moduleIdx = (byte)boxGroupList[i].Module,
-                    sectionCnt = (byte)boxList.Count,
-                    totalWidth = totW, // total byte 몇 바이트로?
-                    totalHeight = totH // total byte 몇 바이트로?
-                };
-
-                ListSectionPacket.Add(new SectionPacket
-                {
-                    commonHeader = sh,
-                    sectionDatas = SectionDataList.ToArray()
-                });
-
+                //ShortPacket sp = new ShortPacket { CMD = (byte)MagiColor.Net.Command.AdvertAdd, DAT = packetbytes};
+                // 임시로 커맨드는 0x70
+                ShortPacket sp = new ShortPacket { CMD = 0x70, DAT = packetbytes };
+                Packet recvPacket = packetManager.SendWaitPacket(sp, repeat: 0);
             }
-
-            byte[] packetbytes = StructConverter.StructToByte(ListSectionPacket.ToArray());
-
-            //ShortPacket sp = new ShortPacket { CMD = (byte)MagiColor.Net.Command.AdvertAdd, DAT = packetbytes};
-            // 임시로 커맨드는 0x70
-            ShortPacket sp = new ShortPacket { CMD = 0x70, DAT = packetbytes };
-            Packet recvPacket = packetManager.SendWaitPacket(sp, repeat: 0);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Form1.cs - btnSendClicked - {ex.Message}");
+                throw;
+            }
 
         }
 
