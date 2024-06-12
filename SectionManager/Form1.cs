@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -78,18 +79,15 @@ namespace SectionManager {
         private void btnSendClicked() {
             try
             {
-
                 GetCurrentData();
 
                 var drawerModel = preference.DrawerModel;
-
                 var boxGroupList = drawerModel.BoxGroupList;
 
-                SectionPacket ListSectionPacket = new SectionPacket();
+                List<SectionPacket> ListSectionPacket = new List<SectionPacket>();
 
                 for (int i = 0; i < boxGroupList.Count; i++)
                 {
-
                     var boxList = boxGroupList[i].BoxList;
 
                     SectionData[] SectionDataList = new SectionData[boxList.Count];
@@ -101,28 +99,32 @@ namespace SectionManager {
                     int maxEX = boxList[i].Rect.X + boxList[i].Rect.Width;
                     int maxEY = boxList[i].Rect.Y + boxList[i].Rect.Height;
 
+                    byte[] moduleBytes = new byte[] { (byte)(boxGroupList[i].Module >> 8), (byte)boxGroupList[i].Module };
+
                     // 포트별 섹션
                     for (int j = 0; j < boxList.Count; j++)
                     {
                         var box = boxList[j];
 
-                        minSX = boxList[i].Rect.X < minSX ? boxList[i].Rect.X : minSX;
-                        minSY = boxList[i].Rect.Y < minSY ? boxList[i].Rect.Y : minSY;
-                        maxEX = boxList[i].Rect.X + boxList[i].Rect.Width > maxEX ? boxList[i].Rect.X + boxList[i].Rect.Width : maxEX;
-                        maxEY = boxList[i].Rect.Y + boxList[i].Rect.Height > maxEY ? boxList[i].Rect.Y + boxList[i].Rect.Height : maxEY;
+                        minSX = boxList[j].Rect.X < minSX ? boxList[i].Rect.X : minSX;
+                        minSY = boxList[j].Rect.Y < minSY ? boxList[i].Rect.Y : minSY;
+                        maxEX = boxList[j].Rect.X + boxList[j].Rect.Width > maxEX ? boxList[j].Rect.X + boxList[j].Rect.Width : maxEX;
+                        maxEY = boxList[j].Rect.Y + boxList[j].Rect.Height > maxEY ? boxList[j].Rect.Y + boxList[j].Rect.Height : maxEY;
 
                         byte[] sxBytes = new byte[2] { (byte)(box.Rect.X >> 8), (byte)box.Rect.X };
                         byte[] syBytes = new byte[2] { (byte)(box.Rect.Y >> 8), (byte)box.Rect.Y };
+                        byte[] wBytes = new byte[2] { (byte)(box.Rect.Width >> 8), (byte)box.Rect.Width };
+                        byte[] hBytes = new byte[2] { (byte)(box.Rect.Height >> 8), (byte)box.Rect.Height };
 
                         SectionData sd = new SectionData
                         {
                             idx = (byte)(j + 1),
                             port = (byte)box.tagPort,
-                            sx = sxBytes ,
+                            sx = sxBytes,
                             sy = syBytes,
-                            width = (byte)box.Rect.Width,
-                            height = (byte)box.Rect.Height,
-                            moduleIdx = (byte)boxGroupList[i].Module
+                            width = wBytes,
+                            height = hBytes,
+                            moduleIdx = moduleBytes
                         };
                         SectionDataList[j]=sd;
                     }
@@ -132,31 +134,42 @@ namespace SectionManager {
                     byte[] totH = new byte[2] { (byte)(maxEY - minSY >> 8), (byte)(maxEY - minSY)};
 
                     // 헤더
-                    CommonHeader sh = new CommonHeader
+                    HeaderData sh = new HeaderData
                     {
                         idx = 0,
                         port = (byte)boxGroupList[i].BoxList[0].tagPort,
-                        moduleIdx = (byte)boxGroupList[i].Module,
+                        moduleIdx = moduleBytes,
                         sectionCnt = (byte)boxList.Count,
-                        totalWidth = totW, // total byte 몇 바이트로?
-                        totalHeight = totH // total byte 몇 바이트로?
+                        totalWidth = totW,
+                        totalHeight = totH
                     };
 
-                    ListSectionPacket.commonHeader = sh;
-                    ListSectionPacket.sectionDatas = SectionDataList;
-
+                    ListSectionPacket.Add(new SectionPacket
+                    {
+                        headerData = sh,
+                        sectionDatas = SectionDataList
+                    });
                 }
 
-                byte[] packetbytes = StructConverter.StructToByte(ListSectionPacket);
+                foreach (var packet in ListSectionPacket) {
+                    byte[] headerPacket = StructConverter.StructToByte(packet.headerData);
+                    ///ShortPacket sp = new ShortPacket { CMD = (byte)MagiColor.Net.Command.AdvertAdd, DAT = packetbytes};
+                    // 임시로 커맨드는 0x70
+                    /*ShortPacket sp = new ShortPacket { CMD = 0x70, DAT = headerPacket };
+                    Packet recvPacket = packetManager.SendWaitPacket(sp, repeat: 0);*/
 
-                //ShortPacket sp = new ShortPacket { CMD = (byte)MagiColor.Net.Command.AdvertAdd, DAT = packetbytes};
-                // 임시로 커맨드는 0x70
-                ShortPacket sp = new ShortPacket { CMD = 0x70, DAT = packetbytes };
-                Packet recvPacket = packetManager.SendWaitPacket(sp, repeat: 0);
+                    for (int k = 0; k < packet.sectionDatas.Length; k++) {
+                        byte[] sectionPacket = StructConverter.StructToByte(packet.sectionDatas[k]);
+                        /*sp = new ShortPacket { CMD = 0x70, DAT = sectionPacket };
+                        recvPacket = packetManager.SendWaitPacket(sp, repeat: 0);*/
+                    }
+                }
+                
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Form1.cs - btnSendClicked - {ex.Message}");
+                Debug.WriteLine($"Form1.cs - btnSendClicked - {ex.Message}");
                 throw;
             }
 

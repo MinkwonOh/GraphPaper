@@ -13,14 +13,11 @@ namespace SectionManager.Models
     }
 
     /// <summary>
-    /// 헤더 + 섹션데이터s
+    /// HeaderData + SectionData[]
     /// </summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct SectionPacket
+    public class SectionPacket
     {
-        // 테스트 해볼 부분 > 적용 or 미적용 할지
-        public CommonHeader commonHeader;
-        [MarshalAs(UnmanagedType.ByValArray)]
+        public HeaderData headerData;
         public SectionData[] sectionDatas;
     }
 
@@ -29,10 +26,10 @@ namespace SectionManager.Models
     /// 패킷의 헤더
     /// </summary>
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct CommonHeader
+    public struct HeaderData
     {
         /// <summary>
-        /// 2차 헤더 - CommonHeader의 idx는 0 고정, Section 부터 + 1
+        /// 2차 헤더 - HeaderData의 idx는 0 고정, Section 부터 + 1
         /// </summary>
         public byte idx;
 
@@ -42,37 +39,34 @@ namespace SectionManager.Models
         public byte port;
 
         /// <summary>
-        /// 헤더 데이터의 2차 헤더 리저브
+        /// HeaderData의 2차 헤더 리저브 16 - 2 = 14
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16 - 2)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 14)]
         private byte[] rsv1;
-
-        /// <summary>
-        /// 전체 너비, 최대 2048px -> 2바이트 사용
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public byte[] totalWidth;
-
-        /// <summary>
-        /// 전체 높이, 최대 2바이트 사용
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public byte[] totalHeight;
 
         /// <summary>
         /// 섹션에 설정할 모듈 번호, 0부터 시작
         /// </summary>
-        public byte moduleIdx;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] moduleIdx;
 
         /// <summary>
-        /// 섹션(SectionData)의 갯수 - total 99개
+        /// 섹션(SectionData)의 갯수 - total 255개
         /// </summary>
         public byte sectionCnt;
 
         /// <summary>
-        /// 헤더 데이터의 데이터 리저브
+        /// 전체 너비/높이, 최대 2048px -> 2바이트씩 사용
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64 - 16 - 6)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] totalWidth;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] totalHeight;
+
+        /// <summary>
+        /// HeaderData의 데이터 리저브 64 - 16(2차 header) - 7(data) = 41
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 41)]
         private byte[] rsv2;
     }
 
@@ -84,7 +78,7 @@ namespace SectionManager.Models
     public struct SectionData
     {
         /// <summary>
-        /// 2차 헤더 - CommonHeader의 idx는 0 고정, Section 부터 + 1
+        /// 2차 헤더 - HeaderData의 idx는 0 고정, Section 부터 + 1
         /// </summary>
         public byte idx;
 
@@ -94,30 +88,33 @@ namespace SectionManager.Models
         public byte port;
 
         /// <summary>
-        /// 헤더 데이터의 2차 헤더 리저브
+        /// SectionData의 2차 헤더 리저브 16 - 2 = 14
         /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16 - 2)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 14)]
         private byte[] rsv1;
 
         /// <summary>
-        /// 영역 크기 데이터, 
+        /// 섹션에 설정할 모듈 번호, 0부터 시작
+        /// </summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] moduleIdx;
+
+        /// <summary>
+        /// 영역 크기 데이터, 2바이트씩 사용
         /// </summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         public byte[] sx;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         public byte[] sy;
-        public byte width;
-        public byte height;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] width;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public byte[] height;
 
         /// <summary>
-        /// 섹션에 설정할 모듈 번호, 0부터 시작
+        /// SectionData의 데이터 리저브 64 - 16(2차 header) - 10(data) = 38
         /// </summary>
-        public byte moduleIdx;
-
-        /// <summary>
-        /// 헤더 데이터의 데이터 리저브
-        /// </summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 64 - 16 - 7)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 38)]
         private byte[] rsv2;
     }
 }
