@@ -166,11 +166,11 @@ namespace SectionManager {
         }
 
         public void SetControlSize(int w, int h) {
-            var size = new Size(w,h);
-            sectionCtrl.Size = size;
+            var size = new Size(w, h);
             sectionCtrl.SetBaseSize(size);
+            sectionCtrl.Size = size;
             sectionCtrl.SetViewSize(w, h);
-            sectionCtrl.SetLayerSize(w, h);
+            sectionCtrl.ModLayerSize(w, h);
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {

@@ -21,6 +21,7 @@ namespace SectionManager {
         public EventHandler<(int, int)> LayerSizeChangeEvent;
         public EventHandler<int> PortAddedEvent;
         public DrawerModel Model { get => _model; set => _model = value; }
+        public Size BaseSize { get => _baseSize; set => _baseSize = value; }
 
         private Bitmap StartImg = Properties.Resources.Start;
         private Bitmap FinishImg = Properties.Resources.Finish;
@@ -961,7 +962,11 @@ namespace SectionManager {
         }
 
         public void ModLayerSize(int w, int h) {
-            layer?.SetLayerSize(w, h);
+            if (layer != null) { 
+                layer.SetLayerSize(w, h);
+                layer.Clear();
+                DrawBoxGroup(layer);
+            }   
         }
 
         public void BoxUpdate() {

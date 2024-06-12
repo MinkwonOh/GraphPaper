@@ -15,7 +15,7 @@ namespace SectionManager.Models {
 
     public class Preference : IDisposable {
 
-        public static string PreferenceFilepath = Path.Combine(Application.StartupPath, $"{typeof(Preference).Name}.config");
+        public static string PreferenceFilepath = Path.Combine(Application.StartupPath, $"{typeof(Preference).Name}.ccfg");
         
         public Model Model;
         public int NetPort;

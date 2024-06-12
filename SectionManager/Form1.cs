@@ -48,7 +48,7 @@ namespace SectionManager {
             // filedialog > cfg파일 선택
             using (OpenFileDialog ofd = new OpenFileDialog()) {
                 ofd.InitialDirectory = "C:\\";
-                ofd.Filter = "config files (*.config)|*.config";
+                ofd.Filter = "ccfg files (*.ccfg)|*.ccfg";
                 ofd.FilterIndex = 0;
                 ofd.RestoreDirectory = true;
 
