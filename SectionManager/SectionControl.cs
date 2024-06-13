@@ -22,6 +22,7 @@ namespace SectionManager {
         public EventHandler<int> PortAddedEvent;
         public DrawerModel Model { get => _model; set => _model = value; }
         public Size BaseSize { get => _baseSize; set => _baseSize = value; }
+        public Size RootSize { get => _rootSize; }
 
         private Bitmap StartImg = Properties.Resources.Start;
         private Bitmap FinishImg = Properties.Resources.Finish;
@@ -35,6 +36,7 @@ namespace SectionManager {
         private bool _mousePressed;
         private Point _pressedPoint;
         private Size _baseSize;
+        private Size _rootSize;
         public ZoomPer Zoom { set => zoom = value; }
 
         private bool thRunning;
@@ -315,14 +317,18 @@ namespace SectionManager {
                         int maxY = selectedBoxes.Max(i => i.RctY + i.RctH);
 
                         if (Width < maxX + 50)
-                            Width = layer.Width = maxX + 50;
+                            Width = maxX + 50;
                         else if (_baseSize.Width < Width)
-                            Width = layer.Width = _baseSize.Width < maxX + 50 ? maxX + 50 : _baseSize.Width;
+                            Width = _baseSize.Width < maxX + 50 ? maxX + 50 : _baseSize.Width;
+                        else
+                            Width = layer.Width = ClientSize.Width;
 
                         if (Height < maxY + 50)
-                            Height = layer.Height = maxY + 50;
+                            Height = maxY + 50;
                         else if (_baseSize.Height < Height)
-                            Height = layer.Height = _baseSize.Height < maxY + 50 ? maxY + 50 : _baseSize.Height;
+                            Height =  _baseSize.Height < maxY + 50 ? maxY + 50 : _baseSize.Height;
+                        else
+                            Height = layer.Height = ClientSize.Height;
 
                         SetViewSize(Width, Height);
                         layer.SetLayerSize(Width, Height);
@@ -961,12 +967,61 @@ namespace SectionManager {
             layer = new Layer(width, height);
         }
 
-        public void ModLayerSize(int w, int h) {
-            if (layer != null) { 
-                layer.SetLayerSize(w, h);
-                layer.Clear();
-                DrawBoxGroup(layer);
-            }   
+        public void ModLayerSize(Size clientSize, Size size) {
+            // size, clientSize, this.ClientSize, this.Size, this.layer, this.baseSize, box(rectangle)
+            // 
+
+            try
+            {
+                if (layer != null) {
+
+                    var boxGroupList = _model.BoxGroupList[_model.SelectedPort];
+                    List<Box> selectedBoxes = boxGroupList.BoxList.Where(i => i.Selected).ToList();
+                    int maxX = selectedBoxes.Max(i => i.RctX + i.RctW);
+                    int maxY = selectedBoxes.Max(i => i.RctY + i.RctH);
+
+                    //this.Size = clientSize;
+
+                    // 이건 panel 사이즈 따라감
+                    BaseSize = size;
+
+                    // box -> maxX랑 baseX 비교해서 더 큰쪽으로 따라감.
+                    Size = size;
+
+                    bool lowFlagW = false;
+                    bool lowFlagH = false;
+
+                    if (Width < maxX + 50)
+                        Width = layer.Width = maxX + 50;
+                    else if (_baseSize.Width < Width)
+                        Width = layer.Width = _baseSize.Width < maxX + 50 ? maxX + 50 : _baseSize.Width;
+                    else
+                        Width = layer.Width = clientSize.Width;
+
+                    if (Height < maxY + 50)
+                        Height = layer.Height = maxY + 50;
+                    else if (_baseSize.Height < Height)
+                        Height = layer.Height = _baseSize.Height < maxY + 50 ? maxY + 50 : _baseSize.Height;
+                    else 
+                        Height = layer.Height = clientSize.Height;
+
+                    //Size viewSize = new Size(maxX > clientSize.Width ? maxX + 50 : clientSize.Width, maxY > clientSize.Height ? maxY + 50 : clientSize.Height);
+
+                    SetViewSize(lowFlagW ? size.Width : Width, lowFlagH ? size.Height : Height);
+                    layer.SetLayerSize(Width, Height);
+
+                    layer.Clear();
+                    DrawBoxGroup(layer);
+                    Invalidate(true);
+
+
+                }   
+            }
+            catch (Exception)
+            {
+
+                
+            }
         }
 
         public void BoxUpdate() {

@@ -756,6 +756,7 @@ namespace SectionManager {
             // 
             this.sectionCtrl.AutoScroll = true;
             this.sectionCtrl.BackColor = System.Drawing.Color.White;
+            this.sectionCtrl.BaseSize = new System.Drawing.Size(0, 0);
             this.sectionCtrl.Location = new System.Drawing.Point(24, 33);
             this.sectionCtrl.Model = null;
             this.sectionCtrl.Name = "sectionCtrl";
@@ -821,6 +822,7 @@ namespace SectionManager {
             this.Controls.Add(this.nmrcBoxWidth);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.grpPort);
+            this.MinimumSize = new System.Drawing.Size(1024, 680);
             this.Name = "SectionDrawerControl";
             this.Size = new System.Drawing.Size(1036, 680);
             ((System.ComponentModel.ISupportInitialize)(this.nmrcBoxWidth)).EndInit();

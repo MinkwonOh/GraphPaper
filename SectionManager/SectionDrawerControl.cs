@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -42,7 +43,7 @@ namespace SectionManager {
                 ListModuleIdx.Add(i);
             }
             sectionCtrl.Location = new Point(0,0);
-            sectionCtrl.Size = new Size(pnlBackground.ClientSize.Width, pnlBackground.ClientSize.Height);
+            sectionCtrl.Size = new Size(pnlBackground.Size.Width, pnlBackground.Size.Height);
             sectionCtrl.SetBaseSize(sectionCtrl.Size);
 
             List<int> zoomVals = Enum.GetValues(typeof(ZoomPer)).Cast<int>().ToList();
@@ -106,7 +107,7 @@ namespace SectionManager {
             nmrcBaseWidth.ValueChanged += (s, e) => sectionCtrl.SetBoxWidth((int)nmrcBaseWidth.Value);
             nmrcBaseHeight.ValueChanged += (s, e) => sectionCtrl.SetBoxHeight((int)nmrcBaseHeight.Value);
 
-            pnlBackground.SizeChanged += (s, e) => SetControlSize(pnlBackground.ClientSize.Width, pnlBackground.ClientSize.Height);
+            pnlBackground.SizeChanged += (s, e) => SetControlSize();
 
             nmrcRow.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
             nmrcCol.ValueChanged += (s, e) => sectionCtrl.ResetGroup((int)nmrcRow.Value, (int)nmrcCol.Value, (int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
@@ -165,12 +166,30 @@ namespace SectionManager {
             sectionCtrl.RegistBox((int)nmrcBaseWidth.Value, (int)nmrcBaseHeight.Value);
         }
 
-        public void SetControlSize(int w, int h) {
-            var size = new Size(w, h);
-            sectionCtrl.SetBaseSize(size);
-            sectionCtrl.Size = size;
-            sectionCtrl.SetViewSize(w, h);
-            sectionCtrl.ModLayerSize(w, h);
+        public void SetControlSize() {
+
+            /*
+            사이즈와 관계되는 부분
+            sectionCtrl.BaseSize
+                - 스크롤을 
+            sectionCtrl.Size
+            sectionCtrl.box(Rectangle)
+            sectionCtrl.layer.size
+            */
+            //sectionCtrl.ModLayerSize(pnlBackground.ClientSize, pnlBackground.Size);
+            Debug.WriteLine($"------------------------prev--------------------");
+            Debug.WriteLine($"pnl nSize : {pnlBackground.Size}");
+            Debug.WriteLine($"pnl cSize : {pnlBackground.ClientSize}");
+            Debug.WriteLine($"sct nSize : {sectionCtrl.Size}");
+            Debug.WriteLine($"sct cSize : {sectionCtrl.ClientSize}");
+            Debug.WriteLine($"------------------------------------------------");
+            sectionCtrl.ModLayerSize(pnlBackground.ClientSize, pnlBackground.Size);
+            Debug.WriteLine($"------------------------after-------------------");
+            Debug.WriteLine($"pnl nSize : {pnlBackground.Size}");
+            Debug.WriteLine($"pnl cSize : {pnlBackground.ClientSize}");
+            Debug.WriteLine($"sct nSize : {sectionCtrl.Size}");
+            Debug.WriteLine($"sct cSize : {sectionCtrl.ClientSize}");
+            Debug.WriteLine($"------------------------------------------------");
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {

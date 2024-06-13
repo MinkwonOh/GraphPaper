@@ -213,7 +213,8 @@ namespace SectionManager {
 
             packetManager = new PacketManager();
             packetManager.AddPacketType<ShortPacket>();
-            
+
+            this.MinimumSize = new Size(sdc.MinimumSize.Width + 50, sdc.MinimumSize.Height + 100);
         }
         private void GetCurrentData()
         {
