@@ -157,8 +157,9 @@ namespace SectionManager {
                 var dm = new DrawerModel();
                 sectionCtrl.SetModelValue(ref dm);
             }
-            sectionCtrl.SetViewSize(sectionCtrl.Width, sectionCtrl.Height);
-            sectionCtrl.SetLayerSize(sectionCtrl.Width, sectionCtrl.Height);
+            sectionCtrl.SetViewSize(pnlBackground.Width, pnlBackground.Height);
+            sectionCtrl.SetLayerSize(pnlBackground.Width, pnlBackground.Height);
+            sectionCtrl.ModLayerSize(pnlBackground.ClientSize, pnlBackground.Size);
         }
 
         // 새 Box 생성
@@ -168,28 +169,7 @@ namespace SectionManager {
 
         public void SetControlSize() {
 
-            /*
-            사이즈와 관계되는 부분
-            sectionCtrl.BaseSize
-                - 스크롤을 
-            sectionCtrl.Size
-            sectionCtrl.box(Rectangle)
-            sectionCtrl.layer.size
-            */
-            //sectionCtrl.ModLayerSize(pnlBackground.ClientSize, pnlBackground.Size);
-            Debug.WriteLine($"------------------------prev--------------------");
-            Debug.WriteLine($"pnl nSize : {pnlBackground.Size}");
-            Debug.WriteLine($"pnl cSize : {pnlBackground.ClientSize}");
-            Debug.WriteLine($"sct nSize : {sectionCtrl.Size}");
-            Debug.WriteLine($"sct cSize : {sectionCtrl.ClientSize}");
-            Debug.WriteLine($"------------------------------------------------");
             sectionCtrl.ModLayerSize(pnlBackground.ClientSize, pnlBackground.Size);
-            Debug.WriteLine($"------------------------after-------------------");
-            Debug.WriteLine($"pnl nSize : {pnlBackground.Size}");
-            Debug.WriteLine($"pnl cSize : {pnlBackground.ClientSize}");
-            Debug.WriteLine($"sct nSize : {sectionCtrl.Size}");
-            Debug.WriteLine($"sct cSize : {sectionCtrl.ClientSize}");
-            Debug.WriteLine($"------------------------------------------------");
         }
 
         protected override void OnHandleDestroyed(EventArgs e) {
